@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Xml.Serialization;
-using D360.Bindings;
-
 using Action = D360.Types.Action;
 
 namespace D360.SystemCode
@@ -12,10 +9,14 @@ namespace D360.SystemCode
         public Action leftTriggerBinding;
         public Action rightTriggerBinding;
 
+        //public List<Keys> gamepadBindings;
+
         public Configuration()
         {
             leftTriggerBinding = Action.ActionbarSkill1;
             rightTriggerBinding = Action.ActionbarSkill2;
+
+
         }
     }
 }

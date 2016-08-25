@@ -10,35 +10,37 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
-using System.Xml.Serialization;
+
+using Keys = System.Windows.Forms.Keys;
 
 namespace D360
 {
     public partial class HUDForm : Form
     {
-        public bool diabloActive;
-        private bool setNonTopmost;
+        // DLL libraries used to manage hotkeys
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        //[DllImport("user32.dll")]
+        //public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-        public bool hudDisabled;
+        private const int CONFIG_HOTKEY = 0;
+        private const int ACTIONS_HOTKEY = 1;
+        private const int EXIT_HOTKEY = 2;
 
-        private int screenWidth;
-        private int screenHeight;
+        private bool m_DiabloActive;
 
-        private HUD hud;
-        InputProcessor inputProcessor;
+        private readonly bool m_HUDDisabled;
 
-        ActionBindingsForm m_ActionBindingsForm;
-        ConfigForm configForm;
+        private bool m_SetNonTopmost;
 
-        GamePadState oldGamePadState;
-        KeyboardState oldKeyboardState;
+        private readonly HUD m_HUD;
+        private readonly InputProcessor m_InputProcessor;
 
-        /*
-        Thread hudlessUpdateThread;
-        private bool terminateThread = false;
+        private readonly ActionBindingsForm m_ActionBindingsForm;
+        private readonly ConfigForm m_ConfigForm;
 
-        private bool currentlyUpdating = false;
-         */
+        //private GamePadState m_OldGamePadState;
+        //private KeyboardState m_OldKeyboardState;
 
         /// <summary>
         /// Gets an IServiceProvider containing our IGraphicsDeviceService.
@@ -49,11 +51,10 @@ namespace D360
         {
             InitializeComponent();
 
-
             StartPosition = FormStartPosition.Manual;
-            screenWidth = Screen.GetBounds(this).Width;
-            screenHeight = Screen.GetBounds(this).Height;
 
+            var screenWidth = Screen.GetBounds(this).Width;
+            var screenHeight = Screen.GetBounds(this).Height;
             ClientSize = new Size(screenWidth, screenHeight);
 
             FormBorderStyle = FormBorderStyle.None;  // no borders
@@ -61,7 +62,7 @@ namespace D360
             Left = 0;
             Top = 0;
 
-            TopMost = true;        // make the form always on top                     
+            TopMost = true;        // make the form always on top 
             Visible = true;        // Important! if this isn't set, then the form is not shown at all
 
             // Set the form click-through
@@ -70,11 +71,11 @@ namespace D360
             if (WindowFunctions.isCompositionEnabled())
                 SetWindowLong(Handle, -20, initialStyle | 0x80000 | 0x20);
             else
-                hudDisabled = true;
+                m_HUDDisabled = true;
 
-            inputProcessor = new InputProcessor(GamePad.GetState(0));
+            m_InputProcessor = new InputProcessor(GamePad.GetState(0));
 
-            hud = new HUD(Handle)
+            m_HUD = new HUD(Handle)
             {
                 screenWidth = screenWidth,
                 screenHeight = screenHeight
@@ -83,78 +84,32 @@ namespace D360
             // Extend aero glass style on form initialization
             OnResize(null);
 
-            m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = inputProcessor };
+            m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = m_InputProcessor };
 
             if (File.Exists(@"ActionBindings.dat"))
-            {
-                inputProcessor.actionBindings = LoadD3Bindings();
-#if DEBUG
-                m_ActionBindingsForm.Show();
-#endif
-            }
+                m_InputProcessor.actionBindings = LoadActionBindings();
             else
             {
-                SaveD3Bindings(inputProcessor.actionBindings);
+                SaveActionBindings(m_InputProcessor.actionBindings);
                 m_ActionBindingsForm.Show();
             }
 
-            configForm = new ConfigForm { inputProcessor = inputProcessor };
+            m_ConfigForm = new ConfigForm { inputProcessor = m_InputProcessor };
 
             if (File.Exists(@"Config.dat"))
-            {
-                inputProcessor.config = LoadConfig();
-#if DEBUG
-                configForm.Show();
-#endif
-            }
+                m_InputProcessor.config = LoadConfig();
             else
             {
-                SaveConfig(inputProcessor.config);
-                configForm.Show();
+                SaveConfig(m_InputProcessor.config);
+                m_ConfigForm.Show();
             }
 
-            inputProcessor.AddConfiguredBindings();
+            m_InputProcessor.AddConfiguredBindings();
 
-            var configHotKey = new Hotkey
-            {
-                KeyCode = System.Windows.Forms.Keys.F10,
-                Control = true
-            };
-            configHotKey.Pressed +=
-                delegate
-                {
-                    configForm.Visible = !configForm.Visible;
-                };
-            configHotKey.Register(this);
+            //m_OldGamePadState = GamePad.GetState(0, GamePadDeadZone.Circular);
+            //m_OldKeyboardState = Keyboard.GetState();
 
-            var bindingsHotKey = new Hotkey
-            {
-                KeyCode = System.Windows.Forms.Keys.F11,
-                Control = true
-            };
-            bindingsHotKey.Pressed +=
-                delegate
-                {
-                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
-                };
-            bindingsHotKey.Register(this);
-
-            var quitHotKey = new Hotkey
-            {
-                KeyCode = System.Windows.Forms.Keys.F12,
-                Control = true
-            };
-            quitHotKey.Pressed +=
-                delegate
-                {
-                    Close();
-                };
-            quitHotKey.Register(this);
-
-            oldGamePadState = GamePad.GetState(0, GamePadDeadZone.Circular);
-            oldKeyboardState = Keyboard.GetState();
-
-            if (hudDisabled)
+            if (m_HUDDisabled)
             {
                 Visible = false;
                 ClientSize = new Size(0, 0);
@@ -165,90 +120,13 @@ namespace D360
 
                 backgroundWorker1.RunWorkerAsync();
             }
+
+            RegisterHotKey(Handle, ACTIONS_HOTKEY, 2, (int)Keys.F10);
+            RegisterHotKey(Handle, CONFIG_HOTKEY, 2, (int)Keys.F11);
+            RegisterHotKey(Handle, EXIT_HOTKEY, 2, (int)Keys.F12);
         }
 
-        /*
-        public void DoUpdate()
-        {
-            while (!terminateThread)
-            {
-                if (!currentlyUpdating)
-                {
-                    currentlyUpdating = true;
-                    diabloActive = false;
-                    string foregroundWindowString = WindowFunctions.GetActiveWindowTitle();
-
-                    try
-                    {
-                        if (foregroundWindowString != null)
-                        {
-                            if (foregroundWindowString.ToUpper() == "DIABLO III")
-                            {
-                                diabloActive = true;
-
-                                if (!setNonTopmost)
-                                {
-                                    WindowFunctions.DisableTopMost(WindowFunctions.GetForegroundWindowHandle());
-
-                                    setNonTopmost = true;
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        string crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
-                        using (StreamWriter outfile = new StreamWriter(crashPath, true))
-                        {
-                            outfile.WriteLine();
-                            outfile.WriteLine(DateTime.Now.ToString());
-                            outfile.WriteLine(ex.Message);
-                            outfile.WriteLine(ex.StackTrace);
-                            outfile.WriteLine();
-                            outfile.Flush();
-                        }
-                        MessageBox.Show("Exception in windowing functions. Written to crash.txt.");
-                        this.Close();
-                    }
-
-                    try
-                    {
-                        if (diabloActive) LogicUpdate();
-                    }
-                    catch (Exception ex)
-                    {
-                        string crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
-                        using (StreamWriter outfile = new StreamWriter(crashPath, true))
-                        {
-                            outfile.WriteLine();
-                            outfile.WriteLine(DateTime.Now.ToString());
-                            outfile.WriteLine(ex.Message);
-                            outfile.WriteLine(ex.StackTrace);
-                            outfile.WriteLine();
-                            outfile.Flush();
-                        }
-                        MessageBox.Show("Exception in Logic update. Written to crash.txt.");
-                        this.Close();
-                    }
-
-                    if (ActionBindingsForm.Visible)
-                    {
-                        ActionBindingsForm.Refresh();
-                    }
-
-                    if (configForm.Visible)
-                    {
-                        configForm.Refresh();
-                    }
-
-                    currentlyUpdating = false;
-                }
-                Thread.Sleep(10);
-            }
-        }
-         */
-
-        private void SaveD3Bindings(ActionBindings bindings)
+        private void SaveActionBindings(ActionBindings bindings)
         {
             var bindingsFileStream = new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Create);
             var bindingsBinaryFormatter = new BinaryFormatter();
@@ -257,7 +135,7 @@ namespace D360
             bindingsFileStream.Close();
         }
 
-        private ActionBindings LoadD3Bindings()
+        private ActionBindings LoadActionBindings()
         {
             var bindingsFileStream = new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Open);
             var bindingsBinaryFormatter = new BinaryFormatter();
@@ -314,57 +192,41 @@ namespace D360
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            // Clear device with fully transparent black
-            //
+#if !DEBUG
             var foregroundWindowString = WindowFunctions.GetActiveWindowTitle();
 
-            diabloActive =
+            m_DiabloActive =
                     !string.IsNullOrEmpty(foregroundWindowString) &&
                     foregroundWindowString.ToUpper() == "DIABLO III";
+#else
+            m_DiabloActive = true;
+#endif
 
             try
             {
-                if (diabloActive && !setNonTopmost)
+                if (m_DiabloActive && !m_SetNonTopmost)
                 {
                     WindowFunctions.DisableTopMost(WindowFunctions.GetForegroundWindowHandle());
 
-                    setNonTopmost = true;
+                    m_SetNonTopmost = true;
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                var crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
-                using (var outfile = new StreamWriter(crashPath, true))
-                {
-                    outfile.WriteLine();
-                    outfile.WriteLine(DateTime.Now.ToString(CultureInfo.InvariantCulture));
-                    outfile.WriteLine(ex.Message);
-                    outfile.WriteLine(ex.StackTrace);
-                    outfile.WriteLine();
-                    outfile.Flush();
-                }
-                MessageBox.Show("Exception in windowing functions. Written to crash.txt.");
+                WriteToLog(exception);
+                MessageBox.Show(@"Exception in windowing functions. Written to crash.txt.");
                 Close();
             }
 
             try
             {
-                hud.Draw(inputProcessor.currentControllerState, diabloActive);
+                m_HUD.Draw(m_InputProcessor.currentControllerState, m_DiabloActive);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                var crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
-                using (var outfile = new StreamWriter(crashPath, true))
-                {
-                    outfile.WriteLine();
-                    outfile.WriteLine(DateTime.Now.ToString());
-                    outfile.WriteLine(ex.Message);
-                    outfile.WriteLine(ex.StackTrace);
-                    outfile.WriteLine();
-                    outfile.Flush();
-                }
-                MessageBox.Show("Exception in HUD draw. Written to crash.txt.");
+                WriteToLog(exception);
+                MessageBox.Show(@"Exception in HUD draw. Written to crash.txt.");
                 Close();
             }
 
@@ -373,34 +235,21 @@ namespace D360
 
             try
             {
-                if (diabloActive)
+                if (m_DiabloActive)
                     LogicUpdate();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                var crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
-                using (var outfile = new StreamWriter(crashPath, true))
-                {
-                    outfile.WriteLine();
-                    outfile.WriteLine(DateTime.Now.ToString());
-                    outfile.WriteLine(ex.Message);
-                    outfile.WriteLine(ex.StackTrace);
-                    outfile.WriteLine();
-                    outfile.Flush();
-                }
-                MessageBox.Show("Exception in Logic update. Written to crash.txt.");
+                WriteToLog(exception);
+                MessageBox.Show(@"Exception in Logic update. Written to crash.txt.");
                 Close();
             }
 
             if (m_ActionBindingsForm.Visible)
-            {
                 m_ActionBindingsForm.Refresh();
-            }
 
-            if (configForm.Visible)
-            {
-                configForm.Refresh();
-            }
+            if (m_ConfigForm.Visible)
+                m_ConfigForm.Refresh();
         }
 
 
@@ -428,7 +277,7 @@ namespace D360
 
         public void LogicUpdate()
         {
-            inputProcessor.Update(GamePad.GetState(0, GamePadDeadZone.Circular));
+            m_InputProcessor.Update(GamePad.GetState(0, GamePadDeadZone.Circular));
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -458,6 +307,40 @@ namespace D360
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             //DoUpdate();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x0312)
+            {
+                switch (m.WParam.ToInt32())
+                {
+                    case CONFIG_HOTKEY:
+                        m_ConfigForm.Visible = !m_ConfigForm.Visible;
+                        break;
+                    case ACTIONS_HOTKEY:
+                        m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
+                        break;
+                    case EXIT_HOTKEY:
+                        Close();
+                        break;
+                }
+            }
+            base.WndProc(ref m);
+        }
+
+        private void WriteToLog(Exception exception)
+        {
+            var crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
+            using (var outfile = new StreamWriter(crashPath, true))
+            {
+                outfile.WriteLine();
+                outfile.WriteLine(DateTime.Now.ToString(CultureInfo.InvariantCulture));
+                outfile.WriteLine(exception.Message);
+                outfile.WriteLine(exception.StackTrace);
+                outfile.WriteLine();
+                outfile.Flush();
+            }
         }
     }
 }
