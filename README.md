@@ -1,6 +1,6 @@
 Diablo-360
 ====
-Originally developed (here)[https://github.com/d360project/d360] but I've
+Originally developed [here](https://github.com/d360project/d360] but I've)
 picked up the torch so to speak since development stopped
 
 Xbox 360 Controller application for Diablo 3 (Windows)
