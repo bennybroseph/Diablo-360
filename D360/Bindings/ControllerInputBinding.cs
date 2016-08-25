@@ -20,13 +20,8 @@ namespace D360.Bindings
         public ControllerButtonState buttonState { get; set; }
         public ControllerTriggerState triggerState { get; set; }
 
-        public List<Command> commands;
-
-        public ControllerInputBinding()
-        {
-            commands = new List<Command>();
-        }
-
+        public readonly List<Command> commands = new List<Command>();
+        
         internal void ExecuteCommands(ref ControllerState state)
         {
             foreach (var command in commands)

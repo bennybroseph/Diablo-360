@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using D360.Bindings;
 
-using Action = D360.Bindings.Action;
+using Action = D360.Types.Action;
 
 namespace D360.SystemCode
 {

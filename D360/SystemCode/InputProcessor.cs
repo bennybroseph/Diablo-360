@@ -8,7 +8,7 @@ using D360.InputEmulation;
 using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Action = D360.Bindings.Action;
+using Action = D360.Types.Action;
 using Keys = System.Windows.Forms.Keys;
 
 namespace D360.SystemCode

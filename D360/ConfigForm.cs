@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using D360.Bindings;
 using D360.SystemCode;
-using Action = D360.Bindings.Action;
+using D360.Types;
+
+using Action = D360.Types.Action;
 
 namespace D360
 {
@@ -14,9 +13,9 @@ namespace D360
     {
         public InputProcessor inputProcessor;
 
-        private bool EditingConfig;
+        private bool m_EditingConfig;
 
-        private Configuration editedConfig;
+        private Configuration m_EditedConfig;
 
         public ConfigForm()
         {
@@ -34,14 +33,14 @@ namespace D360
 
         private void saveAndCloseButton_Click(object sender, EventArgs e)
         {
-            if (editedConfig != null)
+            if (m_EditedConfig != null)
             {
 
-                inputProcessor.config = editedConfig;
-                editedConfig = null;
+                inputProcessor.config = m_EditedConfig;
+                m_EditedConfig = null;
             }
 
-            EditingConfig = false;
+            m_EditingConfig = false;
 
             SaveConfig(inputProcessor.config);
 
@@ -59,9 +58,11 @@ namespace D360
 
         private Configuration copyConfig(Configuration config)
         {
-            Configuration resultConfig = new Configuration();
-            resultConfig.leftTriggerBinding = config.leftTriggerBinding;
-            resultConfig.rightTriggerBinding = config.rightTriggerBinding;
+            var resultConfig = new Configuration
+            {
+                leftTriggerBinding = config.leftTriggerBinding,
+                rightTriggerBinding = config.rightTriggerBinding
+            };
 
             return resultConfig;
 
@@ -69,8 +70,8 @@ namespace D360
 
         private void CancelEditing()
         {
-            EditingConfig = false;
-            editedConfig = null;
+            m_EditingConfig = false;
+            m_EditedConfig = null;
         }
 
         private void SaveConfig(Configuration configuration)
@@ -85,14 +86,14 @@ namespace D360
         {
             if (LeftTriggerComboBox.SelectedItem != null)
             {
-                EditingConfig = true;
+                m_EditingConfig = true;
 
-                if (editedConfig == null)
+                if (m_EditedConfig == null)
                 {
-                    editedConfig = copyConfig(inputProcessor.config);
+                    m_EditedConfig = copyConfig(inputProcessor.config);
                 }
 
-                editedConfig.leftTriggerBinding = (LeftTriggerComboBox.SelectedItem as string).ParseAction();
+                m_EditedConfig.leftTriggerBinding = (LeftTriggerComboBox.SelectedItem as string).ParseAction();
             }
         }
 
@@ -100,14 +101,14 @@ namespace D360
         {
             if (RightTriggerComboBox.SelectedItem != null)
             {
-                EditingConfig = true;
+                m_EditingConfig = true;
 
-                if (editedConfig == null)
+                if (m_EditedConfig == null)
                 {
-                    editedConfig = copyConfig(inputProcessor.config);
+                    m_EditedConfig = copyConfig(inputProcessor.config);
                 }
 
-                editedConfig.rightTriggerBinding = (RightTriggerComboBox.SelectedItem as string).ParseAction();
+                m_EditedConfig.rightTriggerBinding = (RightTriggerComboBox.SelectedItem as string).ParseAction();
             }
         }
 

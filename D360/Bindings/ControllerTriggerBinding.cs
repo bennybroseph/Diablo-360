@@ -4,9 +4,8 @@ namespace D360.Bindings
 {
     public class ControllerTriggerBinding
     {
-        public ControllerTrigger side;
-        public float position;
-
+        public readonly ControllerTrigger side;
+        public readonly float position;
 
         public ControllerTriggerBinding(ControllerTrigger leftOrRight, float v)
         {

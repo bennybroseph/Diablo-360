@@ -12,15 +12,14 @@ namespace D360.Display
         public int screenWidth;
         public int screenHeight;
 
-        private GraphicsDevice dev;
-        BasicEffect effect;
+        private readonly GraphicsDevice m_GraphicsDevice;
 
-        SpriteBatch spriteBatch;
+        private readonly SpriteBatch m_SpriteBatch;
 
-        Texture2D targetTexture;
-        Texture2D moveModeTexture;
-        Texture2D pointerModeTexture;
-        Texture2D controllerNotFoundTexture;
+        private readonly Texture2D m_TargetTexture;
+        private readonly Texture2D m_MoveModeTexture;
+        private readonly Texture2D m_PointerModeTexture;
+        private readonly Texture2D m_ControllerNotFoundTexture;
 
         public HUD(IntPtr windowHandle)
         {
@@ -34,101 +33,76 @@ namespace D360.Display
             };
 
             // Create XNA graphics device
-            dev = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.Reach, p);
+            m_GraphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.Reach, p);
 
             using (var stream = new FileStream(@"Content\Target.png", FileMode.Open))
             {
-                targetTexture = Texture2D.FromStream(dev, stream);
+                m_TargetTexture = Texture2D.FromStream(m_GraphicsDevice, stream);
             }
 
             using (var stream = new FileStream(@"Content\Move.png", FileMode.Open))
             {
-                moveModeTexture = Texture2D.FromStream(dev, stream);
+                m_MoveModeTexture = Texture2D.FromStream(m_GraphicsDevice, stream);
             }
 
             using (var stream = new FileStream(@"Content\Pointer.png", FileMode.Open))
             {
-                pointerModeTexture = Texture2D.FromStream(dev, stream);
+                m_PointerModeTexture = Texture2D.FromStream(m_GraphicsDevice, stream);
             }
 
             using (var stream = new FileStream(@"Content\ControllerNotFound.png", FileMode.Open))
             {
-                controllerNotFoundTexture = Texture2D.FromStream(dev, stream);
+                m_ControllerNotFoundTexture = Texture2D.FromStream(m_GraphicsDevice, stream);
             }
 
             // Initialize basic effect
-            effect = new BasicEffect(dev);
+            new BasicEffect(m_GraphicsDevice);
 
-            spriteBatch = new SpriteBatch(dev);
+            m_SpriteBatch = new SpriteBatch(m_GraphicsDevice);
         }
 
         public void Draw(ControllerState state, bool diabloActive)
         {
-            dev.Clear(new Color(0, 0, 0, 0.0f));
+            m_GraphicsDevice.Clear(new Color(0, 0, 0, 0.0f));
 
             if (diabloActive)
             {
-                spriteBatch.Begin();
-
-                Rectangle targetRect;
-
-                if (!state.connected)
+                m_SpriteBatch.Begin();
                 {
-                    targetRect =
-                        new Rectangle(
-                            screenWidth / 2 - controllerNotFoundTexture.Width / 2,
-                            screenHeight / 2 - controllerNotFoundTexture.Height / 2,
-                            controllerNotFoundTexture.Width,
-                            controllerNotFoundTexture.Height);
-                    spriteBatch.Draw(controllerNotFoundTexture, targetRect, Color.White);
-                }
+                    Rectangle targetRect;
 
-                else
-                {
-                    if ((state.targetingReticulePosition.X != state.centerPosition.X) &&
-                        (state.targetingReticulePosition.Y != state.centerPosition.Y))
+                    if (!state.connected)
                     {
-                        var x = (int)(state.targetingReticulePosition.X / 65535.0f * screenWidth) - 16;
-                        var y = (int)(state.targetingReticulePosition.Y / 65535.0f * screenHeight) - 16;
-                        targetRect = new Rectangle(x, y, 32, 32);
-
-                        spriteBatch.Draw(targetTexture, targetRect, new Color(1.0f, 1.0f, 1.0f, 0.5f));
+                        targetRect =
+                            new Rectangle(
+                                screenWidth / 2 - m_ControllerNotFoundTexture.Width / 2,
+                                screenHeight / 2 - m_ControllerNotFoundTexture.Height / 2,
+                                m_ControllerNotFoundTexture.Width,
+                                m_ControllerNotFoundTexture.Height);
+                        m_SpriteBatch.Draw(m_ControllerNotFoundTexture, targetRect, Color.White);
                     }
 
-                    spriteBatch.Draw(
-                        state.inputMode == InputMode.Pointer ? pointerModeTexture : moveModeTexture,
-                        new Rectangle(screenWidth - 128, screenHeight - 64, 128, 64),
-                        Color.White);
+                    else
+                    {
+                        if ((state.targetingReticulePosition.X != state.centerPosition.X) &&
+                            (state.targetingReticulePosition.Y != state.centerPosition.Y))
+                        {
+                            var x = (int)(state.targetingReticulePosition.X / 65535.0f * screenWidth) - 16;
+                            var y = (int)(state.targetingReticulePosition.Y / 65535.0f * screenHeight) - 16;
+                            targetRect = new Rectangle(x, y, 32, 32);
+
+                            m_SpriteBatch.Draw(m_TargetTexture, targetRect, new Color(1.0f, 1.0f, 1.0f, 0.5f));
+                        }
+
+                        m_SpriteBatch.Draw(
+                            state.inputMode == InputMode.Pointer ? m_PointerModeTexture : m_MoveModeTexture,
+                            new Rectangle(screenWidth - 128, screenHeight - 64, 128, 64),
+                            Color.White);
+                    }
                 }
-                spriteBatch.End();
+                m_SpriteBatch.End();
             }
-            /*
-            
-
-            spriteBatch.Begin();
-
-            if ((rightStickXValue != 0) && (rightStickYValue != 0))
-            {
-                spriteBatch.Draw(targetTexture, targetRect, new Microsoft.Xna.Framework.Color(1.0f, 1.0f, 1.0f, 0.5f));
-            }
-
-            //spriteBatch.Draw(moveModeTexture, new Microsoft.Xna.Framework.Rectangle(screenWidth - 256, screenHeight - 128, 128, 64), Microsoft.Xna.Framework.Color.White);
-
-            if (mouse_absolute) 
-            {
-                spriteBatch.Draw(moveModeTexture, new Microsoft.Xna.Framework.Rectangle(screenWidth - 256, screenHeight - 128, 128, 64), Microsoft.Xna.Framework.Color.White);
-            }
-            else
-            {
-                spriteBatch.Draw(pointerModeTexture, new Microsoft.Xna.Framework.Rectangle(screenWidth - 256, screenHeight - 128, 128, 64), Microsoft.Xna.Framework.Color.White);
-            }
-
-
-            spriteBatch.End();
-
-             */
-            // Present the device contents into form
-            dev.Present();
+            m_GraphicsDevice.Present();
         }
     }
 }

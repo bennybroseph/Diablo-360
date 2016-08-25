@@ -6,8 +6,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using D360.Bindings;
 using D360.SystemCode;
-
-using Action = D360.Bindings.Action;
+using D360.Types;
+using Action = D360.Types.Action;
 
 namespace D360
 {
@@ -47,7 +47,7 @@ namespace D360
             // Set the color and text to signify it's being edited to the user
             senderTextBox.BackColor = Color.White;
             senderTextBox.ForeColor = Color.DodgerBlue;
-            senderTextBox.Text = "<Press Any Key>";
+            senderTextBox.Text = @"<Press Any Key>";
 
             foreach (var bindingGUI in m_BindingGuis)
                 if (bindingGUI.textBox == senderTextBox)

@@ -5,10 +5,10 @@ namespace D360.Bindings
 {
     public class ControllerStickBinding
     {
-        public ControllerStick side;
+        public readonly ControllerStick side;
         public Vector2 position;
-        public StickState newState;
-        public StickState oldState;
+        public readonly StickState newState;
+        public readonly StickState oldState;
 
         public ControllerStickBinding(ControllerStick leftOrRight, Vector2 v, StickState newS, StickState oldS = StickState.Any)
         {
