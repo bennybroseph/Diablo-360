@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using D360.InputEmulation;
 using D360.SystemCode;
+
 using ButtonState = D360.Types.ButtonState;
 
 namespace D360.Commands

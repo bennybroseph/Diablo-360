@@ -8,57 +8,56 @@ using D360.InputEmulation;
 using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+
 using Action = D360.Types.Action;
-using Keys = System.Windows.Forms.Keys;
+using FormsKeys = System.Windows.Forms.Keys;
 
 namespace D360.SystemCode
 {
     public class InputProcessor
     {
-        GamePadState lastState;
+        private GamePadState m_LastState;
 
         public ControllerState currentControllerState;
 
-        public UIntVector center;
+        private UIntVector m_Center;
 
         public ActionBindings actionBindings;
         public Configuration config;
 
-        public List<ControllerInputBinding> bindings;
+        private readonly List<ControllerInputBinding> m_Bindings;
 
-        public Queue<StateChangeCommand> stateChangeCommands;
-        public Queue<CursorMoveCommand> cursorMoveCommands;
-        public Queue<Command> reticuleTargetedCommands;
-        public Queue<Command> cursorTargetedCommands;
-        public Queue<Command> untargetedCommands;
-        public Queue<Command> centerRandomTargetedCommands;
-
-        Random rand = new Random();
-
+        private readonly Queue<StateChangeCommand> m_StateChangeCommands;
+        private readonly Queue<CursorMoveCommand> m_CursorMoveCommands;
+        private readonly Queue<Command> m_ReticuleTargetedCommands;
+        private readonly Queue<Command> m_CursorTargetedCommands;
+        private readonly Queue<Command> m_UntargetedCommands;
+        private readonly Queue<Command> m_CenterRandomTargetedCommands;
+        
         public InputProcessor(GamePadState initialState)
         {
-            center = new UIntVector(32768, 30650);
+            m_Center = new UIntVector(32768, 30650);
 
-            bindings = new List<ControllerInputBinding>();
-            lastState = initialState;
+            m_Bindings = new List<ControllerInputBinding>();
+            m_LastState = initialState;
 
             currentControllerState = new ControllerState
             {
                 inputMode = InputMode.Pointer,
-                targetingReticulePosition = center,
-                cursorPosition = center,
-                centerPosition = center
+                targetingReticulePosition = m_Center,
+                cursorPosition = m_Center,
+                centerPosition = m_Center
             };
 
             actionBindings = new ActionBindings();
             config = new Configuration();
 
-            stateChangeCommands = new Queue<StateChangeCommand>();
-            cursorMoveCommands = new Queue<CursorMoveCommand>();
-            reticuleTargetedCommands = new Queue<Command>();
-            cursorTargetedCommands = new Queue<Command>();
-            untargetedCommands = new Queue<Command>();
-            centerRandomTargetedCommands = new Queue<Command>();
+            m_StateChangeCommands = new Queue<StateChangeCommand>();
+            m_CursorMoveCommands = new Queue<CursorMoveCommand>();
+            m_ReticuleTargetedCommands = new Queue<Command>();
+            m_CursorTargetedCommands = new Queue<Command>();
+            m_UntargetedCommands = new Queue<Command>();
+            m_CenterRandomTargetedCommands = new Queue<Command>();
 
             CreateDefaultBindings();
         }
@@ -127,7 +126,7 @@ namespace D360.SystemCode
 
         public void loadChanges()
         {
-            bindings.Clear();
+            m_Bindings.Clear();
             CreateDefaultBindings();
             AddConfiguredBindings();
         }
@@ -140,73 +139,73 @@ namespace D360.SystemCode
 
         private void AddButtonLootBinding(Buttons buttons)
         {
-            bindings.AddRange(ControllerInputBinding.createButtonLootBindings(buttons));
+            m_Bindings.AddRange(ControllerInputBinding.createButtonLootBindings(buttons));
         }
 
 
         private void AddButtonMouseBinding(Buttons buttons, MouseButtons mouseButtons, InputMode bindingMode = InputMode.All, CommandTarget commandTarget = CommandTarget.None)
         {
-            bindings.AddRange(ControllerInputBinding.createMouseButtonBindings(buttons, mouseButtons, bindingMode, commandTarget));
+            m_Bindings.AddRange(ControllerInputBinding.createMouseButtonBindings(buttons, mouseButtons, bindingMode, commandTarget));
         }
 
         private void AddButtonMouseBinding(Buttons buttons, MouseButtons mouseButtons, InputMode bindingMode = InputMode.All, CommandTarget commandTarget = CommandTarget.None, ControllerButtonState cbState = ControllerButtonState.WhileDown)
         {
-            bindings.AddRange(ControllerInputBinding.createMouseButtonBindings(buttons, mouseButtons, bindingMode, commandTarget, cbState));
+            m_Bindings.AddRange(ControllerInputBinding.createMouseButtonBindings(buttons, mouseButtons, bindingMode, commandTarget, cbState));
         }
 
-        public void AddButtonKeyBinding(Buttons button, Keys key, InputMode bindingMode = InputMode.All, CommandTarget commandTarget = CommandTarget.None)
+        public void AddButtonKeyBinding(Buttons button, FormsKeys key, InputMode bindingMode = InputMode.All, CommandTarget commandTarget = CommandTarget.None)
         {
-            bindings.AddRange(ControllerInputBinding.createButtonKeyBindings(button, key, bindingMode, commandTarget));
+            m_Bindings.AddRange(ControllerInputBinding.createButtonKeyBindings(button, key, bindingMode, commandTarget));
         }
 
         private void AddButtonModeChangeBinding(Buttons buttons, InputMode inputMode, bool toggle = false, InputMode bindingMode = InputMode.All, CommandTarget commandTarget = CommandTarget.None)
         {
-            bindings.Add(ControllerInputBinding.createButtonModeChangeBinding(buttons, inputMode, toggle, bindingMode, commandTarget));
+            m_Bindings.Add(ControllerInputBinding.createButtonModeChangeBinding(buttons, inputMode, toggle, bindingMode, commandTarget));
         }
 
         private void AddStickCursorMoveBinding(ControllerStick stick, MouseMoveType moveType, UIntVector moveScale, CommandTarget commandTarget, InputMode bindingMode = InputMode.All)
         {
-            bindings.Add(ControllerInputBinding.createStickCursorMoveBinding(stick, Vector2.Zero, StickState.Any, moveType, moveScale, commandTarget, bindingMode));
+            m_Bindings.Add(ControllerInputBinding.createStickCursorMoveBinding(stick, Vector2.Zero, StickState.Any, moveType, moveScale, commandTarget, bindingMode));
         }
 
         private void AddStickCursorMoveBinding(ControllerStick stick, Vector2 comparisonVector, StickState comparisonState, MouseMoveType moveType, UIntVector moveScale, CommandTarget commandTarget, InputMode bindingMode = InputMode.All)
         {
-            bindings.Add(ControllerInputBinding.createStickCursorMoveBinding(stick, comparisonVector, comparisonState, moveType, moveScale, commandTarget, bindingMode));
+            m_Bindings.Add(ControllerInputBinding.createStickCursorMoveBinding(stick, comparisonVector, comparisonState, moveType, moveScale, commandTarget, bindingMode));
         }
 
         private void AddStickCursorMoveBinding(ControllerStick stick, Vector2 comparisonVector, StickState comparisonState, StickState oldComparisonState, MouseMoveType moveType, UIntVector moveScale, CommandTarget commandTarget, InputMode bindingMode = InputMode.All)
         {
-            bindings.Add(ControllerInputBinding.createStickCursorMoveBinding(stick, comparisonVector, comparisonState, oldComparisonState, moveType, moveScale, commandTarget, bindingMode));
+            m_Bindings.Add(ControllerInputBinding.createStickCursorMoveBinding(stick, comparisonVector, comparisonState, oldComparisonState, moveType, moveScale, commandTarget, bindingMode));
         }
 
-        private void AddStickKeyBinding(ControllerStick stick, Vector2 comparisonVector, Keys key, CommandTarget commandTarget, InputMode inputMode)
+        private void AddStickKeyBinding(ControllerStick stick, Vector2 comparisonVector, FormsKeys key, CommandTarget commandTarget, InputMode inputMode)
         {
-            bindings.AddRange(ControllerInputBinding.createStickKeyBinding(stick, comparisonVector, key, inputMode, commandTarget));
+            m_Bindings.AddRange(ControllerInputBinding.createStickKeyBinding(stick, comparisonVector, key, inputMode, commandTarget));
         }
 
-        private void AddStickKeyBinding(ControllerStick stick, Keys key, CommandTarget commandTarget, InputMode inputMode)
+        private void AddStickKeyBinding(ControllerStick stick, FormsKeys key, CommandTarget commandTarget, InputMode inputMode)
         {
-            bindings.AddRange(ControllerInputBinding.createStickKeyBinding(stick, Vector2.Zero, key, inputMode, commandTarget));
+            m_Bindings.AddRange(ControllerInputBinding.createStickKeyBinding(stick, Vector2.Zero, key, inputMode, commandTarget));
         }
 
-        private void AddStickKeyBinding(ControllerStick stick, Vector2 comparisonVector, StickState comparisonState, StickState oldComparisonState, Keys key, CommandTarget commandTarget, InputMode inputMode)
+        private void AddStickKeyBinding(ControllerStick stick, Vector2 comparisonVector, StickState comparisonState, StickState oldComparisonState, FormsKeys key, CommandTarget commandTarget, InputMode inputMode)
         {
-            bindings.AddRange(ControllerInputBinding.createStickKeyBinding(stick, comparisonVector, comparisonState, oldComparisonState, key, inputMode, commandTarget));
+            m_Bindings.AddRange(ControllerInputBinding.createStickKeyBinding(stick, comparisonVector, comparisonState, oldComparisonState, key, inputMode, commandTarget));
         }
 
-        private void AddTriggerKeyBinding(ControllerTrigger controllerTrigger, float triggerValue, Keys keys, InputMode inputMode, CommandTarget commandTarget)
+        private void AddTriggerKeyBinding(ControllerTrigger controllerTrigger, float triggerValue, FormsKeys keys, InputMode inputMode, CommandTarget commandTarget)
         {
-            bindings.AddRange(ControllerInputBinding.createTriggerKeyBindings(controllerTrigger, triggerValue, keys, inputMode, commandTarget));
+            m_Bindings.AddRange(ControllerInputBinding.createTriggerKeyBindings(controllerTrigger, triggerValue, keys, inputMode, commandTarget));
         }
 
         public void ClearBindingsForButton(Buttons button)
         {
             var i = 0;
-            while (i < bindings.Count)
+            while (i < m_Bindings.Count)
             {
-                if (bindings[i].button == button)
+                if (m_Bindings[i].button == button)
                 {
-                    bindings.RemoveAt(i);
+                    m_Bindings.RemoveAt(i);
                 }
                 else
                 {
@@ -224,33 +223,33 @@ namespace D360.SystemCode
                 return;
             }
 
+            // Cursor Movement
             if (currentControllerState.inputMode == InputMode.Move)
             {
-                var DeltaX = (int)currentControllerState.cursorPosition.X - (int)center.X;
-                var DeltaY = (int)currentControllerState.cursorPosition.Y - (int)center.Y;
+                var DeltaX = (int)currentControllerState.cursorPosition.X - (int)m_Center.X;
+                var DeltaY = (int)currentControllerState.cursorPosition.Y - (int)m_Center.Y;
 
                 var deltaVector = new Vector2(DeltaX, DeltaY);
                 deltaVector.Normalize();
 
                 deltaVector *= 1000.0f;
 
-
-                currentControllerState.centerPosition = new UIntVector((uint)(center.X + deltaVector.X), (uint)(center.Y + deltaVector.Y));
+                currentControllerState.centerPosition = new UIntVector((uint)(m_Center.X + deltaVector.X), (uint)(m_Center.Y + deltaVector.Y));
                 // VirtualMouse.MoveAbsolute(center.X, center.Y);
             }
 
-            foreach (var binding in bindings)
+            foreach (var binding in m_Bindings)
             {
                 if (binding.button != 0)
                 {
                     switch (binding.buttonState)
                     {
                     case ControllerButtonState.OnDown:
-                        if (newState.IsButtonDown(binding.button) && lastState.IsButtonUp(binding.button))
+                        if (newState.IsButtonDown(binding.button) && m_LastState.IsButtonUp(binding.button))
                             enqueueCommands(binding, currentControllerState);
                         break;
                     case ControllerButtonState.OnUp:
-                        if (newState.IsButtonUp(binding.button) && lastState.IsButtonDown(binding.button))
+                        if (newState.IsButtonUp(binding.button) && m_LastState.IsButtonDown(binding.button))
                             enqueueCommands(binding, currentControllerState);
                         break;
                     case ControllerButtonState.WhileDown:
@@ -272,11 +271,11 @@ namespace D360.SystemCode
                         switch (binding.triggerState)
                         {
                         case ControllerTriggerState.OnDown:
-                            if ((newState.Triggers.Left > binding.trigger.position) && (lastState.Triggers.Left < binding.trigger.position))
+                            if ((newState.Triggers.Left > binding.trigger.position) && (m_LastState.Triggers.Left < binding.trigger.position))
                                 enqueueCommands(binding, currentControllerState);
                             break;
                         case ControllerTriggerState.OnUp:
-                            if ((newState.Triggers.Left < binding.trigger.position) && (lastState.Triggers.Left > binding.trigger.position))
+                            if ((newState.Triggers.Left < binding.trigger.position) && (m_LastState.Triggers.Left > binding.trigger.position))
                                 enqueueCommands(binding, currentControllerState);
                             break;
                         case ControllerTriggerState.WhileDown:
@@ -293,11 +292,11 @@ namespace D360.SystemCode
                         switch (binding.triggerState)
                         {
                         case ControllerTriggerState.OnDown:
-                            if ((newState.Triggers.Right > binding.trigger.position) && (lastState.Triggers.Right < binding.trigger.position))
+                            if ((newState.Triggers.Right > binding.trigger.position) && (m_LastState.Triggers.Right < binding.trigger.position))
                                 enqueueCommands(binding, currentControllerState);
                             break;
                         case ControllerTriggerState.OnUp:
-                            if ((newState.Triggers.Right < binding.trigger.position) && (lastState.Triggers.Right > binding.trigger.position))
+                            if ((newState.Triggers.Right < binding.trigger.position) && (m_LastState.Triggers.Right > binding.trigger.position))
                                 enqueueCommands(binding, currentControllerState);
                             break;
                         case ControllerTriggerState.WhileDown:
@@ -338,11 +337,11 @@ namespace D360.SystemCode
                     switch (binding.stick.oldState)
                     {
                     case StickState.NotEqual:
-                        if ((lastState.ThumbSticks.Left.X == binding.stick.position.X) && (lastState.ThumbSticks.Left.Y == binding.stick.position.Y))
+                        if ((m_LastState.ThumbSticks.Left.X == binding.stick.position.X) && (m_LastState.ThumbSticks.Left.Y == binding.stick.position.Y))
                             executeCommand = false;
                         break;
                     case StickState.Equal:
-                        if ((lastState.ThumbSticks.Left.X != binding.stick.position.X) || (lastState.ThumbSticks.Left.Y != binding.stick.position.Y))
+                        if ((m_LastState.ThumbSticks.Left.X != binding.stick.position.X) || (m_LastState.ThumbSticks.Left.Y != binding.stick.position.Y))
                             executeCommand = false;
                         break;
                     }
@@ -371,11 +370,11 @@ namespace D360.SystemCode
                     switch (binding.stick.oldState)
                     {
                     case StickState.NotEqual:
-                        if ((lastState.ThumbSticks.Right.X == binding.stick.position.X) && (lastState.ThumbSticks.Right.Y == binding.stick.position.Y))
+                        if ((m_LastState.ThumbSticks.Right.X == binding.stick.position.X) && (m_LastState.ThumbSticks.Right.Y == binding.stick.position.Y))
                             executeCommand = false;
                         break;
                     case StickState.Equal:
-                        if ((lastState.ThumbSticks.Right.X != binding.stick.position.X) || (lastState.ThumbSticks.Right.Y != binding.stick.position.Y))
+                        if ((m_LastState.ThumbSticks.Right.X != binding.stick.position.X) || (m_LastState.ThumbSticks.Right.Y != binding.stick.position.Y))
                             executeCommand = false;
                         break;
                     }
@@ -390,36 +389,36 @@ namespace D360.SystemCode
             }
 
 
-            while (stateChangeCommands.Count > 0)
+            while (m_StateChangeCommands.Count > 0)
             {
                 VirtualKeyboard.AllUp();
 
                 currentControllerState.targetingReticulePosition = currentControllerState.centerPosition;
                 currentControllerState.cursorPosition = currentControllerState.centerPosition;
 
-                stateChangeCommands.Dequeue().Execute(ref currentControllerState);
+                m_StateChangeCommands.Dequeue().Execute(ref currentControllerState);
             }
 
-            while (cursorMoveCommands.Count > 0)
-                cursorMoveCommands.Dequeue().Execute(ref currentControllerState);
+            while (m_CursorMoveCommands.Count > 0)
+                m_CursorMoveCommands.Dequeue().Execute(ref currentControllerState);
 
-            if (centerRandomTargetedCommands.Count > 0)
+            if (m_CenterRandomTargetedCommands.Count > 0)
             {
-                var DeltaX = (int)currentControllerState.cursorPosition.X - (int)center.X;
-                var DeltaY = (int)currentControllerState.cursorPosition.Y - (int)center.Y;
+                var DeltaX = (int)currentControllerState.cursorPosition.X - (int)m_Center.X;
+                var DeltaY = (int)currentControllerState.cursorPosition.Y - (int)m_Center.Y;
 
                 var deltaVector = new Vector2(DeltaX, DeltaY);
                 deltaVector.Normalize();
 
                 deltaVector *= 1000.0f;
 
-                var centerOffset = new UIntVector((uint)(center.X + deltaVector.X), (uint)(center.Y + deltaVector.Y));
+                var centerOffset = new UIntVector((uint)(m_Center.X + deltaVector.X), (uint)(m_Center.Y + deltaVector.Y));
                 VirtualMouse.MoveAbsolute(centerOffset.X, centerOffset.Y);
             }
-            while (centerRandomTargetedCommands.Count > 0)
-                centerRandomTargetedCommands.Dequeue().Execute(ref currentControllerState);
+            while (m_CenterRandomTargetedCommands.Count > 0)
+                m_CenterRandomTargetedCommands.Dequeue().Execute(ref currentControllerState);
 
-            if (reticuleTargetedCommands.Count > 0)
+            if (m_ReticuleTargetedCommands.Count > 0)
             {
                 if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerPosition.X) && (currentControllerState.targetingReticulePosition.Y == currentControllerState.centerPosition.Y))
                     VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
@@ -429,21 +428,21 @@ namespace D360.SystemCode
 
             Thread.Sleep(10);
 
-            while (reticuleTargetedCommands.Count > 0)
-                reticuleTargetedCommands.Dequeue().Execute(ref currentControllerState);
+            while (m_ReticuleTargetedCommands.Count > 0)
+                m_ReticuleTargetedCommands.Dequeue().Execute(ref currentControllerState);
 
             //if ((currentControllerState.inputMode != InputMode.None) && (currentControllerState.inputMode != InputMode.Pointer))
             if (currentControllerState.inputMode != InputMode.None)
                 VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
-            while (cursorTargetedCommands.Count > 0)
-                cursorTargetedCommands.Dequeue().Execute(ref currentControllerState);
+            while (m_CursorTargetedCommands.Count > 0)
+                m_CursorTargetedCommands.Dequeue().Execute(ref currentControllerState);
 
             //if ((currentControllerState.inputMode != InputMode.None) && (currentControllerState.inputMode != InputMode.Pointer))
 
-            while (untargetedCommands.Count > 0)
-                untargetedCommands.Dequeue().Execute(ref currentControllerState);
+            while (m_UntargetedCommands.Count > 0)
+                m_UntargetedCommands.Dequeue().Execute(ref currentControllerState);
 
-            lastState = newState;
+            m_LastState = newState;
         }
 
         private void enqueueCommands(ControllerInputBinding binding, ControllerState currentControllerState)
@@ -452,27 +451,27 @@ namespace D360.SystemCode
             {
                 if (command is StateChangeCommand)
                 {
-                    stateChangeCommands.Enqueue(command as StateChangeCommand);
+                    m_StateChangeCommands.Enqueue(command as StateChangeCommand);
                 }
                 else if (command is CursorMoveCommand)
                 {
-                    cursorMoveCommands.Enqueue(command as CursorMoveCommand);
+                    m_CursorMoveCommands.Enqueue(command as CursorMoveCommand);
                 }
                 else
                 {
                     switch (command.target)
                     {
                     case CommandTarget.Cursor:
-                        cursorTargetedCommands.Enqueue(command);
+                        m_CursorTargetedCommands.Enqueue(command);
                         break;
                     case CommandTarget.TargetReticule:
-                        reticuleTargetedCommands.Enqueue(command);
+                        m_ReticuleTargetedCommands.Enqueue(command);
                         break;
                     case CommandTarget.CenterRandom:
-                        centerRandomTargetedCommands.Enqueue(command);
+                        m_CenterRandomTargetedCommands.Enqueue(command);
                         break;
                     default:
-                        untargetedCommands.Enqueue(command);
+                        m_UntargetedCommands.Enqueue(command);
                         break;
                     }
                 }
@@ -487,7 +486,7 @@ namespace D360.SystemCode
                 {
                     var cmCommand = command as CursorMoveCommand;
                     cmCommand.inputCommandValue = inputValue;
-                    cursorMoveCommands.Enqueue(cmCommand);
+                    m_CursorMoveCommands.Enqueue(cmCommand);
                 }
                 else
                     enqueueCommands(binding, currentControllerState);

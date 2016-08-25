@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 using ButtonState = D360.Types.ButtonState;
-using Keys = System.Windows.Forms.Keys;
+using FormsKeys = System.Windows.Forms.Keys;
 
 namespace D360.Bindings
 {
@@ -42,7 +42,7 @@ namespace D360.Bindings
         /// <returns>A two-element array of ControllerInputBinding, to be passed to bindings.AddRange()</returns>
         public static IEnumerable<ControllerInputBinding> createButtonKeyBindings(
             Buttons button,
-            Keys key,
+            FormsKeys key,
             InputMode applicableMode = InputMode.All,
             CommandTarget target = CommandTarget.None)
         {
@@ -229,7 +229,7 @@ namespace D360.Bindings
         internal static IEnumerable<ControllerInputBinding> createStickKeyBinding(
             ControllerStick stick,
             Vector2 comparisonVector,
-            Keys key,
+            FormsKeys key,
             InputMode applicableMode = InputMode.All,
             CommandTarget target = CommandTarget.None)
         {
@@ -267,7 +267,7 @@ namespace D360.Bindings
             Vector2 comparisonVector,
             StickState comparisonState,
             StickState oldState,
-            Keys key,
+            FormsKeys key,
             InputMode applicableMode = InputMode.All,
             CommandTarget target = CommandTarget.None)
         {
@@ -303,7 +303,7 @@ namespace D360.Bindings
         internal static IEnumerable<ControllerInputBinding> createTriggerKeyBindings(
             ControllerTrigger controllerTrigger,
             float triggerValue,
-            Keys key,
+            FormsKeys key,
             InputMode applicableMode,
             CommandTarget target)
         {

@@ -199,7 +199,7 @@ namespace D360
                     !string.IsNullOrEmpty(foregroundWindowString) &&
                     foregroundWindowString.ToUpper() == "DIABLO III";
 #else
-            m_DiabloActive = true;
+            m_DiabloActive = false;
 #endif
 
             try

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using D360.SystemCode;
@@ -29,13 +31,21 @@ namespace D360
                 LeftTriggerComboBox.Items.Add(name.ParseDisplayName());
                 RightTriggerComboBox.Items.Add(name.ParseDisplayName());
             }
+
+            foreach (var table in Controls.OfType<TableLayoutPanel>())
+            {
+                foreach (Control control in table.Controls)
+                {
+                    if (control.GetType() == typeof(Label))
+                        control.Text = control.Name;
+                }
+            }
         }
 
         private void saveAndCloseButton_Click(object sender, EventArgs e)
         {
             if (m_EditedConfig != null)
             {
-
                 inputProcessor.config = m_EditedConfig;
                 m_EditedConfig = null;
             }
@@ -128,6 +138,27 @@ namespace D360
             e.Cancel = true;
             CancelEditing();
             Hide();
+        }
+    }
+
+    public static class ControlExtensions
+    {
+        public static T Clone<T>(this T controlToClone) where T : Control
+        {
+            var controlProperties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            var instance = Activator.CreateInstance<T>();
+
+            foreach (var propInfo in controlProperties)
+            {
+                if (!propInfo.CanWrite)
+                    continue;
+
+                if (propInfo.Name != "WindowTarget" && propInfo.GetMethod != null && propInfo.SetMethod != null)
+                    propInfo.SetValue(instance, propInfo.GetValue(controlToClone, null), null);
+            }
+
+            return instance;
         }
     }
 }
