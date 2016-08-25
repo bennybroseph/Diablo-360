@@ -15,7 +15,7 @@ http://www.microsoft.com/en-au/download/details.aspx?id=20914
 
 ===============================
 
-D360 is an attempt at a useable method of controlling Diablo 3 via an Xbox 360 controller on Windows. While I don't think it'll replace keyboard/mouse for everyday play, I hope it'll be useful enough to allow users to drop a Torment level or two and run some bounties or similar from their couch/stationary bike/bed. This is a very early beta - things work on my development machine, but are not necessarily going to work everywhere. Issues/suggestions/crash reports are welcome at d360project@gmail.com. I expect to wake up to a multitude of people on the internet angry that this (very, VERY early) software doesn't work perfectly. :D
+D360 is an attempt at a useable method of controlling Diablo 3 via an Xbox 360 controller on Windows. While I don't think it'll replace keyboard/mouse for everyday play, I hope it'll be useful enough to allow users to drop a Torment level or two and run some bounties or similar from their couch/stationary bike/bed. This is a very early beta - things work on my development machine, but are not necessarily going to work everywhere. Issues/suggestions/crash reports are welcome at ~~d360project@gmail.com~~(Email me instead: bennybroseph@gmail.com). I expect to wake up to a multitude of people on the internet angry that this (very, VERY early) software doesn't work perfectly. :D
 
 The software will only work with Diablo 3 running in Windowed (Fullscreen) mode, on the left monitor. I'll add in the ability to modify that at a later date.
 
