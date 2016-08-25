@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -26,7 +27,7 @@ namespace D360
         private HUD hud;
         InputProcessor inputProcessor;
 
-        D3BindingsForm d3bindingsForm;
+        ActionBindingsForm m_ActionBindingsForm;
         ConfigForm configForm;
 
         GamePadState oldGamePadState;
@@ -82,33 +83,35 @@ namespace D360
             // Extend aero glass style on form initialization
             OnResize(null);
 
-            d3bindingsForm = new D3BindingsForm { inputProcessor = inputProcessor };
+            m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = inputProcessor };
 
-#if !DEBUG
-            if (File.Exists(@"D3Bindings.xml"))
-                inputProcessor.d3Bindings = LoadD3Bindings();
+            if (File.Exists(@"ActionBindings.dat"))
+            {
+                inputProcessor.actionBindings = LoadD3Bindings();
+#if DEBUG
+                m_ActionBindingsForm.Show();
+#endif
+            }
             else
             {
-#endif
-            SaveD3Bindings(inputProcessor.d3Bindings);
-            d3bindingsForm.Show();
-#if !DEBUG
+                SaveD3Bindings(inputProcessor.actionBindings);
+                m_ActionBindingsForm.Show();
             }
-#endif
 
             configForm = new ConfigForm { inputProcessor = inputProcessor };
 
-#if !DEBUG
-            if (File.Exists(@"Config.xml"))
+            if (File.Exists(@"Config.dat"))
+            {
                 inputProcessor.config = LoadConfig();
+#if DEBUG
+                configForm.Show();
+#endif
+            }
             else
             {
-#endif
-            SaveConfig(inputProcessor.config);
-            configForm.Show();
-#if !DEBUG
-        }
-#endif
+                SaveConfig(inputProcessor.config);
+                configForm.Show();
+            }
 
             inputProcessor.AddConfiguredBindings();
 
@@ -132,7 +135,7 @@ namespace D360
             bindingsHotKey.Pressed +=
                 delegate
                 {
-                    d3bindingsForm.Visible = !d3bindingsForm.Visible;
+                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
                 };
             bindingsHotKey.Register(this);
 
@@ -228,9 +231,9 @@ namespace D360
                         this.Close();
                     }
 
-                    if (d3bindingsForm.Visible)
+                    if (ActionBindingsForm.Visible)
                     {
-                        d3bindingsForm.Refresh();
+                        ActionBindingsForm.Refresh();
                     }
 
                     if (configForm.Visible)
@@ -245,19 +248,21 @@ namespace D360
         }
          */
 
-        private void SaveD3Bindings(D3Bindings bindings)
+        private void SaveD3Bindings(ActionBindings bindings)
         {
-            var bindingsFileStream = new FileStream(Application.StartupPath + @"\D3Bindings.xml", FileMode.Create);
-            var bindingsXMLSerializer = new XmlSerializer(typeof(D3Bindings));
-            bindingsXMLSerializer.Serialize(bindingsFileStream, bindings);
+            var bindingsFileStream = new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Create);
+            var bindingsBinaryFormatter = new BinaryFormatter();
+
+            bindingsBinaryFormatter.Serialize(bindingsFileStream, bindings);
             bindingsFileStream.Close();
         }
 
-        private D3Bindings LoadD3Bindings()
+        private ActionBindings LoadD3Bindings()
         {
-            var bindingsFileStream = new FileStream(Application.StartupPath + @"\D3Bindings.xml", FileMode.Open);
-            var bindingsXMLSerializer = new XmlSerializer(typeof(D3Bindings));
-            var result = (D3Bindings)bindingsXMLSerializer.Deserialize(bindingsFileStream);
+            var bindingsFileStream = new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Open);
+            var bindingsBinaryFormatter = new BinaryFormatter();
+            var result = (ActionBindings)bindingsBinaryFormatter.Deserialize(bindingsFileStream);
+
             bindingsFileStream.Close();
             return result;
         }
@@ -265,18 +270,20 @@ namespace D360
 
         private void SaveConfig(Configuration config)
         {
-            var configFileStream = new FileStream(Application.StartupPath + @"\Config.xml", FileMode.Create);
-            var configXMLSerializer = new XmlSerializer(typeof(Configuration));
-            configXMLSerializer.Serialize(configFileStream, config);
+            var configFileStream = new FileStream(Application.StartupPath + @"\Config.dat", FileMode.Create);
+            var configBinaryFormatter = new BinaryFormatter();
+
+            configBinaryFormatter.Serialize(configFileStream, config);
             configFileStream.Close();
         }
 
         private Configuration LoadConfig()
         {
-            var ConfigFileStream = new FileStream(Application.StartupPath + @"\Config.xml", FileMode.Open);
-            var ConfigXMLSerializer = new XmlSerializer(typeof(Configuration));
-            var result = (Configuration)ConfigXMLSerializer.Deserialize(ConfigFileStream);
-            ConfigFileStream.Close();
+            var configFileStream = new FileStream(Application.StartupPath + @"\Config.dat", FileMode.Open);
+            var configBinaryFormatter = new BinaryFormatter();
+            var result = (Configuration)configBinaryFormatter.Deserialize(configFileStream);
+
+            configFileStream.Close();
             return result;
         }
 
@@ -385,9 +392,9 @@ namespace D360
                 Close();
             }
 
-            if (d3bindingsForm.Visible)
+            if (m_ActionBindingsForm.Visible)
             {
-                d3bindingsForm.Refresh();
+                m_ActionBindingsForm.Refresh();
             }
 
             if (configForm.Visible)
@@ -405,13 +412,13 @@ namespace D360
         //    {
         //        if ((oldGamePadState.IsButtonUp(Buttons.Back)) || (oldGamePadState.IsButtonUp(Buttons.Start)))
         //        {
-        //            if (d3bindingsForm.Visible)
+        //            if (ActionBindingsForm.Visible)
         //            {
-        //                d3bindingsForm.Visible = false;
+        //                ActionBindingsForm.Visible = false;
         //            }
         //            else
         //            {
-        //                d3bindingsForm.Visible = true;
+        //                ActionBindingsForm.Visible = true;
         //            }
         //        }
         //    }

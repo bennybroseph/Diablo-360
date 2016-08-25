@@ -74,7 +74,7 @@
   <ItemGroup>
     <Compile Include="Bindings\ControllerStickBinding.cs" />
     <Compile Include="Bindings\ControllerTriggerBinding.cs" />
-    <Compile Include="Bindings\D3Bindings.cs" />
+    <Compile Include="Bindings\ActionBindings.cs" />
     <Compile Include="Commands\CursorMoveCommand.cs" />
     <Compile Include="Commands\MouseButtonCommand.cs" />
     <Compile Include="Commands\KeyboardCommand.cs" />
@@ -93,11 +93,11 @@
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SystemCode\ControllerState.cs" />
-    <Compile Include="D3BindingsForm.cs">
+    <Compile Include="ActionBindingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="D3BindingsForm.Designer.cs">
-      <DependentUpon>D3BindingsForm.cs</DependentUpon>
+    <Compile Include="ActionBindingsForm.Designer.cs">
+      <DependentUpon>ActionBindingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Display\HUD.cs" />
     <Compile Include="HUDForm.cs">
@@ -116,8 +116,8 @@
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="D3BindingsForm.resx">
-      <DependentUpon>D3BindingsForm.cs</DependentUpon>
+    <EmbeddedResource Include="ActionBindingsForm.resx">
+      <DependentUpon>ActionBindingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HUDForm.resx">
       <DependentUpon>HUDForm.cs</DependentUpon>

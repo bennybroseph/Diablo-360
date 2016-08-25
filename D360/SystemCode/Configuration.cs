@@ -1,19 +1,21 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
+using D360.Bindings;
+
+using Action = D360.Bindings.Action;
 
 namespace D360.SystemCode
 {
+    [Serializable]
     public class Configuration
     {
-        [XmlElement("leftTriggerBinding")]
-        public string leftTriggerBinding;
-
-        [XmlElement("rightTriggerBinding")]
-        public string rightTriggerBinding;
+        public Action leftTriggerBinding;
+        public Action rightTriggerBinding;
 
         public Configuration()
         {
-            leftTriggerBinding = "actionBarSkill1Key";
-            rightTriggerBinding = "actionBarSkill2Key";
+            leftTriggerBinding = Action.ActionbarSkill1;
+            rightTriggerBinding = Action.ActionbarSkill2;
         }
     }
 }

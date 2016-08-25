@@ -8,7 +8,7 @@ using D360.InputEmulation;
 using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
+using Action = D360.Bindings.Action;
 using Keys = System.Windows.Forms.Keys;
 
 namespace D360.SystemCode
@@ -21,7 +21,7 @@ namespace D360.SystemCode
 
         public UIntVector center;
 
-        public D3Bindings d3Bindings;
+        public ActionBindings actionBindings;
         public Configuration config;
 
         public List<ControllerInputBinding> bindings;
@@ -50,7 +50,7 @@ namespace D360.SystemCode
                 centerPosition = center
             };
 
-            d3Bindings = new D3Bindings();
+            actionBindings = new ActionBindings();
             config = new Configuration();
 
             stateChangeCommands = new Queue<StateChangeCommand>();
@@ -66,37 +66,37 @@ namespace D360.SystemCode
         private void CreateDefaultBindings()
         {
             // Primary Skill Key
-            AddButtonKeyBinding(Buttons.LeftShoulder, d3Bindings.forceStandStillKey, InputMode.Move, CommandTarget.TargetReticule);
+            AddButtonKeyBinding(Buttons.LeftShoulder, actionBindings.bindings[Action.ForceMove], InputMode.Move, CommandTarget.TargetReticule);
             AddButtonMouseBinding(Buttons.LeftShoulder, MouseButtons.Left, InputMode.Move, CommandTarget.TargetReticule);
 
             // Secondary Skill Key
-            AddButtonKeyBinding(Buttons.RightShoulder, d3Bindings.forceStandStillKey, InputMode.Move, CommandTarget.TargetReticule);
+            AddButtonKeyBinding(Buttons.RightShoulder, actionBindings.bindings[Action.ForceStandStill], InputMode.Move, CommandTarget.TargetReticule);
             AddButtonMouseBinding(Buttons.RightShoulder, MouseButtons.Right, InputMode.Move, CommandTarget.TargetReticule);
 
             // Action Bar Skill 1 - 4
-            AddButtonKeyBinding(Buttons.X, d3Bindings.actionBarSkill1Key, InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonKeyBinding(Buttons.A, d3Bindings.actionBarSkill2Key, InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonKeyBinding(Buttons.Y, d3Bindings.actionBarSkill3Key, InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonKeyBinding(Buttons.B, d3Bindings.actionBarSkill4Key, InputMode.Move, CommandTarget.TargetReticule);
+            AddButtonKeyBinding(Buttons.X, actionBindings.bindings[Action.ActionbarSkill1], InputMode.Move, CommandTarget.TargetReticule);
+            AddButtonKeyBinding(Buttons.A, actionBindings.bindings[Action.ActionbarSkill2], InputMode.Move, CommandTarget.TargetReticule);
+            AddButtonKeyBinding(Buttons.Y, actionBindings.bindings[Action.ActionbarSkill3], InputMode.Move, CommandTarget.TargetReticule);
+            AddButtonKeyBinding(Buttons.B, actionBindings.bindings[Action.ActionbarSkill4], InputMode.Move, CommandTarget.TargetReticule);
 
             // Inventory Key
-            AddButtonKeyBinding(Buttons.DPadDown, d3Bindings.inventoryKey);
+            AddButtonKeyBinding(Buttons.DPadDown, actionBindings.bindings[Action.Inventory]);
             AddButtonModeChangeBinding(Buttons.DPadDown, InputMode.Pointer);
 
             // Map Key
-            AddButtonKeyBinding(Buttons.DPadLeft, d3Bindings.mapKey);
+            AddButtonKeyBinding(Buttons.DPadLeft, actionBindings.bindings[Action.Map]);
 
             // Potion Key
-            AddButtonKeyBinding(Buttons.DPadUp, d3Bindings.potionKey);
+            AddButtonKeyBinding(Buttons.DPadUp, actionBindings.bindings[Action.Potion]);
 
             // Town Portal Key
-            AddButtonKeyBinding(Buttons.DPadRight, d3Bindings.townPortalKey);
+            AddButtonKeyBinding(Buttons.DPadRight, actionBindings.bindings[Action.TownPortal]);
 
             // Game Menu Key
-            AddButtonKeyBinding(Buttons.Back, d3Bindings.gameMenuKey);
+            AddButtonKeyBinding(Buttons.Back, actionBindings.bindings[Action.GameMenu]);
 
             // Game Menu Key
-            AddButtonKeyBinding(Buttons.Start, d3Bindings.worldMapKey);
+            AddButtonKeyBinding(Buttons.Start, actionBindings.bindings[Action.WorldMap]);
             AddButtonModeChangeBinding(Buttons.DPadDown, InputMode.Pointer);
 
             // Left stick click to toggle between Pointer and Move modes
@@ -107,11 +107,11 @@ namespace D360.SystemCode
 
             //Left Stick to Move Character in Move Mode
             AddStickCursorMoveBinding(ControllerStick.Left, Vector2.Zero, StickState.NotEqual, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.Cursor, InputMode.Move);
-            AddStickKeyBinding(ControllerStick.Left, d3Bindings.forceMoveKey, CommandTarget.Cursor, InputMode.Move);
+            AddStickKeyBinding(ControllerStick.Left, actionBindings.bindings[Action.ForceMove], CommandTarget.Cursor, InputMode.Move);
 
             // Left Stick to stop character in place when stick returns to zero in Move Mode
             AddStickCursorMoveBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.Cursor, InputMode.Move);
-            AddStickKeyBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, d3Bindings.forceMoveKey, CommandTarget.Cursor, InputMode.Move);
+            AddStickKeyBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, actionBindings.bindings[Action.ForceMove], CommandTarget.Cursor, InputMode.Move);
 
             //Right Stick to move reticule in Move Mode
             AddStickCursorMoveBinding(ControllerStick.Right, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.TargetReticule, InputMode.Move);
@@ -134,8 +134,8 @@ namespace D360.SystemCode
 
         public void AddConfiguredBindings()
         {
-            AddTriggerKeyBinding(ControllerTrigger.Left, 0.1f, d3Bindings.fromString(config.leftTriggerBinding), InputMode.Move, CommandTarget.TargetReticule);
-            AddTriggerKeyBinding(ControllerTrigger.Right, 0.1f, d3Bindings.fromString(config.rightTriggerBinding), InputMode.Move, CommandTarget.TargetReticule);
+            AddTriggerKeyBinding(ControllerTrigger.Left, 0.1f, actionBindings.bindings[config.leftTriggerBinding], InputMode.Move, CommandTarget.TargetReticule);
+            AddTriggerKeyBinding(ControllerTrigger.Right, 0.1f, actionBindings.bindings[config.rightTriggerBinding], InputMode.Move, CommandTarget.TargetReticule);
         }
 
         private void AddButtonLootBinding(Buttons buttons)

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using D360.Bindings;
 using D360.SystemCode;
+using Action = D360.Bindings.Action;
 
 namespace D360
 {
@@ -17,6 +21,15 @@ namespace D360
         public ConfigForm()
         {
             InitializeComponent();
+
+            LeftTriggerComboBox.Items.Clear();
+            RightTriggerComboBox.Items.Clear();
+
+            foreach (Action name in Enum.GetValues(typeof(Action)))
+            {
+                LeftTriggerComboBox.Items.Add(name.ParseDisplayName());
+                RightTriggerComboBox.Items.Add(name.ParseDisplayName());
+            }
         }
 
         private void saveAndCloseButton_Click(object sender, EventArgs e)
@@ -62,8 +75,8 @@ namespace D360
 
         private void SaveConfig(Configuration configuration)
         {
-            var configurationFileStream = new FileStream(Application.StartupPath + @"\Config.xml", FileMode.Create);
-            var bindingsXMLSerializer = new XmlSerializer(typeof(Configuration));
+            var configurationFileStream = new FileStream(Application.StartupPath + @"\Config.dat", FileMode.Create);
+            var bindingsXMLSerializer = new BinaryFormatter();
             bindingsXMLSerializer.Serialize(configurationFileStream, configuration);
             configurationFileStream.Close();
         }
@@ -79,20 +92,7 @@ namespace D360
                     editedConfig = copyConfig(inputProcessor.config);
                 }
 
-                string selectedItem = (LeftTriggerComboBox.SelectedItem).ToString();
-
-                switch (selectedItem)
-                {
-                    case "Action Bar Skill 1": editedConfig.leftTriggerBinding = "actionBarSkill1Key"; break;
-                    case "Action Bar Skill 2": editedConfig.leftTriggerBinding = "actionBarSkill2Key"; break;
-                    case "Action Bar Skill 3": editedConfig.leftTriggerBinding = "actionBarSkill3Key"; break;
-                    case "Action Bar Skill 4": editedConfig.leftTriggerBinding = "actionBarSkill4Key"; break;
-                    case "Inventory": editedConfig.leftTriggerBinding = "inventoryKey"; break;
-                    case "Map": editedConfig.leftTriggerBinding = "mapKey"; break;
-                    case "Potion": editedConfig.leftTriggerBinding = "potionKey"; break;
-                    case "Town Portal": editedConfig.leftTriggerBinding = "townPortalKey"; break;
-                    default: break;
-                }
+                editedConfig.leftTriggerBinding = (LeftTriggerComboBox.SelectedItem as string).ParseAction();
             }
         }
 
@@ -107,20 +107,7 @@ namespace D360
                     editedConfig = copyConfig(inputProcessor.config);
                 }
 
-                string selectedItem = (RightTriggerComboBox.SelectedItem).ToString();
-
-                switch (selectedItem)
-                {
-                    case "Action Bar Skill 1": editedConfig.rightTriggerBinding = "actionBarSkill1Key"; break;
-                    case "Action Bar Skill 2": editedConfig.rightTriggerBinding = "actionBarSkill2Key"; break;
-                    case "Action Bar Skill 3": editedConfig.rightTriggerBinding = "actionBarSkill3Key"; break;
-                    case "Action Bar Skill 4": editedConfig.rightTriggerBinding = "actionBarSkill4Key"; break;
-                    case "Inventory": editedConfig.rightTriggerBinding = "inventoryKey"; break;
-                    case "Map": editedConfig.rightTriggerBinding = "mapKey"; break;
-                    case "Potion": editedConfig.rightTriggerBinding = "potionKey"; break;
-                    case "Town Portal": editedConfig.rightTriggerBinding = "townPortalKey"; break;
-                    default: break;
-                }
+                editedConfig.rightTriggerBinding = (RightTriggerComboBox.SelectedItem as string).ParseAction();
             }
         }
 
@@ -128,24 +115,10 @@ namespace D360
         {
             if (Visible)
             {
-                LeftTriggerComboBox.SelectedIndex = LeftTriggerComboBox.Items.IndexOf(BindingToString(inputProcessor.config.leftTriggerBinding));
-                RightTriggerComboBox.SelectedIndex = RightTriggerComboBox.Items.IndexOf(BindingToString(inputProcessor.config.rightTriggerBinding));
-            }
-        }
-
-        private string BindingToString(string p)
-        {
-            switch (p)
-            {
-                case "actionBarSkill1Key": return "Action Bar Skill 1";
-                case "actionBarSkill2Key": return "Action Bar Skill 2";
-                case "actionBarSkill3Key": return "Action Bar Skill 3";
-                case "actionBarSkill4Key": return "Action Bar Skill 4";
-                case "inventoryKey": return "Inventory";
-                case "mapKey": return "Map";
-                case "potionKey": return "Potion";
-                case "townPortalKey": return "Town Portal";
-                default: return "";
+                LeftTriggerComboBox.SelectedIndex =
+                    LeftTriggerComboBox.Items.IndexOf(inputProcessor.config.leftTriggerBinding.ParseDisplayName());
+                RightTriggerComboBox.SelectedIndex =
+                    RightTriggerComboBox.Items.IndexOf(inputProcessor.config.rightTriggerBinding.ParseDisplayName());
             }
         }
 
