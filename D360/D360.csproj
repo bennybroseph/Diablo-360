@@ -116,9 +116,11 @@
     <Compile Include="Types\UIntVector.cs" />
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ActionBindingsForm.resx">
       <DependentUpon>ActionBindingsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="HUDForm.resx">
       <DependentUpon>HUDForm.cs</DependentUpon>
@@ -163,7 +165,9 @@
     <None Include="Content\ControllerNotFound.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\XBoxOneControllerOutline.png" />
+    <None Include="Content\XBoxOneControllerOutline.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\XBoxOneControllerWhite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

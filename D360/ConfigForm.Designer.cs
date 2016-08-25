@@ -34,7 +34,7 @@ namespace D360
             System.Windows.Forms.Label defaultLabel;
             System.Windows.Forms.Label backLabel;
             System.Windows.Forms.Label startLabel;
-            System.Windows.Forms.Label rightTriggerLable;
+            System.Windows.Forms.Label rightTriggerLabel;
             System.Windows.Forms.Label leftTriggerLabel;
             System.Windows.Forms.Label leftBumperLabel;
             System.Windows.Forms.Label rightBumperLabel;
@@ -63,8 +63,8 @@ namespace D360
             D360.CustomTextBox dPadDownPressBinding;
             D360.CustomTextBox aHoldBinding;
             D360.CustomTextBox aPressBinding;
-            D360.CustomTextBox bButtonHoldKey;
-            D360.CustomTextBox bButtonPressKey;
+            D360.CustomTextBox bHoldBinding;
+            D360.CustomTextBox bPressBinding;
             D360.CustomTextBox yHoldBinding;
             D360.CustomTextBox yPressBinding;
             D360.CustomTextBox xHoldBinding;
@@ -73,8 +73,8 @@ namespace D360
             D360.CustomTextBox leftStickPressBinding;
             D360.CustomTextBox rightShoulderHoldBinding;
             D360.CustomTextBox rightShoulderPressBinding;
-            D360.CustomTextBox leftBumperHoldKey;
-            D360.CustomTextBox leftBumperPressKey;
+            D360.CustomTextBox leftBumperHoldBinding;
+            D360.CustomTextBox leftBumperPressBinding;
             D360.CustomTextBox leftTriggerHoldBinding;
             D360.CustomTextBox leftTriggerPressBinding;
             D360.CustomTextBox rightTriggerHoldBinding;
@@ -115,7 +115,7 @@ namespace D360
             defaultLabel = new System.Windows.Forms.Label();
             backLabel = new System.Windows.Forms.Label();
             startLabel = new System.Windows.Forms.Label();
-            rightTriggerLable = new System.Windows.Forms.Label();
+            rightTriggerLabel = new System.Windows.Forms.Label();
             leftTriggerLabel = new System.Windows.Forms.Label();
             leftBumperLabel = new System.Windows.Forms.Label();
             rightBumperLabel = new System.Windows.Forms.Label();
@@ -144,8 +144,8 @@ namespace D360
             dPadDownPressBinding = new D360.CustomTextBox();
             aHoldBinding = new D360.CustomTextBox();
             aPressBinding = new D360.CustomTextBox();
-            bButtonHoldKey = new D360.CustomTextBox();
-            bButtonPressKey = new D360.CustomTextBox();
+            bHoldBinding = new D360.CustomTextBox();
+            bPressBinding = new D360.CustomTextBox();
             yHoldBinding = new D360.CustomTextBox();
             yPressBinding = new D360.CustomTextBox();
             xHoldBinding = new D360.CustomTextBox();
@@ -154,8 +154,8 @@ namespace D360
             leftStickPressBinding = new D360.CustomTextBox();
             rightShoulderHoldBinding = new D360.CustomTextBox();
             rightShoulderPressBinding = new D360.CustomTextBox();
-            leftBumperHoldKey = new D360.CustomTextBox();
-            leftBumperPressKey = new D360.CustomTextBox();
+            leftBumperHoldBinding = new D360.CustomTextBox();
+            leftBumperPressBinding = new D360.CustomTextBox();
             leftTriggerHoldBinding = new D360.CustomTextBox();
             leftTriggerPressBinding = new D360.CustomTextBox();
             rightTriggerHoldBinding = new D360.CustomTextBox();
@@ -220,16 +220,16 @@ namespace D360
             startLabel.Text = "Default Press Label";
             startLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // rightTriggerLable
+            // rightTriggerLabel
             // 
-            rightTriggerLable.AutoSize = true;
-            rightTriggerLable.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightTriggerLable.Location = new System.Drawing.Point(3, 0);
-            rightTriggerLable.Name = "rightTriggerLable";
-            rightTriggerLable.Size = new System.Drawing.Size(169, 19);
-            rightTriggerLable.TabIndex = 27;
-            rightTriggerLable.Text = "Default Press Label";
-            rightTriggerLable.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            rightTriggerLabel.AutoSize = true;
+            rightTriggerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightTriggerLabel.Location = new System.Drawing.Point(3, 0);
+            rightTriggerLabel.Name = "rightTriggerLabel";
+            rightTriggerLabel.Size = new System.Drawing.Size(169, 19);
+            rightTriggerLabel.TabIndex = 27;
+            rightTriggerLabel.Text = "Default Press Label";
+            rightTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // leftTriggerLabel
             // 
@@ -373,6 +373,17 @@ namespace D360
             dPadLeftLabel.TabIndex = 27;
             dPadLeftLabel.Text = "Default Press Label";
             dPadLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // bigButtonLabel
+            // 
+            bigButtonLabel.AutoSize = true;
+            bigButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            bigButtonLabel.Location = new System.Drawing.Point(3, 0);
+            bigButtonLabel.Name = "bigButtonLabel";
+            bigButtonLabel.Size = new System.Drawing.Size(169, 19);
+            bigButtonLabel.TabIndex = 27;
+            bigButtonLabel.Text = "Default Press Label";
+            bigButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // OldLeftTriggerLabel
             // 
@@ -528,7 +539,7 @@ namespace D360
             this.rightTriggerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.rightTriggerPanel.Controls.Add(rightTriggerHoldBinding, 0, 2);
             this.rightTriggerPanel.Controls.Add(rightTriggerPressBinding, 0, 1);
-            this.rightTriggerPanel.Controls.Add(rightTriggerLable, 0, 0);
+            this.rightTriggerPanel.Controls.Add(rightTriggerLabel, 0, 0);
             this.rightTriggerPanel.Location = new System.Drawing.Point(949, 75);
             this.rightTriggerPanel.Name = "rightTriggerPanel";
             this.rightTriggerPanel.RowCount = 3;
@@ -558,8 +569,8 @@ namespace D360
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel6.Controls.Add(leftBumperHoldKey, 0, 2);
-            this.tableLayoutPanel6.Controls.Add(leftBumperPressKey, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(leftBumperHoldBinding, 0, 2);
+            this.tableLayoutPanel6.Controls.Add(leftBumperPressBinding, 0, 1);
             this.tableLayoutPanel6.Controls.Add(leftBumperLabel, 0, 0);
             this.tableLayoutPanel6.Location = new System.Drawing.Point(112, 177);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
@@ -639,8 +650,8 @@ namespace D360
             // 
             this.bPanel.ColumnCount = 1;
             this.bPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.bPanel.Controls.Add(bButtonHoldKey, 0, 2);
-            this.bPanel.Controls.Add(bButtonPressKey, 0, 1);
+            this.bPanel.Controls.Add(bHoldBinding, 0, 2);
+            this.bPanel.Controls.Add(bPressBinding, 0, 1);
             this.bPanel.Controls.Add(bLabel, 0, 0);
             this.bPanel.Location = new System.Drawing.Point(1041, 428);
             this.bPanel.Name = "bPanel";
@@ -762,17 +773,6 @@ namespace D360
             this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.bigButtonPanel.Size = new System.Drawing.Size(175, 66);
             this.bigButtonPanel.TabIndex = 50;
-            // 
-            // bigButtonLabel
-            // 
-            bigButtonLabel.AutoSize = true;
-            bigButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            bigButtonLabel.Location = new System.Drawing.Point(3, 0);
-            bigButtonLabel.Name = "bigButtonLabel";
-            bigButtonLabel.Size = new System.Drawing.Size(169, 19);
-            bigButtonLabel.TabIndex = 27;
-            bigButtonLabel.Text = "Default Press Label";
-            bigButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // bigButtonHoldBinding
             // 
@@ -928,27 +928,27 @@ namespace D360
             aPressBinding.TabIndex = 29;
             aPressBinding.Text = "Default Text Box";
             // 
-            // bButtonHoldKey
+            // bHoldBinding
             // 
-            bButtonHoldKey.AllowDrop = true;
-            bButtonHoldKey.Cursor = System.Windows.Forms.Cursors.Default;
-            bButtonHoldKey.Dock = System.Windows.Forms.DockStyle.Fill;
-            bButtonHoldKey.Location = new System.Drawing.Point(3, 48);
-            bButtonHoldKey.Name = "bButtonHoldKey";
-            bButtonHoldKey.Size = new System.Drawing.Size(169, 20);
-            bButtonHoldKey.TabIndex = 33;
-            bButtonHoldKey.Text = "Default Text Box";
+            bHoldBinding.AllowDrop = true;
+            bHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            bHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            bHoldBinding.Location = new System.Drawing.Point(3, 48);
+            bHoldBinding.Name = "bHoldBinding";
+            bHoldBinding.Size = new System.Drawing.Size(169, 20);
+            bHoldBinding.TabIndex = 33;
+            bHoldBinding.Text = "Default Text Box";
             // 
-            // bButtonPressKey
+            // bPressBinding
             // 
-            bButtonPressKey.AllowDrop = true;
-            bButtonPressKey.Cursor = System.Windows.Forms.Cursors.Default;
-            bButtonPressKey.Dock = System.Windows.Forms.DockStyle.Fill;
-            bButtonPressKey.Location = new System.Drawing.Point(3, 22);
-            bButtonPressKey.Name = "bButtonPressKey";
-            bButtonPressKey.Size = new System.Drawing.Size(169, 20);
-            bButtonPressKey.TabIndex = 29;
-            bButtonPressKey.Text = "Default Text Box";
+            bPressBinding.AllowDrop = true;
+            bPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            bPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            bPressBinding.Location = new System.Drawing.Point(3, 22);
+            bPressBinding.Name = "bPressBinding";
+            bPressBinding.Size = new System.Drawing.Size(169, 20);
+            bPressBinding.TabIndex = 29;
+            bPressBinding.Text = "Default Text Box";
             // 
             // yHoldBinding
             // 
@@ -1038,27 +1038,27 @@ namespace D360
             rightShoulderPressBinding.TabIndex = 29;
             rightShoulderPressBinding.Text = "Default Text Box";
             // 
-            // leftBumperHoldKey
+            // leftBumperHoldBinding
             // 
-            leftBumperHoldKey.AllowDrop = true;
-            leftBumperHoldKey.Cursor = System.Windows.Forms.Cursors.Default;
-            leftBumperHoldKey.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftBumperHoldKey.Location = new System.Drawing.Point(3, 48);
-            leftBumperHoldKey.Name = "leftBumperHoldKey";
-            leftBumperHoldKey.Size = new System.Drawing.Size(169, 20);
-            leftBumperHoldKey.TabIndex = 33;
-            leftBumperHoldKey.Text = "Default Text Box";
+            leftBumperHoldBinding.AllowDrop = true;
+            leftBumperHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftBumperHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftBumperHoldBinding.Location = new System.Drawing.Point(3, 48);
+            leftBumperHoldBinding.Name = "leftBumperHoldBinding";
+            leftBumperHoldBinding.Size = new System.Drawing.Size(169, 20);
+            leftBumperHoldBinding.TabIndex = 33;
+            leftBumperHoldBinding.Text = "Default Text Box";
             // 
-            // leftBumperPressKey
+            // leftBumperPressBinding
             // 
-            leftBumperPressKey.AllowDrop = true;
-            leftBumperPressKey.Cursor = System.Windows.Forms.Cursors.Default;
-            leftBumperPressKey.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftBumperPressKey.Location = new System.Drawing.Point(3, 22);
-            leftBumperPressKey.Name = "leftBumperPressKey";
-            leftBumperPressKey.Size = new System.Drawing.Size(169, 20);
-            leftBumperPressKey.TabIndex = 29;
-            leftBumperPressKey.Text = "Default Text Box";
+            leftBumperPressBinding.AllowDrop = true;
+            leftBumperPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftBumperPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftBumperPressBinding.Location = new System.Drawing.Point(3, 22);
+            leftBumperPressBinding.Name = "leftBumperPressBinding";
+            leftBumperPressBinding.Size = new System.Drawing.Size(169, 20);
+            leftBumperPressBinding.TabIndex = 29;
+            leftBumperPressBinding.Text = "Default Text Box";
             // 
             // leftTriggerHoldBinding
             // 
