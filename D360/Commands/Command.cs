@@ -1,11 +1,7 @@
-﻿using D360.InputEmulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using D360.SystemCode;
+using D360.Types;
 
-namespace D360
+namespace D360.Commands
 {
     public class Command
     {
@@ -17,14 +13,9 @@ namespace D360
         public virtual bool Execute(ref ControllerState state)
         {
             if (applicableMode == InputMode.None)
-            {
                 return false;
-            }
 
-            if ((applicableMode != state.inputMode) && (applicableMode != InputMode.All))
-            {
-                return false;
-            }
+            return (applicableMode == state.inputMode) || (applicableMode == InputMode.All);
 
             /*
             if (target == CommandTarget.Cursor)
@@ -47,7 +38,6 @@ namespace D360
                 //
             }
             */
-            return true;
         }
     }
 }

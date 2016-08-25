@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using D360.SystemCode;
 
 namespace D360
 {
@@ -16,7 +10,7 @@ namespace D360
     {
         public InputProcessor inputProcessor;
 
-        private bool EditingConfig = false;
+        private bool EditingConfig;
 
         private Configuration editedConfig;
 
@@ -32,9 +26,8 @@ namespace D360
 
                 inputProcessor.config = editedConfig;
                 editedConfig = null;
-
-
             }
+
             EditingConfig = false;
 
             SaveConfig(inputProcessor.config);
@@ -133,7 +126,7 @@ namespace D360
 
         private void ConfigForm_VisibleChanged(object sender, EventArgs e)
         {
-            if (this.Visible)
+            if (Visible)
             {
                 LeftTriggerComboBox.SelectedIndex = LeftTriggerComboBox.Items.IndexOf(BindingToString(inputProcessor.config.leftTriggerBinding));
                 RightTriggerComboBox.SelectedIndex = RightTriggerComboBox.Items.IndexOf(BindingToString(inputProcessor.config.rightTriggerBinding));
@@ -160,7 +153,7 @@ namespace D360
         {
             e.Cancel = true;
             CancelEditing();
-            this.Hide();
+            Hide();
         }
     }
 }

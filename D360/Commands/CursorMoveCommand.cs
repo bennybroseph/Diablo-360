@@ -1,12 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using D360.Bindings;
+using D360.SystemCode;
+using D360.Types;
+using Microsoft.Xna.Framework;
 
-namespace D360
+namespace D360.Commands
 {
     public class CursorMoveCommand : Command
     {
@@ -15,52 +12,43 @@ namespace D360
 
         public override bool Execute(ref ControllerState state)
         {
-            if (base.Execute(ref state))
+            if (!base.Execute(ref state) || mouseMove == null)
+                return false;
+
+            #region Mouse Movements
+            switch (mouseMove.commandTarget)
             {
-                #region Mouse Movements
-                if (mouseMove != null)
-                {
-                    if (mouseMove.commandTarget == CommandTarget.Cursor)
+                case CommandTarget.Cursor:
+                    switch (mouseMove.moveType)
                     {
-                        if (mouseMove.moveType == MouseMoveType.Absolute)
-                        {
+                        case MouseMoveType.Absolute:
                             state.cursorPosition.X = state.centerPosition.X + (uint)(inputCommandValue.X * mouseMove.moveScale.X);
                             state.cursorPosition.Y = state.centerPosition.Y - (uint)(inputCommandValue.Y * mouseMove.moveScale.Y);
-                        }
-                        else if (mouseMove.moveType == MouseMoveType.Relative)
-                        {
+                            break;
+                        case MouseMoveType.Relative:
                             state.cursorPosition.X += (uint)(inputCommandValue.X * mouseMove.moveScale.X);
                             state.cursorPosition.Y -= (uint)(inputCommandValue.Y * mouseMove.moveScale.Y);
-                        }
+                            break;
                     }
-                    else if (mouseMove.commandTarget == CommandTarget.TargetReticule)
+                    break;
+                case CommandTarget.TargetReticule:
+                    switch (mouseMove.moveType)
                     {
-                        if (mouseMove.moveType == MouseMoveType.Absolute)
-                        {
-                            
+                        case MouseMoveType.Absolute:
+
                             state.targetingReticulePosition.X = state.centerPosition.X + (uint)(inputCommandValue.X * mouseMove.moveScale.X);
                             state.targetingReticulePosition.Y = state.centerPosition.Y - (uint)(inputCommandValue.Y * mouseMove.moveScale.Y);
-                        }
-                        else if (mouseMove.moveType == MouseMoveType.Relative)
-                        {
+                            break;
+                        case MouseMoveType.Relative:
                             state.targetingReticulePosition.X += (uint)(inputCommandValue.X * mouseMove.moveScale.X);
                             state.targetingReticulePosition.Y -= (uint)(inputCommandValue.Y * mouseMove.moveScale.Y);
-                        }
-
-
+                            break;
                     }
-                }
-                return true;
-
-                #endregion
+                    break;
             }
-            else
-            {
-                return false;
-            }
+            #endregion
 
-
+            return true;
         }
-
     }
 }

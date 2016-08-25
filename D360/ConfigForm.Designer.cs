@@ -1,11 +1,14 @@
-﻿namespace D360
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace D360
 {
     partial class ConfigForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -138,11 +141,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox LeftTriggerComboBox;
-        private System.Windows.Forms.Label RightTriggerLabel;
-        private System.Windows.Forms.ComboBox RightTriggerComboBox;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Button saveAndCloseButton;
+        private Label label1;
+        private ComboBox LeftTriggerComboBox;
+        private Label RightTriggerLabel;
+        private ComboBox RightTriggerComboBox;
+        private Button cancelButton;
+        private Button saveAndCloseButton;
     }
 }

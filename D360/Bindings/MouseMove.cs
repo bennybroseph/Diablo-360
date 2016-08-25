@@ -1,12 +1,6 @@
 ﻿using D360.Types;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace D360
+namespace D360.Bindings
 {
     public class MouseMove
     {

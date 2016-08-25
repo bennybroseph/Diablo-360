@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace D360
+namespace D360.SystemCode
 {
     public class WindowFunctions
     {
-
         /// <summary>
         ///     Special window handles
         /// </summary>
@@ -86,7 +82,7 @@ namespace D360
             SWP_NOOWNERZORDER = 0x0200,
 
             /// <summary>
-            ///     Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to the client area, the nonclient area (including the title bar and scroll bars), and any part of the parent window uncovered as a result of the window being moved. When this flag is set, the application must explicitly invalidate or redraw any parts of the window and parent window that need redrawing.
+            ///     Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to the client area, the non-client area (including the title bar and scroll bars), and any part of the parent window uncovered as a result of the window being moved. When this flag is set, the application must explicitly invalidate or redraw any parts of the window and parent window that need redrawing.
             /// </summary>
             SWP_NOREDRAW = 0x0008,
 
@@ -130,16 +126,16 @@ namespace D360
 
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetForegroundWindow();
+        private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
-        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+        private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         public static string GetActiveWindowTitle()
         {
             const int nChars = 256;
-            StringBuilder Buff = new StringBuilder(nChars);
-            IntPtr handle = GetForegroundWindow();
+            var Buff = new StringBuilder(nChars);
+            var handle = GetForegroundWindow();
 
             if (GetWindowText(handle, Buff, nChars) > 0)
             {
@@ -158,7 +154,7 @@ namespace D360
 
         public static bool isCompositionEnabled()
         {
-            bool enabled = false;
+            bool enabled;
             DwmIsCompositionEnabled(out enabled);
 
             return enabled;

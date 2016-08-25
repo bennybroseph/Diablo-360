@@ -1,11 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using D360.Types;
 
-namespace D360
+namespace D360.Bindings
 {
     public class ControllerTriggerBinding
     {

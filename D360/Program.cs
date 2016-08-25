@@ -1,40 +1,34 @@
 using System;
-using System.Collections.Generic;
+#if !DEBUG
+using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+#endif
 using System.Windows.Forms;
 
 namespace D360
 {
-    static class Program
+    internal static class Program
     {
-
-
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        /// <summary> The main entry point for the application. </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
 #if !DEBUG
             try
             {
 #endif
-                Application.Run(new HUDForm());
-
+            Application.Run(new HUDForm());
 #if !DEBUG
             }
             catch (Exception ex)
             {
-                string crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
-                using (StreamWriter outfile = new StreamWriter(crashPath, true))
+                var crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
+                using (var outfile = new StreamWriter(crashPath, true))
                 {
                     outfile.WriteLine();
-                    outfile.WriteLine(DateTime.Now.ToString());
+                    outfile.WriteLine(DateTime.Now.ToString(CultureInfo.InvariantCulture));
                     outfile.WriteLine(ex.Message);
                     outfile.WriteLine(ex.StackTrace);
                     outfile.WriteLine();
@@ -43,7 +37,5 @@ namespace D360
             }
 #endif
         }
-
-
     }
 }
