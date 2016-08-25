@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using D360.Bindings;
 using D360.SystemCode;
 using D360.Types;
+
 using Action = D360.Types.Action;
 
 namespace D360
@@ -86,17 +87,19 @@ namespace D360
             m_TempBindings = null;
         }
 
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private void OnKeyUp(object sender, KeyEventArgs e)
         {
             if (!m_EditingBinding)
                 return;
 
-            m_TempBindings.bindings[m_CurrentlyEditingBindingGui.action] = e.KeyCode;
-            m_CurrentlyEditingBindingGui.textBox.Text = e.KeyCode.ToString();
+            var action = m_CurrentlyEditingBindingGui.action;
+
+            m_TempBindings.bindings[action] = e.KeyData;
+            m_CurrentlyEditingBindingGui.textBox.Text = e.KeyData.ToString();
             m_CurrentlyEditingBindingGui.textBox.BackColor = SystemColors.Control;
             m_CurrentlyEditingBindingGui.textBox.ForeColor =
-                m_TempBindings.bindings[m_CurrentlyEditingBindingGui.action] ==
-                inputProcessor.actionBindings.bindings[m_CurrentlyEditingBindingGui.action]
+                m_TempBindings.bindings[action] ==
+                inputProcessor.actionBindings.bindings[action]
                 ? SystemColors.ControlText : Color.DodgerBlue;
 
             m_EditingBinding = false;
@@ -159,7 +162,7 @@ namespace D360
             {
                 var bindingGUI = new BindingGUI
                 {
-                    textBox = new TextBox(),
+                    textBox = new CustomTextBox(),
                     label = new Label(),
                     action = pair.Key
                 };
@@ -199,6 +202,17 @@ namespace D360
             defaultLabel.Hide();
 
             Refresh();
+        }
+    }
+
+    class CustomTextBox : TextBox
+    {
+        protected override bool IsInputKey(Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+                return true;
+
+            return base.IsInputKey(keyData);
         }
     }
 }
