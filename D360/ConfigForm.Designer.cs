@@ -385,6 +385,394 @@ namespace D360
             bigButtonLabel.Text = "Default Press Label";
             bigButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // OldLeftTriggerLabel
+            // 
+            this.OldLeftTriggerLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.OldLeftTriggerLabel.AutoSize = true;
+            this.OldLeftTriggerLabel.Location = new System.Drawing.Point(12, 41);
+            this.OldLeftTriggerLabel.Name = "OldLeftTriggerLabel";
+            this.OldLeftTriggerLabel.Size = new System.Drawing.Size(61, 13);
+            this.OldLeftTriggerLabel.TabIndex = 0;
+            this.OldLeftTriggerLabel.Text = "Left Trigger";
+            this.OldLeftTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.OldLeftTriggerLabel.Visible = false;
+            // 
+            // LeftTriggerComboBox
+            // 
+            this.LeftTriggerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LeftTriggerComboBox.FormattingEnabled = true;
+            this.LeftTriggerComboBox.Items.AddRange(new object[] {
+            "Action Bar Skill 1",
+            "Action Bar Skill 2",
+            "Action Bar Skill 3",
+            "Action Bar Skill 4",
+            "Inventory",
+            "Map",
+            "Potion",
+            "Town Portal"});
+            this.LeftTriggerComboBox.Location = new System.Drawing.Point(12, 12);
+            this.LeftTriggerComboBox.Name = "LeftTriggerComboBox";
+            this.LeftTriggerComboBox.Size = new System.Drawing.Size(186, 21);
+            this.LeftTriggerComboBox.TabIndex = 1;
+            this.LeftTriggerComboBox.Visible = false;
+            this.LeftTriggerComboBox.SelectedIndexChanged += new System.EventHandler(this.LeftTriggerComboBox_SelectedIndexChanged);
+            // 
+            // OldRightTriggerLabel
+            // 
+            this.OldRightTriggerLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.OldRightTriggerLabel.AutoSize = true;
+            this.OldRightTriggerLabel.Location = new System.Drawing.Point(1182, 41);
+            this.OldRightTriggerLabel.Name = "OldRightTriggerLabel";
+            this.OldRightTriggerLabel.Size = new System.Drawing.Size(68, 13);
+            this.OldRightTriggerLabel.TabIndex = 2;
+            this.OldRightTriggerLabel.Text = "Right Trigger";
+            this.OldRightTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.OldRightTriggerLabel.Visible = false;
+            // 
+            // RightTriggerComboBox
+            // 
+            this.RightTriggerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.RightTriggerComboBox.FormattingEnabled = true;
+            this.RightTriggerComboBox.Items.AddRange(new object[] {
+            "Action Bar Skill 1",
+            "Action Bar Skill 2",
+            "Action Bar Skill 3",
+            "Action Bar Skill 4",
+            "Inventory",
+            "Map",
+            "Potion",
+            "Town Portal"});
+            this.RightTriggerComboBox.Location = new System.Drawing.Point(1066, 12);
+            this.RightTriggerComboBox.Name = "RightTriggerComboBox";
+            this.RightTriggerComboBox.Size = new System.Drawing.Size(186, 21);
+            this.RightTriggerComboBox.TabIndex = 3;
+            this.RightTriggerComboBox.Visible = false;
+            this.RightTriggerComboBox.SelectedIndexChanged += new System.EventHandler(this.RightTriggerComboBox_SelectedIndexChanged);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelButton.Location = new System.Drawing.Point(1157, 731);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(93, 23);
+            this.cancelButton.TabIndex = 25;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
+            // saveAndCloseButton
+            // 
+            this.saveAndCloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveAndCloseButton.Location = new System.Drawing.Point(12, 731);
+            this.saveAndCloseButton.Name = "saveAndCloseButton";
+            this.saveAndCloseButton.Size = new System.Drawing.Size(93, 23);
+            this.saveAndCloseButton.TabIndex = 24;
+            this.saveAndCloseButton.Text = "Save and Close";
+            this.saveAndCloseButton.UseVisualStyleBackColor = true;
+            this.saveAndCloseButton.Click += new System.EventHandler(this.saveAndCloseButton_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Image = global::D360.Properties.Resources.XBoxOneControllerOutline1;
+            this.pictureBox1.Location = new System.Drawing.Point(98, 99);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1067, 617);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 26;
+            this.pictureBox1.TabStop = false;
+            // 
+            // defaultTable
+            // 
+            this.defaultTable.ColumnCount = 1;
+            this.defaultTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.defaultTable.Controls.Add(defaultHoldBinding, 0, 2);
+            this.defaultTable.Controls.Add(defaultPressBinding, 0, 1);
+            this.defaultTable.Controls.Add(defaultLabel, 0, 0);
+            this.defaultTable.Location = new System.Drawing.Point(348, 12);
+            this.defaultTable.Name = "defaultTable";
+            this.defaultTable.RowCount = 3;
+            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.defaultTable.Size = new System.Drawing.Size(175, 72);
+            this.defaultTable.TabIndex = 33;
+            this.defaultTable.Visible = false;
+            // 
+            // backPanel
+            // 
+            this.backPanel.ColumnCount = 1;
+            this.backPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.backPanel.Controls.Add(backHoldBinding, 0, 2);
+            this.backPanel.Controls.Add(backPressBinding, 0, 1);
+            this.backPanel.Controls.Add(backLabel, 0, 0);
+            this.backPanel.Location = new System.Drawing.Point(443, 166);
+            this.backPanel.Name = "backPanel";
+            this.backPanel.RowCount = 3;
+            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.backPanel.Size = new System.Drawing.Size(175, 72);
+            this.backPanel.TabIndex = 34;
+            // 
+            // startPanel
+            // 
+            this.startPanel.ColumnCount = 1;
+            this.startPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.startPanel.Controls.Add(startHoldBinding, 0, 2);
+            this.startPanel.Controls.Add(startPressBinding, 0, 1);
+            this.startPanel.Controls.Add(startLabel, 0, 0);
+            this.startPanel.Location = new System.Drawing.Point(640, 166);
+            this.startPanel.Name = "startPanel";
+            this.startPanel.RowCount = 3;
+            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.startPanel.Size = new System.Drawing.Size(175, 72);
+            this.startPanel.TabIndex = 35;
+            // 
+            // rightTriggerPanel
+            // 
+            this.rightTriggerPanel.ColumnCount = 1;
+            this.rightTriggerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.rightTriggerPanel.Controls.Add(rightTriggerHoldBinding, 0, 2);
+            this.rightTriggerPanel.Controls.Add(rightTriggerPressBinding, 0, 1);
+            this.rightTriggerPanel.Controls.Add(rightTriggerLabel, 0, 0);
+            this.rightTriggerPanel.Location = new System.Drawing.Point(951, 66);
+            this.rightTriggerPanel.Name = "rightTriggerPanel";
+            this.rightTriggerPanel.RowCount = 3;
+            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightTriggerPanel.Size = new System.Drawing.Size(175, 72);
+            this.rightTriggerPanel.TabIndex = 36;
+            // 
+            // leftTriggerPanel
+            // 
+            this.leftTriggerPanel.ColumnCount = 1;
+            this.leftTriggerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.leftTriggerPanel.Controls.Add(leftTriggerHoldBinding, 0, 2);
+            this.leftTriggerPanel.Controls.Add(leftTriggerPressBinding, 0, 1);
+            this.leftTriggerPanel.Controls.Add(leftTriggerLabel, 0, 0);
+            this.leftTriggerPanel.Location = new System.Drawing.Point(157, 66);
+            this.leftTriggerPanel.Name = "leftTriggerPanel";
+            this.leftTriggerPanel.RowCount = 3;
+            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftTriggerPanel.Size = new System.Drawing.Size(175, 72);
+            this.leftTriggerPanel.TabIndex = 37;
+            // 
+            // leftBumperPanel
+            // 
+            this.leftBumperPanel.ColumnCount = 1;
+            this.leftBumperPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.leftBumperPanel.Controls.Add(leftBumperHoldBinding, 0, 2);
+            this.leftBumperPanel.Controls.Add(leftBumperPressBinding, 0, 1);
+            this.leftBumperPanel.Controls.Add(leftBumperLabel, 0, 0);
+            this.leftBumperPanel.Location = new System.Drawing.Point(114, 168);
+            this.leftBumperPanel.Name = "leftBumperPanel";
+            this.leftBumperPanel.RowCount = 3;
+            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftBumperPanel.Size = new System.Drawing.Size(175, 72);
+            this.leftBumperPanel.TabIndex = 38;
+            // 
+            // rightShoulderPanel
+            // 
+            this.rightShoulderPanel.ColumnCount = 1;
+            this.rightShoulderPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.rightShoulderPanel.Controls.Add(rightShoulderHoldBinding, 0, 2);
+            this.rightShoulderPanel.Controls.Add(rightShoulderPressBinding, 0, 1);
+            this.rightShoulderPanel.Controls.Add(rightBumperLabel, 0, 0);
+            this.rightShoulderPanel.Location = new System.Drawing.Point(972, 170);
+            this.rightShoulderPanel.Name = "rightShoulderPanel";
+            this.rightShoulderPanel.RowCount = 3;
+            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightShoulderPanel.Size = new System.Drawing.Size(175, 72);
+            this.rightShoulderPanel.TabIndex = 39;
+            // 
+            // leftStickPanel
+            // 
+            this.leftStickPanel.ColumnCount = 1;
+            this.leftStickPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.leftStickPanel.Controls.Add(leftStickHoldBinding, 0, 2);
+            this.leftStickPanel.Controls.Add(leftStickPressBinding, 0, 1);
+            this.leftStickPanel.Controls.Add(leftStickLabel, 0, 0);
+            this.leftStickPanel.Location = new System.Drawing.Point(84, 307);
+            this.leftStickPanel.Name = "leftStickPanel";
+            this.leftStickPanel.RowCount = 3;
+            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftStickPanel.Size = new System.Drawing.Size(175, 72);
+            this.leftStickPanel.TabIndex = 40;
+            // 
+            // xPanel
+            // 
+            this.xPanel.ColumnCount = 1;
+            this.xPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.xPanel.Controls.Add(xHoldBinding, 0, 2);
+            this.xPanel.Controls.Add(xPressBinding, 0, 1);
+            this.xPanel.Controls.Add(xLabel, 0, 0);
+            this.xPanel.Location = new System.Drawing.Point(957, 271);
+            this.xPanel.Name = "xPanel";
+            this.xPanel.RowCount = 3;
+            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.xPanel.Size = new System.Drawing.Size(175, 72);
+            this.xPanel.TabIndex = 41;
+            // 
+            // yPanel
+            // 
+            this.yPanel.ColumnCount = 1;
+            this.yPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.yPanel.Controls.Add(yHoldBinding, 0, 2);
+            this.yPanel.Controls.Add(yPressBinding, 0, 1);
+            this.yPanel.Controls.Add(yLabel, 0, 0);
+            this.yPanel.Location = new System.Drawing.Point(1025, 345);
+            this.yPanel.Name = "yPanel";
+            this.yPanel.RowCount = 3;
+            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.yPanel.Size = new System.Drawing.Size(175, 72);
+            this.yPanel.TabIndex = 42;
+            // 
+            // bPanel
+            // 
+            this.bPanel.ColumnCount = 1;
+            this.bPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.bPanel.Controls.Add(bHoldBinding, 0, 2);
+            this.bPanel.Controls.Add(bPressBinding, 0, 1);
+            this.bPanel.Controls.Add(bLabel, 0, 0);
+            this.bPanel.Location = new System.Drawing.Point(1043, 419);
+            this.bPanel.Name = "bPanel";
+            this.bPanel.RowCount = 3;
+            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bPanel.Size = new System.Drawing.Size(175, 72);
+            this.bPanel.TabIndex = 43;
+            // 
+            // aPanel
+            // 
+            this.aPanel.ColumnCount = 1;
+            this.aPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.aPanel.Controls.Add(aHoldBinding, 0, 2);
+            this.aPanel.Controls.Add(aPressBinding, 0, 1);
+            this.aPanel.Controls.Add(aLabel, 0, 0);
+            this.aPanel.Location = new System.Drawing.Point(1022, 499);
+            this.aPanel.Name = "aPanel";
+            this.aPanel.RowCount = 3;
+            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.aPanel.Size = new System.Drawing.Size(175, 72);
+            this.aPanel.TabIndex = 44;
+            // 
+            // dPadDownPanel
+            // 
+            this.dPadDownPanel.ColumnCount = 1;
+            this.dPadDownPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.dPadDownPanel.Controls.Add(dPadDownHoldBinding, 0, 2);
+            this.dPadDownPanel.Controls.Add(dPadDownPressBinding, 0, 1);
+            this.dPadDownPanel.Controls.Add(dPadDownLabel, 0, 0);
+            this.dPadDownPanel.Location = new System.Drawing.Point(272, 682);
+            this.dPadDownPanel.Name = "dPadDownPanel";
+            this.dPadDownPanel.RowCount = 3;
+            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadDownPanel.Size = new System.Drawing.Size(175, 72);
+            this.dPadDownPanel.TabIndex = 45;
+            // 
+            // dPadRightPanel
+            // 
+            this.dPadRightPanel.ColumnCount = 1;
+            this.dPadRightPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.dPadRightPanel.Controls.Add(dPadRightHoldBinding, 0, 2);
+            this.dPadRightPanel.Controls.Add(dPadRightPressBinding, 0, 1);
+            this.dPadRightPanel.Controls.Add(dPadRightLabel, 0, 0);
+            this.dPadRightPanel.Location = new System.Drawing.Point(590, 680);
+            this.dPadRightPanel.Name = "dPadRightPanel";
+            this.dPadRightPanel.RowCount = 3;
+            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadRightPanel.Size = new System.Drawing.Size(175, 72);
+            this.dPadRightPanel.TabIndex = 46;
+            // 
+            // rightStickPanel
+            // 
+            this.rightStickPanel.ColumnCount = 1;
+            this.rightStickPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.rightStickPanel.Controls.Add(rightStickHoldBinding, 0, 2);
+            this.rightStickPanel.Controls.Add(rightStickPressBinding, 0, 1);
+            this.rightStickPanel.Controls.Add(rightStickLabel, 0, 0);
+            this.rightStickPanel.Location = new System.Drawing.Point(822, 682);
+            this.rightStickPanel.Name = "rightStickPanel";
+            this.rightStickPanel.RowCount = 3;
+            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightStickPanel.Size = new System.Drawing.Size(175, 72);
+            this.rightStickPanel.TabIndex = 47;
+            // 
+            // dPadUpPanel
+            // 
+            this.dPadUpPanel.ColumnCount = 1;
+            this.dPadUpPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.dPadUpPanel.Controls.Add(dPadUpHoldBinding, 0, 2);
+            this.dPadUpPanel.Controls.Add(dPadUpPressBinding, 0, 1);
+            this.dPadUpPanel.Controls.Add(dPadUpLabel, 0, 0);
+            this.dPadUpPanel.Location = new System.Drawing.Point(25, 441);
+            this.dPadUpPanel.Name = "dPadUpPanel";
+            this.dPadUpPanel.RowCount = 3;
+            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadUpPanel.Size = new System.Drawing.Size(175, 72);
+            this.dPadUpPanel.TabIndex = 48;
+            // 
+            // dPadLeftPanel
+            // 
+            this.dPadLeftPanel.ColumnCount = 1;
+            this.dPadLeftPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.dPadLeftPanel.Controls.Add(dPadLeftHoldBinding, 0, 2);
+            this.dPadLeftPanel.Controls.Add(dPadLeftPressBinding, 0, 1);
+            this.dPadLeftPanel.Controls.Add(dPadLeftLabel, 0, 0);
+            this.dPadLeftPanel.Location = new System.Drawing.Point(28, 527);
+            this.dPadLeftPanel.Name = "dPadLeftPanel";
+            this.dPadLeftPanel.RowCount = 3;
+            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadLeftPanel.Size = new System.Drawing.Size(175, 72);
+            this.dPadLeftPanel.TabIndex = 49;
+            // 
+            // bigButtonPanel
+            // 
+            this.bigButtonPanel.ColumnCount = 1;
+            this.bigButtonPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.bigButtonPanel.Controls.Add(bigButtonHoldBinding, 0, 2);
+            this.bigButtonPanel.Controls.Add(bigButtonPressBinding, 0, 1);
+            this.bigButtonPanel.Controls.Add(bigButtonLabel, 0, 0);
+            this.bigButtonPanel.Location = new System.Drawing.Point(543, 12);
+            this.bigButtonPanel.Name = "bigButtonPanel";
+            this.bigButtonPanel.RowCount = 3;
+            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bigButtonPanel.Size = new System.Drawing.Size(175, 72);
+            this.bigButtonPanel.TabIndex = 50;
+            // 
             // bigButtonHoldBinding
             // 
             bigButtonHoldBinding.AllowDrop = true;
@@ -780,394 +1168,6 @@ namespace D360
             defaultPressBinding.Size = new System.Drawing.Size(169, 20);
             defaultPressBinding.TabIndex = 29;
             defaultPressBinding.Text = "Default Text Box";
-            // 
-            // OldLeftTriggerLabel
-            // 
-            this.OldLeftTriggerLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.OldLeftTriggerLabel.AutoSize = true;
-            this.OldLeftTriggerLabel.Location = new System.Drawing.Point(12, 41);
-            this.OldLeftTriggerLabel.Name = "OldLeftTriggerLabel";
-            this.OldLeftTriggerLabel.Size = new System.Drawing.Size(61, 13);
-            this.OldLeftTriggerLabel.TabIndex = 0;
-            this.OldLeftTriggerLabel.Text = "Left Trigger";
-            this.OldLeftTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.OldLeftTriggerLabel.Visible = false;
-            // 
-            // LeftTriggerComboBox
-            // 
-            this.LeftTriggerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.LeftTriggerComboBox.FormattingEnabled = true;
-            this.LeftTriggerComboBox.Items.AddRange(new object[] {
-            "Action Bar Skill 1",
-            "Action Bar Skill 2",
-            "Action Bar Skill 3",
-            "Action Bar Skill 4",
-            "Inventory",
-            "Map",
-            "Potion",
-            "Town Portal"});
-            this.LeftTriggerComboBox.Location = new System.Drawing.Point(12, 12);
-            this.LeftTriggerComboBox.Name = "LeftTriggerComboBox";
-            this.LeftTriggerComboBox.Size = new System.Drawing.Size(186, 21);
-            this.LeftTriggerComboBox.TabIndex = 1;
-            this.LeftTriggerComboBox.Visible = false;
-            this.LeftTriggerComboBox.SelectedIndexChanged += new System.EventHandler(this.LeftTriggerComboBox_SelectedIndexChanged);
-            // 
-            // OldRightTriggerLabel
-            // 
-            this.OldRightTriggerLabel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.OldRightTriggerLabel.AutoSize = true;
-            this.OldRightTriggerLabel.Location = new System.Drawing.Point(1182, 41);
-            this.OldRightTriggerLabel.Name = "OldRightTriggerLabel";
-            this.OldRightTriggerLabel.Size = new System.Drawing.Size(68, 13);
-            this.OldRightTriggerLabel.TabIndex = 2;
-            this.OldRightTriggerLabel.Text = "Right Trigger";
-            this.OldRightTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.OldRightTriggerLabel.Visible = false;
-            // 
-            // RightTriggerComboBox
-            // 
-            this.RightTriggerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.RightTriggerComboBox.FormattingEnabled = true;
-            this.RightTriggerComboBox.Items.AddRange(new object[] {
-            "Action Bar Skill 1",
-            "Action Bar Skill 2",
-            "Action Bar Skill 3",
-            "Action Bar Skill 4",
-            "Inventory",
-            "Map",
-            "Potion",
-            "Town Portal"});
-            this.RightTriggerComboBox.Location = new System.Drawing.Point(1066, 12);
-            this.RightTriggerComboBox.Name = "RightTriggerComboBox";
-            this.RightTriggerComboBox.Size = new System.Drawing.Size(186, 21);
-            this.RightTriggerComboBox.TabIndex = 3;
-            this.RightTriggerComboBox.Visible = false;
-            this.RightTriggerComboBox.SelectedIndexChanged += new System.EventHandler(this.RightTriggerComboBox_SelectedIndexChanged);
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(1157, 731);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(93, 23);
-            this.cancelButton.TabIndex = 25;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
-            // saveAndCloseButton
-            // 
-            this.saveAndCloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveAndCloseButton.Location = new System.Drawing.Point(12, 731);
-            this.saveAndCloseButton.Name = "saveAndCloseButton";
-            this.saveAndCloseButton.Size = new System.Drawing.Size(93, 23);
-            this.saveAndCloseButton.TabIndex = 24;
-            this.saveAndCloseButton.Text = "Save and Close";
-            this.saveAndCloseButton.UseVisualStyleBackColor = true;
-            this.saveAndCloseButton.Click += new System.EventHandler(this.saveAndCloseButton_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = global::D360.Properties.Resources.XBoxOneControllerOutline1;
-            this.pictureBox1.Location = new System.Drawing.Point(98, 99);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1067, 617);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 26;
-            this.pictureBox1.TabStop = false;
-            // 
-            // defaultTable
-            // 
-            this.defaultTable.ColumnCount = 1;
-            this.defaultTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.defaultTable.Controls.Add(defaultHoldBinding, 0, 2);
-            this.defaultTable.Controls.Add(defaultPressBinding, 0, 1);
-            this.defaultTable.Controls.Add(defaultLabel, 0, 0);
-            this.defaultTable.Location = new System.Drawing.Point(348, 12);
-            this.defaultTable.Name = "defaultTable";
-            this.defaultTable.RowCount = 3;
-            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.defaultTable.Size = new System.Drawing.Size(175, 72);
-            this.defaultTable.TabIndex = 33;
-            this.defaultTable.Visible = false;
-            // 
-            // backPanel
-            // 
-            this.backPanel.ColumnCount = 1;
-            this.backPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.backPanel.Controls.Add(backHoldBinding, 0, 2);
-            this.backPanel.Controls.Add(backPressBinding, 0, 1);
-            this.backPanel.Controls.Add(backLabel, 0, 0);
-            this.backPanel.Location = new System.Drawing.Point(443, 166);
-            this.backPanel.Name = "backPanel";
-            this.backPanel.RowCount = 3;
-            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.backPanel.Size = new System.Drawing.Size(175, 72);
-            this.backPanel.TabIndex = 34;
-            // 
-            // startPanel
-            // 
-            this.startPanel.ColumnCount = 1;
-            this.startPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.startPanel.Controls.Add(startHoldBinding, 0, 2);
-            this.startPanel.Controls.Add(startPressBinding, 0, 1);
-            this.startPanel.Controls.Add(startLabel, 0, 0);
-            this.startPanel.Location = new System.Drawing.Point(640, 166);
-            this.startPanel.Name = "startPanel";
-            this.startPanel.RowCount = 3;
-            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.startPanel.Size = new System.Drawing.Size(175, 72);
-            this.startPanel.TabIndex = 35;
-            // 
-            // rightTriggerPanel
-            // 
-            this.rightTriggerPanel.ColumnCount = 1;
-            this.rightTriggerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.rightTriggerPanel.Controls.Add(rightTriggerHoldBinding, 0, 2);
-            this.rightTriggerPanel.Controls.Add(rightTriggerPressBinding, 0, 1);
-            this.rightTriggerPanel.Controls.Add(rightTriggerLabel, 0, 0);
-            this.rightTriggerPanel.Location = new System.Drawing.Point(951, 66);
-            this.rightTriggerPanel.Name = "rightTriggerPanel";
-            this.rightTriggerPanel.RowCount = 3;
-            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightTriggerPanel.Size = new System.Drawing.Size(175, 72);
-            this.rightTriggerPanel.TabIndex = 36;
-            // 
-            // leftTriggerPanel
-            // 
-            this.leftTriggerPanel.ColumnCount = 1;
-            this.leftTriggerPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.leftTriggerPanel.Controls.Add(leftTriggerHoldBinding, 0, 2);
-            this.leftTriggerPanel.Controls.Add(leftTriggerPressBinding, 0, 1);
-            this.leftTriggerPanel.Controls.Add(leftTriggerLabel, 0, 0);
-            this.leftTriggerPanel.Location = new System.Drawing.Point(157, 66);
-            this.leftTriggerPanel.Name = "leftTriggerPanel";
-            this.leftTriggerPanel.RowCount = 3;
-            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftTriggerPanel.Size = new System.Drawing.Size(175, 72);
-            this.leftTriggerPanel.TabIndex = 37;
-            // 
-            // leftBumperPanel
-            // 
-            this.leftBumperPanel.ColumnCount = 1;
-            this.leftBumperPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.leftBumperPanel.Controls.Add(leftBumperHoldBinding, 0, 2);
-            this.leftBumperPanel.Controls.Add(leftBumperPressBinding, 0, 1);
-            this.leftBumperPanel.Controls.Add(leftBumperLabel, 0, 0);
-            this.leftBumperPanel.Location = new System.Drawing.Point(114, 168);
-            this.leftBumperPanel.Name = "leftBumperPanel";
-            this.leftBumperPanel.RowCount = 3;
-            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftBumperPanel.Size = new System.Drawing.Size(175, 72);
-            this.leftBumperPanel.TabIndex = 38;
-            // 
-            // rightShoulderPanel
-            // 
-            this.rightShoulderPanel.ColumnCount = 1;
-            this.rightShoulderPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.rightShoulderPanel.Controls.Add(rightShoulderHoldBinding, 0, 2);
-            this.rightShoulderPanel.Controls.Add(rightShoulderPressBinding, 0, 1);
-            this.rightShoulderPanel.Controls.Add(rightBumperLabel, 0, 0);
-            this.rightShoulderPanel.Location = new System.Drawing.Point(972, 170);
-            this.rightShoulderPanel.Name = "rightShoulderPanel";
-            this.rightShoulderPanel.RowCount = 3;
-            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightShoulderPanel.Size = new System.Drawing.Size(175, 72);
-            this.rightShoulderPanel.TabIndex = 39;
-            // 
-            // leftStickPanel
-            // 
-            this.leftStickPanel.ColumnCount = 1;
-            this.leftStickPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.leftStickPanel.Controls.Add(leftStickHoldBinding, 0, 2);
-            this.leftStickPanel.Controls.Add(leftStickPressBinding, 0, 1);
-            this.leftStickPanel.Controls.Add(leftStickLabel, 0, 0);
-            this.leftStickPanel.Location = new System.Drawing.Point(84, 307);
-            this.leftStickPanel.Name = "leftStickPanel";
-            this.leftStickPanel.RowCount = 3;
-            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.leftStickPanel.Size = new System.Drawing.Size(175, 72);
-            this.leftStickPanel.TabIndex = 40;
-            // 
-            // xPanel
-            // 
-            this.xPanel.ColumnCount = 1;
-            this.xPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.xPanel.Controls.Add(xHoldBinding, 0, 2);
-            this.xPanel.Controls.Add(xPressBinding, 0, 1);
-            this.xPanel.Controls.Add(xLabel, 0, 0);
-            this.xPanel.Location = new System.Drawing.Point(957, 271);
-            this.xPanel.Name = "xPanel";
-            this.xPanel.RowCount = 3;
-            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.xPanel.Size = new System.Drawing.Size(175, 72);
-            this.xPanel.TabIndex = 41;
-            // 
-            // yPanel
-            // 
-            this.yPanel.ColumnCount = 1;
-            this.yPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.yPanel.Controls.Add(yHoldBinding, 0, 2);
-            this.yPanel.Controls.Add(yPressBinding, 0, 1);
-            this.yPanel.Controls.Add(yLabel, 0, 0);
-            this.yPanel.Location = new System.Drawing.Point(1025, 345);
-            this.yPanel.Name = "yPanel";
-            this.yPanel.RowCount = 3;
-            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.yPanel.Size = new System.Drawing.Size(175, 72);
-            this.yPanel.TabIndex = 42;
-            // 
-            // bPanel
-            // 
-            this.bPanel.ColumnCount = 1;
-            this.bPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.bPanel.Controls.Add(bHoldBinding, 0, 2);
-            this.bPanel.Controls.Add(bPressBinding, 0, 1);
-            this.bPanel.Controls.Add(bLabel, 0, 0);
-            this.bPanel.Location = new System.Drawing.Point(1043, 419);
-            this.bPanel.Name = "bPanel";
-            this.bPanel.RowCount = 3;
-            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.bPanel.Size = new System.Drawing.Size(175, 72);
-            this.bPanel.TabIndex = 43;
-            // 
-            // aPanel
-            // 
-            this.aPanel.ColumnCount = 1;
-            this.aPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.aPanel.Controls.Add(aHoldBinding, 0, 2);
-            this.aPanel.Controls.Add(aPressBinding, 0, 1);
-            this.aPanel.Controls.Add(aLabel, 0, 0);
-            this.aPanel.Location = new System.Drawing.Point(1022, 499);
-            this.aPanel.Name = "aPanel";
-            this.aPanel.RowCount = 3;
-            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.aPanel.Size = new System.Drawing.Size(175, 72);
-            this.aPanel.TabIndex = 44;
-            // 
-            // dPadDownPanel
-            // 
-            this.dPadDownPanel.ColumnCount = 1;
-            this.dPadDownPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.dPadDownPanel.Controls.Add(dPadDownHoldBinding, 0, 2);
-            this.dPadDownPanel.Controls.Add(dPadDownPressBinding, 0, 1);
-            this.dPadDownPanel.Controls.Add(dPadDownLabel, 0, 0);
-            this.dPadDownPanel.Location = new System.Drawing.Point(272, 682);
-            this.dPadDownPanel.Name = "dPadDownPanel";
-            this.dPadDownPanel.RowCount = 3;
-            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadDownPanel.Size = new System.Drawing.Size(175, 72);
-            this.dPadDownPanel.TabIndex = 45;
-            // 
-            // dPadRightPanel
-            // 
-            this.dPadRightPanel.ColumnCount = 1;
-            this.dPadRightPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.dPadRightPanel.Controls.Add(dPadRightHoldBinding, 0, 2);
-            this.dPadRightPanel.Controls.Add(dPadRightPressBinding, 0, 1);
-            this.dPadRightPanel.Controls.Add(dPadRightLabel, 0, 0);
-            this.dPadRightPanel.Location = new System.Drawing.Point(590, 680);
-            this.dPadRightPanel.Name = "dPadRightPanel";
-            this.dPadRightPanel.RowCount = 3;
-            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadRightPanel.Size = new System.Drawing.Size(175, 72);
-            this.dPadRightPanel.TabIndex = 46;
-            // 
-            // rightStickPanel
-            // 
-            this.rightStickPanel.ColumnCount = 1;
-            this.rightStickPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.rightStickPanel.Controls.Add(rightStickHoldBinding, 0, 2);
-            this.rightStickPanel.Controls.Add(rightStickPressBinding, 0, 1);
-            this.rightStickPanel.Controls.Add(rightStickLabel, 0, 0);
-            this.rightStickPanel.Location = new System.Drawing.Point(822, 682);
-            this.rightStickPanel.Name = "rightStickPanel";
-            this.rightStickPanel.RowCount = 3;
-            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.rightStickPanel.Size = new System.Drawing.Size(175, 72);
-            this.rightStickPanel.TabIndex = 47;
-            // 
-            // dPadUpPanel
-            // 
-            this.dPadUpPanel.ColumnCount = 1;
-            this.dPadUpPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.dPadUpPanel.Controls.Add(dPadUpHoldBinding, 0, 2);
-            this.dPadUpPanel.Controls.Add(dPadUpPressBinding, 0, 1);
-            this.dPadUpPanel.Controls.Add(dPadUpLabel, 0, 0);
-            this.dPadUpPanel.Location = new System.Drawing.Point(25, 441);
-            this.dPadUpPanel.Name = "dPadUpPanel";
-            this.dPadUpPanel.RowCount = 3;
-            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadUpPanel.Size = new System.Drawing.Size(175, 72);
-            this.dPadUpPanel.TabIndex = 48;
-            // 
-            // dPadLeftPanel
-            // 
-            this.dPadLeftPanel.ColumnCount = 1;
-            this.dPadLeftPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.dPadLeftPanel.Controls.Add(dPadLeftHoldBinding, 0, 2);
-            this.dPadLeftPanel.Controls.Add(dPadLeftPressBinding, 0, 1);
-            this.dPadLeftPanel.Controls.Add(dPadLeftLabel, 0, 0);
-            this.dPadLeftPanel.Location = new System.Drawing.Point(28, 527);
-            this.dPadLeftPanel.Name = "dPadLeftPanel";
-            this.dPadLeftPanel.RowCount = 3;
-            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.dPadLeftPanel.Size = new System.Drawing.Size(175, 72);
-            this.dPadLeftPanel.TabIndex = 49;
-            // 
-            // bigButtonPanel
-            // 
-            this.bigButtonPanel.ColumnCount = 1;
-            this.bigButtonPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.bigButtonPanel.Controls.Add(bigButtonHoldBinding, 0, 2);
-            this.bigButtonPanel.Controls.Add(bigButtonPressBinding, 0, 1);
-            this.bigButtonPanel.Controls.Add(bigButtonLabel, 0, 0);
-            this.bigButtonPanel.Location = new System.Drawing.Point(543, 12);
-            this.bigButtonPanel.Name = "bigButtonPanel";
-            this.bigButtonPanel.RowCount = 3;
-            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.bigButtonPanel.Size = new System.Drawing.Size(175, 72);
-            this.bigButtonPanel.TabIndex = 50;
             // 
             // ConfigForm
             // 
