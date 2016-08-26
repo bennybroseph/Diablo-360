@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using XInputDotNetPure;
 
 using Action = D360.Types.Action;
 using FormsKeys = System.Windows.Forms.Keys;
@@ -13,17 +14,74 @@ namespace D360.SystemUtility
         public Action leftTriggerBinding;
         public Action rightTriggerBinding;
 
-        public readonly Dictionary<Buttons, FormsKeys> gamepadBindings = new Dictionary<Buttons, FormsKeys>();
+        public Dictionary<Buttons, FormsKeys> gamepadBindings = new Dictionary<Buttons, FormsKeys>();
 
         public Configuration()
         {
             leftTriggerBinding = Action.ActionbarSkill1;
             rightTriggerBinding = Action.ActionbarSkill2;
-
+            
             foreach (Buttons value in Enum.GetValues(typeof(Buttons)))
             {
-                gamepadBindings.Add(value, FormsKeys.D7);
+                if (value >= Buttons.LeftThumbstickLeft)
+                    continue;
+
+                switch (value)
+                {
+                    case Buttons.DPadUp:
+                        gamepadBindings.Add(value, FormsKeys.U | FormsKeys.P);
+                        break;
+                    case Buttons.DPadDown:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.DPadLeft:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.DPadRight:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+
+                    case Buttons.Start:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.Back:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+
+                    case Buttons.LeftStick:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.RightStick:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+
+                    case Buttons.LeftShoulder:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.RightShoulder:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+
+                    case Buttons.A:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.B:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.X:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                    case Buttons.Y:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+
+                    default:
+                        gamepadBindings.Add(value, FormsKeys.None);
+                        break;
+                }
             }
+
+            gamepadBindings.Add((Buttons)0x0400, FormsKeys.None);
         }
     }
 
@@ -40,40 +98,40 @@ namespace D360.SystemUtility
         {
             switch (str.ParseButtons())
             {
-            case Buttons.BigButton:
-                str = "XBox Button";
-                break;
+                case Buttons.BigButton:
+                    str = "XBox Button";
+                    break;
 
-            case Buttons.DPadUp:
-                str = "DPad Up";
-                break;
-            case Buttons.DPadDown:
-                str = "DPad Down";
-                break;
-            case Buttons.DPadLeft:
-                str = "DPad Left";
-                break;
-            case Buttons.DPadRight:
-                str = "DPad Right";
-                break;
+                case Buttons.DPadUp:
+                    str = "DPad Up";
+                    break;
+                case Buttons.DPadDown:
+                    str = "DPad Down";
+                    break;
+                case Buttons.DPadLeft:
+                    str = "DPad Left";
+                    break;
+                case Buttons.DPadRight:
+                    str = "DPad Right";
+                    break;
 
-            default:
-                for (var i = 0; i < str.Length; ++i)
-                {
-                    if (!char.IsUpper(str[i]))
-                        continue;
+                default:
+                    for (var i = 0; i < str.Length; ++i)
+                    {
+                        if (!char.IsUpper(str[i]))
+                            continue;
 
-                    str = str.Substring(0, i) + " " + str.Substring(i);
-                    ++i;
-                }
-                break;
+                        str = str.Substring(0, i) + " " + str.Substring(i);
+                        ++i;
+                    }
+                    break;
             }
 
             return str.ToPascal().Replace("Panel", "").Replace("Label", "");
         }
         public static Buttons ParseButtons(this string str)
         {
-            var returnValue = Buttons.A;
+            var returnValue = Buttons.DPadUp;
 
             if (string.IsNullOrEmpty(str))
                 return returnValue;

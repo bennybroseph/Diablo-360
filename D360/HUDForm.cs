@@ -128,7 +128,8 @@ namespace D360
 
         private void SaveActionBindings(ActionBindings bindings)
         {
-            var bindingsFileStream = new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Create);
+            var bindingsFileStream =
+                new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Create);
             var bindingsBinaryFormatter = new BinaryFormatter();
 
             bindingsBinaryFormatter.Serialize(bindingsFileStream, bindings);
@@ -137,7 +138,8 @@ namespace D360
 
         private ActionBindings LoadActionBindings()
         {
-            var bindingsFileStream = new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Open);
+            var bindingsFileStream =
+                new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Open);
             var bindingsBinaryFormatter = new BinaryFormatter();
             var result = (ActionBindings)bindingsBinaryFormatter.Deserialize(bindingsFileStream);
 
@@ -199,7 +201,7 @@ namespace D360
                     !string.IsNullOrEmpty(foregroundWindowString) &&
                     foregroundWindowString.ToUpper() == "DIABLO III";
 #else
-            m_DiabloActive = false;
+            m_DiabloActive = true;
 #endif
 
             try
@@ -236,7 +238,9 @@ namespace D360
             try
             {
                 if (m_DiabloActive)
+                {
                     LogicUpdate();
+                }
             }
             catch (Exception exception)
             {
@@ -315,15 +319,15 @@ namespace D360
             {
                 switch (m.WParam.ToInt32())
                 {
-                case CONFIG_HOTKEY:
-                    m_ConfigForm.Visible = !m_ConfigForm.Visible;
-                    break;
-                case ACTIONS_HOTKEY:
-                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
-                    break;
-                case EXIT_HOTKEY:
-                    Close();
-                    break;
+                    case CONFIG_HOTKEY:
+                        m_ConfigForm.Visible = !m_ConfigForm.Visible;
+                        break;
+                    case ACTIONS_HOTKEY:
+                        m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
+                        break;
+                    case EXIT_HOTKEY:
+                        Close();
+                        break;
                 }
             }
             base.WndProc(ref m);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 using D360.Bindings;
@@ -32,7 +33,7 @@ namespace D360.SystemUtility
         private readonly Queue<Command> m_CursorTargetedCommands;
         private readonly Queue<Command> m_UntargetedCommands;
         private readonly Queue<Command> m_CenterRandomTargetedCommands;
-        
+
         public InputProcessor(GamePadState initialState)
         {
             m_Center = new UIntVector(32768, 30650);
@@ -63,39 +64,46 @@ namespace D360.SystemUtility
 
         private void CreateDefaultBindings()
         {
-            // Primary Skill Key
-            AddButtonKeyBinding(Buttons.LeftShoulder, actionBindings.bindings[Action.ForceMove], InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonMouseBinding(Buttons.LeftShoulder, MouseButtons.Left, InputMode.Move, CommandTarget.TargetReticule);
+            foreach (Buttons buttons in Enum.GetValues(typeof(Buttons)))
+            {
+                if (config.gamepadBindings.ContainsKey(buttons))
+                    AddButtonKeyBinding(
+                        buttons, config.gamepadBindings[buttons], InputMode.Move, CommandTarget.TargetReticule);
+            }
 
-            // Secondary Skill Key
-            AddButtonKeyBinding(Buttons.RightShoulder, actionBindings.bindings[Action.ForceStandStill], InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonMouseBinding(Buttons.RightShoulder, MouseButtons.Right, InputMode.Move, CommandTarget.TargetReticule);
+            //// Primary Skill Key
+            //AddButtonKeyBinding(Buttons.LeftShoulder, actionBindings.bindings[Action.ForceMove], InputMode.Move, CommandTarget.TargetReticule);
+            //AddButtonMouseBinding(Buttons.LeftShoulder, MouseButtons.Left, InputMode.Move, CommandTarget.TargetReticule);
 
-            // Action Bar Skill 1 - 4
-            AddButtonKeyBinding(Buttons.X, actionBindings.bindings[Action.ActionbarSkill1], InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonKeyBinding(Buttons.A, actionBindings.bindings[Action.ActionbarSkill2], InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonKeyBinding(Buttons.Y, actionBindings.bindings[Action.ActionbarSkill3], InputMode.Move, CommandTarget.TargetReticule);
-            AddButtonKeyBinding(Buttons.B, actionBindings.bindings[Action.ActionbarSkill4], InputMode.Move, CommandTarget.TargetReticule);
+            //// Secondary Skill Key
+            //AddButtonKeyBinding(Buttons.RightShoulder, actionBindings.bindings[Action.ForceStandStill], InputMode.Move, CommandTarget.TargetReticule);
+            //AddButtonMouseBinding(Buttons.RightShoulder, MouseButtons.Right, InputMode.Move, CommandTarget.TargetReticule);
 
-            // Inventory Key
-            AddButtonKeyBinding(Buttons.DPadDown, actionBindings.bindings[Action.Inventory]);
-            AddButtonModeChangeBinding(Buttons.DPadDown, InputMode.Pointer);
+            //// Action Bar Skill 1 - 4
+            //AddButtonKeyBinding(Buttons.X, actionBindings.bindings[Action.ActionbarSkill1], InputMode.Move, CommandTarget.TargetReticule);
+            //AddButtonKeyBinding(Buttons.A, actionBindings.bindings[Action.ActionbarSkill2], InputMode.Move, CommandTarget.TargetReticule);
+            //AddButtonKeyBinding(Buttons.Y, actionBindings.bindings[Action.ActionbarSkill3], InputMode.Move, CommandTarget.TargetReticule);
+            //AddButtonKeyBinding(Buttons.B, actionBindings.bindings[Action.ActionbarSkill4], InputMode.Move, CommandTarget.TargetReticule);
 
-            // Map Key
-            AddButtonKeyBinding(Buttons.DPadLeft, actionBindings.bindings[Action.Map]);
+            //// Inventory Key
+            //AddButtonKeyBinding(Buttons.DPadDown, actionBindings.bindings[Action.Inventory]);
+            //AddButtonModeChangeBinding(Buttons.DPadDown, InputMode.Pointer);
 
-            // Potion Key
-            AddButtonKeyBinding(Buttons.DPadUp, actionBindings.bindings[Action.Potion]);
+            //// Map Key
+            //AddButtonKeyBinding(Buttons.DPadLeft, actionBindings.bindings[Action.Map]);
 
-            // Town Portal Key
-            AddButtonKeyBinding(Buttons.DPadRight, actionBindings.bindings[Action.TownPortal]);
+            //// Potion Key
+            //AddButtonKeyBinding(Buttons.DPadUp, actionBindings.bindings[Action.Potion]);
 
-            // Game Menu Key
-            AddButtonKeyBinding(Buttons.Back, actionBindings.bindings[Action.GameMenu]);
+            //// Town Portal Key
+            //AddButtonKeyBinding(Buttons.DPadRight, actionBindings.bindings[Action.TownPortal]);
 
-            // Game Menu Key
-            AddButtonKeyBinding(Buttons.Start, actionBindings.bindings[Action.WorldMap]);
-            AddButtonModeChangeBinding(Buttons.DPadDown, InputMode.Pointer);
+            //// Game Menu Key
+            //AddButtonKeyBinding(Buttons.Back, actionBindings.bindings[Action.GameMenu]);
+
+            //// Game Menu Key
+            //AddButtonKeyBinding(Buttons.Start, actionBindings.bindings[Action.WorldMap]);
+            //AddButtonModeChangeBinding(Buttons.DPadDown, InputMode.Pointer);
 
             // Left stick click to toggle between Pointer and Move modes
             AddButtonModeChangeBinding(Buttons.LeftStick, InputMode.None, true);
@@ -103,24 +111,24 @@ namespace D360.SystemUtility
             // Right stick click to loot nearby (spam left-mouse clicks in an area near center)
             AddButtonLootBinding(Buttons.RightStick);
 
-            //Left Stick to Move Character in Move Mode
-            AddStickCursorMoveBinding(ControllerStick.Left, Vector2.Zero, StickState.NotEqual, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.Cursor, InputMode.Move);
-            AddStickKeyBinding(ControllerStick.Left, actionBindings.bindings[Action.ForceMove], CommandTarget.Cursor, InputMode.Move);
+            ////Left Stick to Move Character in Move Mode
+            //AddStickCursorMoveBinding(ControllerStick.Left, Vector2.Zero, StickState.NotEqual, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.Cursor, InputMode.Move);
+            //AddStickKeyBinding(ControllerStick.Left, actionBindings.bindings[Action.ForceMove], CommandTarget.Cursor, InputMode.Move);
 
-            // Left Stick to stop character in place when stick returns to zero in Move Mode
-            AddStickCursorMoveBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.Cursor, InputMode.Move);
-            AddStickKeyBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, actionBindings.bindings[Action.ForceMove], CommandTarget.Cursor, InputMode.Move);
+            //// Left Stick to stop character in place when stick returns to zero in Move Mode
+            //AddStickCursorMoveBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.Cursor, InputMode.Move);
+            //AddStickKeyBinding(ControllerStick.Left, Vector2.Zero, StickState.Equal, StickState.NotEqual, actionBindings.bindings[Action.ForceMove], CommandTarget.Cursor, InputMode.Move);
 
-            //Right Stick to move reticule in Move Mode
-            AddStickCursorMoveBinding(ControllerStick.Right, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.TargetReticule, InputMode.Move);
+            ////Right Stick to move reticule in Move Mode
+            //AddStickCursorMoveBinding(ControllerStick.Right, MouseMoveType.Absolute, new UIntVector(30000, 25000), CommandTarget.TargetReticule, InputMode.Move);
 
-            #region Pointer Mode
-            // Left stick to move cursor in Pointer Mode
-            AddStickCursorMoveBinding(ControllerStick.Left, MouseMoveType.Relative, new UIntVector(600, 600), CommandTarget.Cursor, InputMode.Pointer);
+            //#region Pointer Mode
+            //// Left stick to move cursor in Pointer Mode
+            //AddStickCursorMoveBinding(ControllerStick.Left, MouseMoveType.Relative, new UIntVector(600, 600), CommandTarget.Cursor, InputMode.Pointer);
 
-            AddButtonMouseBinding(Buttons.LeftShoulder, MouseButtons.Left, InputMode.Pointer, CommandTarget.None, ControllerButtonState.OnDown);
-            AddButtonMouseBinding(Buttons.RightShoulder, MouseButtons.Right, InputMode.Pointer, CommandTarget.None, ControllerButtonState.OnDown);
-            #endregion
+            //AddButtonMouseBinding(Buttons.LeftShoulder, MouseButtons.Left, InputMode.Pointer, CommandTarget.None, ControllerButtonState.OnDown);
+            //AddButtonMouseBinding(Buttons.RightShoulder, MouseButtons.Right, InputMode.Pointer, CommandTarget.None, ControllerButtonState.OnDown);
+            //#endregion
         }
 
         public void loadChanges()
@@ -140,7 +148,6 @@ namespace D360.SystemUtility
         {
             m_Bindings.AddRange(ControllerInputBinding.createButtonLootBindings(buttons));
         }
-
 
         private void AddButtonMouseBinding(Buttons buttons, MouseButtons mouseButtons, InputMode bindingMode = InputMode.All, CommandTarget commandTarget = CommandTarget.None)
         {
@@ -243,22 +250,22 @@ namespace D360.SystemUtility
                 {
                     switch (binding.buttonState)
                     {
-                    case ControllerButtonState.OnDown:
-                        if (newState.IsButtonDown(binding.button) && m_LastState.IsButtonUp(binding.button))
-                            enqueueCommands(binding, currentControllerState);
-                        break;
-                    case ControllerButtonState.OnUp:
-                        if (newState.IsButtonUp(binding.button) && m_LastState.IsButtonDown(binding.button))
-                            enqueueCommands(binding, currentControllerState);
-                        break;
-                    case ControllerButtonState.WhileDown:
-                        if (newState.IsButtonDown(binding.button))
-                            enqueueCommands(binding, currentControllerState);
-                        break;
-                    case ControllerButtonState.WhileUp:
-                        if (newState.IsButtonUp(binding.button))
-                            enqueueCommands(binding, currentControllerState);
-                        break;
+                        case ControllerButtonState.OnDown:
+                            if (newState.IsButtonDown(binding.button) && m_LastState.IsButtonUp(binding.button))
+                                enqueueCommands(binding, currentControllerState);
+                            break;
+                        case ControllerButtonState.OnUp:
+                            if (newState.IsButtonUp(binding.button) && m_LastState.IsButtonDown(binding.button))
+                                enqueueCommands(binding, currentControllerState);
+                            break;
+                        case ControllerButtonState.WhileDown:
+                            if (newState.IsButtonDown(binding.button))
+                                enqueueCommands(binding, currentControllerState);
+                            break;
+                        case ControllerButtonState.WhileUp:
+                            if (newState.IsButtonUp(binding.button))
+                                enqueueCommands(binding, currentControllerState);
+                            break;
                     }
                 }
 
@@ -266,48 +273,48 @@ namespace D360.SystemUtility
                 {
                     switch (binding.trigger.side)
                     {
-                    case ControllerTrigger.Left:
-                        switch (binding.triggerState)
-                        {
-                        case ControllerTriggerState.OnDown:
-                            if ((newState.Triggers.Left > binding.trigger.position) && (m_LastState.Triggers.Left < binding.trigger.position))
-                                enqueueCommands(binding, currentControllerState);
+                        case ControllerTrigger.Left:
+                            switch (binding.triggerState)
+                            {
+                                case ControllerTriggerState.OnDown:
+                                    if ((newState.Triggers.Left > binding.trigger.position) && (m_LastState.Triggers.Left < binding.trigger.position))
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                                case ControllerTriggerState.OnUp:
+                                    if ((newState.Triggers.Left < binding.trigger.position) && (m_LastState.Triggers.Left > binding.trigger.position))
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                                case ControllerTriggerState.WhileDown:
+                                    if (newState.Triggers.Left > 0)
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                                case ControllerTriggerState.WhileUp:
+                                    if (newState.Triggers.Left == 0)
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                            }
                             break;
-                        case ControllerTriggerState.OnUp:
-                            if ((newState.Triggers.Left < binding.trigger.position) && (m_LastState.Triggers.Left > binding.trigger.position))
-                                enqueueCommands(binding, currentControllerState);
+                        case ControllerTrigger.Right:
+                            switch (binding.triggerState)
+                            {
+                                case ControllerTriggerState.OnDown:
+                                    if ((newState.Triggers.Right > binding.trigger.position) && (m_LastState.Triggers.Right < binding.trigger.position))
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                                case ControllerTriggerState.OnUp:
+                                    if ((newState.Triggers.Right < binding.trigger.position) && (m_LastState.Triggers.Right > binding.trigger.position))
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                                case ControllerTriggerState.WhileDown:
+                                    if (newState.Triggers.Right > 0)
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                                case ControllerTriggerState.WhileUp:
+                                    if (newState.Triggers.Right == 0)
+                                        enqueueCommands(binding, currentControllerState);
+                                    break;
+                            }
                             break;
-                        case ControllerTriggerState.WhileDown:
-                            if (newState.Triggers.Left > 0)
-                                enqueueCommands(binding, currentControllerState);
-                            break;
-                        case ControllerTriggerState.WhileUp:
-                            if (newState.Triggers.Left == 0)
-                                enqueueCommands(binding, currentControllerState);
-                            break;
-                        }
-                        break;
-                    case ControllerTrigger.Right:
-                        switch (binding.triggerState)
-                        {
-                        case ControllerTriggerState.OnDown:
-                            if ((newState.Triggers.Right > binding.trigger.position) && (m_LastState.Triggers.Right < binding.trigger.position))
-                                enqueueCommands(binding, currentControllerState);
-                            break;
-                        case ControllerTriggerState.OnUp:
-                            if ((newState.Triggers.Right < binding.trigger.position) && (m_LastState.Triggers.Right > binding.trigger.position))
-                                enqueueCommands(binding, currentControllerState);
-                            break;
-                        case ControllerTriggerState.WhileDown:
-                            if (newState.Triggers.Right > 0)
-                                enqueueCommands(binding, currentControllerState);
-                            break;
-                        case ControllerTriggerState.WhileUp:
-                            if (newState.Triggers.Right == 0)
-                                enqueueCommands(binding, currentControllerState);
-                            break;
-                        }
-                        break;
                     }
                 }
 
@@ -318,72 +325,72 @@ namespace D360.SystemUtility
 
                 switch (binding.stick.side)
                 {
-                case ControllerStick.Left:
-                    executeCommand = true;
+                    case ControllerStick.Left:
+                        executeCommand = true;
 
-                    switch (binding.stick.newState)
-                    {
-                    case StickState.NotEqual:
-                        if ((newState.ThumbSticks.Left.X == binding.stick.position.X) && (newState.ThumbSticks.Left.Y == binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    case StickState.Equal:
-                        if ((newState.ThumbSticks.Left.X != binding.stick.position.X) || (newState.ThumbSticks.Left.Y != binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    }
+                        switch (binding.stick.newState)
+                        {
+                            case StickState.NotEqual:
+                                if ((newState.ThumbSticks.Left.X == binding.stick.position.X) && (newState.ThumbSticks.Left.Y == binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                            case StickState.Equal:
+                                if ((newState.ThumbSticks.Left.X != binding.stick.position.X) || (newState.ThumbSticks.Left.Y != binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                        }
 
-                    switch (binding.stick.oldState)
-                    {
-                    case StickState.NotEqual:
-                        if ((m_LastState.ThumbSticks.Left.X == binding.stick.position.X) && (m_LastState.ThumbSticks.Left.Y == binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    case StickState.Equal:
-                        if ((m_LastState.ThumbSticks.Left.X != binding.stick.position.X) || (m_LastState.ThumbSticks.Left.Y != binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    }
+                        switch (binding.stick.oldState)
+                        {
+                            case StickState.NotEqual:
+                                if ((m_LastState.ThumbSticks.Left.X == binding.stick.position.X) && (m_LastState.ThumbSticks.Left.Y == binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                            case StickState.Equal:
+                                if ((m_LastState.ThumbSticks.Left.X != binding.stick.position.X) || (m_LastState.ThumbSticks.Left.Y != binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                        }
 
-                    if (executeCommand)
-                    {
-                        var inputCommandValue = new Vector2(newState.ThumbSticks.Left.X, newState.ThumbSticks.Left.Y);
-                        enqueueCommands(binding, currentControllerState, inputCommandValue);
-                    }
-                    break;
-                case ControllerStick.Right:
-                    executeCommand = true;
+                        if (executeCommand)
+                        {
+                            var inputCommandValue = new Vector2(newState.ThumbSticks.Left.X, newState.ThumbSticks.Left.Y);
+                            enqueueCommands(binding, currentControllerState, inputCommandValue);
+                        }
+                        break;
+                    case ControllerStick.Right:
+                        executeCommand = true;
 
-                    switch (binding.stick.newState)
-                    {
-                    case StickState.NotEqual:
-                        if ((newState.ThumbSticks.Right.X == binding.stick.position.X) && (newState.ThumbSticks.Right.Y == binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    case StickState.Equal:
-                        if ((newState.ThumbSticks.Right.X != binding.stick.position.X) || (newState.ThumbSticks.Right.Y != binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    }
+                        switch (binding.stick.newState)
+                        {
+                            case StickState.NotEqual:
+                                if ((newState.ThumbSticks.Right.X == binding.stick.position.X) && (newState.ThumbSticks.Right.Y == binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                            case StickState.Equal:
+                                if ((newState.ThumbSticks.Right.X != binding.stick.position.X) || (newState.ThumbSticks.Right.Y != binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                        }
 
-                    switch (binding.stick.oldState)
-                    {
-                    case StickState.NotEqual:
-                        if ((m_LastState.ThumbSticks.Right.X == binding.stick.position.X) && (m_LastState.ThumbSticks.Right.Y == binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    case StickState.Equal:
-                        if ((m_LastState.ThumbSticks.Right.X != binding.stick.position.X) || (m_LastState.ThumbSticks.Right.Y != binding.stick.position.Y))
-                            executeCommand = false;
-                        break;
-                    }
+                        switch (binding.stick.oldState)
+                        {
+                            case StickState.NotEqual:
+                                if ((m_LastState.ThumbSticks.Right.X == binding.stick.position.X) && (m_LastState.ThumbSticks.Right.Y == binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                            case StickState.Equal:
+                                if ((m_LastState.ThumbSticks.Right.X != binding.stick.position.X) || (m_LastState.ThumbSticks.Right.Y != binding.stick.position.Y))
+                                    executeCommand = false;
+                                break;
+                        }
 
-                    if (executeCommand)
-                    {
-                        var inputCommandValue = new Vector2(newState.ThumbSticks.Right.X, newState.ThumbSticks.Right.Y);
-                        enqueueCommands(binding, currentControllerState, inputCommandValue);
-                    }
-                    break;
+                        if (executeCommand)
+                        {
+                            var inputCommandValue = new Vector2(newState.ThumbSticks.Right.X, newState.ThumbSticks.Right.Y);
+                            enqueueCommands(binding, currentControllerState, inputCommandValue);
+                        }
+                        break;
                 }
             }
 
@@ -393,7 +400,7 @@ namespace D360.SystemUtility
                 VirtualKeyboard.AllUp();
 
                 currentControllerState.targetingReticulePosition = currentControllerState.centerPosition;
-                currentControllerState.cursorPosition = currentControllerState.centerPosition;
+                //currentControllerState.cursorPosition = currentControllerState.centerPosition;
 
                 m_StateChangeCommands.Dequeue().Execute(ref currentControllerState);
             }
@@ -419,10 +426,10 @@ namespace D360.SystemUtility
 
             if (m_ReticuleTargetedCommands.Count > 0)
             {
-                if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerPosition.X) && (currentControllerState.targetingReticulePosition.Y == currentControllerState.centerPosition.Y))
-                    VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
-                else
-                    VirtualMouse.MoveAbsolute(currentControllerState.targetingReticulePosition.X, currentControllerState.targetingReticulePosition.Y);
+                //if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerPosition.X) && (currentControllerState.targetingReticulePosition.Y == currentControllerState.centerPosition.Y))
+                //    VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
+                //else
+                //    VirtualMouse.MoveAbsolute(currentControllerState.targetingReticulePosition.X, currentControllerState.targetingReticulePosition.Y);
             }
 
             Thread.Sleep(10);
@@ -431,8 +438,8 @@ namespace D360.SystemUtility
                 m_ReticuleTargetedCommands.Dequeue().Execute(ref currentControllerState);
 
             //if ((currentControllerState.inputMode != InputMode.None) && (currentControllerState.inputMode != InputMode.Pointer))
-            if (currentControllerState.inputMode != InputMode.None)
-                VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
+            //if (currentControllerState.inputMode != InputMode.None)
+            //    VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
             while (m_CursorTargetedCommands.Count > 0)
                 m_CursorTargetedCommands.Dequeue().Execute(ref currentControllerState);
 
@@ -460,18 +467,18 @@ namespace D360.SystemUtility
                 {
                     switch (command.target)
                     {
-                    case CommandTarget.Cursor:
-                        m_CursorTargetedCommands.Enqueue(command);
-                        break;
-                    case CommandTarget.TargetReticule:
-                        m_ReticuleTargetedCommands.Enqueue(command);
-                        break;
-                    case CommandTarget.CenterRandom:
-                        m_CenterRandomTargetedCommands.Enqueue(command);
-                        break;
-                    default:
-                        m_UntargetedCommands.Enqueue(command);
-                        break;
+                        case CommandTarget.Cursor:
+                            m_CursorTargetedCommands.Enqueue(command);
+                            break;
+                        case CommandTarget.TargetReticule:
+                            m_ReticuleTargetedCommands.Enqueue(command);
+                            break;
+                        case CommandTarget.CenterRandom:
+                            m_CenterRandomTargetedCommands.Enqueue(command);
+                            break;
+                        default:
+                            m_UntargetedCommands.Enqueue(command);
+                            break;
                     }
                 }
             }

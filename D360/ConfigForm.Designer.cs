@@ -780,6 +780,7 @@ namespace D360
             bigButtonHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             bigButtonHoldBinding.Location = new System.Drawing.Point(3, 51);
             bigButtonHoldBinding.Name = "bigButtonHoldBinding";
+            bigButtonHoldBinding.ReadOnly = true;
             bigButtonHoldBinding.Size = new System.Drawing.Size(169, 20);
             bigButtonHoldBinding.TabIndex = 33;
             bigButtonHoldBinding.Text = "Default Text Box";
@@ -791,6 +792,7 @@ namespace D360
             bigButtonPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             bigButtonPressBinding.Location = new System.Drawing.Point(3, 27);
             bigButtonPressBinding.Name = "bigButtonPressBinding";
+            bigButtonPressBinding.ReadOnly = true;
             bigButtonPressBinding.Size = new System.Drawing.Size(169, 20);
             bigButtonPressBinding.TabIndex = 29;
             bigButtonPressBinding.Text = "Default Text Box";
@@ -802,6 +804,7 @@ namespace D360
             dPadLeftHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadLeftHoldBinding.Location = new System.Drawing.Point(3, 51);
             dPadLeftHoldBinding.Name = "dPadLeftHoldBinding";
+            dPadLeftHoldBinding.ReadOnly = true;
             dPadLeftHoldBinding.Size = new System.Drawing.Size(169, 20);
             dPadLeftHoldBinding.TabIndex = 33;
             dPadLeftHoldBinding.Text = "Default Text Box";
@@ -813,6 +816,7 @@ namespace D360
             dPadLeftPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadLeftPressBinding.Location = new System.Drawing.Point(3, 27);
             dPadLeftPressBinding.Name = "dPadLeftPressBinding";
+            dPadLeftPressBinding.ReadOnly = true;
             dPadLeftPressBinding.Size = new System.Drawing.Size(169, 20);
             dPadLeftPressBinding.TabIndex = 29;
             dPadLeftPressBinding.Text = "Default Text Box";
@@ -824,6 +828,7 @@ namespace D360
             dPadUpHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadUpHoldBinding.Location = new System.Drawing.Point(3, 51);
             dPadUpHoldBinding.Name = "dPadUpHoldBinding";
+            dPadUpHoldBinding.ReadOnly = true;
             dPadUpHoldBinding.Size = new System.Drawing.Size(169, 20);
             dPadUpHoldBinding.TabIndex = 33;
             dPadUpHoldBinding.Text = "Default Text Box";
@@ -835,6 +840,7 @@ namespace D360
             dPadUpPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadUpPressBinding.Location = new System.Drawing.Point(3, 27);
             dPadUpPressBinding.Name = "dPadUpPressBinding";
+            dPadUpPressBinding.ReadOnly = true;
             dPadUpPressBinding.Size = new System.Drawing.Size(169, 20);
             dPadUpPressBinding.TabIndex = 29;
             dPadUpPressBinding.Text = "Default Text Box";
@@ -846,6 +852,7 @@ namespace D360
             rightStickHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             rightStickHoldBinding.Location = new System.Drawing.Point(3, 51);
             rightStickHoldBinding.Name = "rightStickHoldBinding";
+            rightStickHoldBinding.ReadOnly = true;
             rightStickHoldBinding.Size = new System.Drawing.Size(169, 20);
             rightStickHoldBinding.TabIndex = 33;
             rightStickHoldBinding.Text = "Default Text Box";
@@ -857,6 +864,7 @@ namespace D360
             rightStickPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             rightStickPressBinding.Location = new System.Drawing.Point(3, 27);
             rightStickPressBinding.Name = "rightStickPressBinding";
+            rightStickPressBinding.ReadOnly = true;
             rightStickPressBinding.Size = new System.Drawing.Size(169, 20);
             rightStickPressBinding.TabIndex = 29;
             rightStickPressBinding.Text = "Default Text Box";
@@ -868,6 +876,7 @@ namespace D360
             dPadRightHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadRightHoldBinding.Location = new System.Drawing.Point(3, 51);
             dPadRightHoldBinding.Name = "dPadRightHoldBinding";
+            dPadRightHoldBinding.ReadOnly = true;
             dPadRightHoldBinding.Size = new System.Drawing.Size(169, 20);
             dPadRightHoldBinding.TabIndex = 33;
             dPadRightHoldBinding.Text = "Default Text Box";
@@ -879,6 +888,7 @@ namespace D360
             dPadRightPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadRightPressBinding.Location = new System.Drawing.Point(3, 27);
             dPadRightPressBinding.Name = "dPadRightPressBinding";
+            dPadRightPressBinding.ReadOnly = true;
             dPadRightPressBinding.Size = new System.Drawing.Size(169, 20);
             dPadRightPressBinding.TabIndex = 29;
             dPadRightPressBinding.Text = "Default Text Box";
@@ -890,6 +900,7 @@ namespace D360
             dPadDownHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadDownHoldBinding.Location = new System.Drawing.Point(3, 51);
             dPadDownHoldBinding.Name = "dPadDownHoldBinding";
+            dPadDownHoldBinding.ReadOnly = true;
             dPadDownHoldBinding.Size = new System.Drawing.Size(169, 20);
             dPadDownHoldBinding.TabIndex = 33;
             dPadDownHoldBinding.Text = "Default Text Box";
@@ -901,6 +912,7 @@ namespace D360
             dPadDownPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadDownPressBinding.Location = new System.Drawing.Point(3, 27);
             dPadDownPressBinding.Name = "dPadDownPressBinding";
+            dPadDownPressBinding.ReadOnly = true;
             dPadDownPressBinding.Size = new System.Drawing.Size(169, 20);
             dPadDownPressBinding.TabIndex = 29;
             dPadDownPressBinding.Text = "Default Text Box";
@@ -912,6 +924,7 @@ namespace D360
             aHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             aHoldBinding.Location = new System.Drawing.Point(3, 51);
             aHoldBinding.Name = "aHoldBinding";
+            aHoldBinding.ReadOnly = true;
             aHoldBinding.Size = new System.Drawing.Size(169, 20);
             aHoldBinding.TabIndex = 33;
             aHoldBinding.Text = "Default Text Box";
@@ -923,6 +936,7 @@ namespace D360
             aPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             aPressBinding.Location = new System.Drawing.Point(3, 27);
             aPressBinding.Name = "aPressBinding";
+            aPressBinding.ReadOnly = true;
             aPressBinding.Size = new System.Drawing.Size(169, 20);
             aPressBinding.TabIndex = 29;
             aPressBinding.Text = "Default Text Box";
@@ -934,6 +948,7 @@ namespace D360
             bHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             bHoldBinding.Location = new System.Drawing.Point(3, 51);
             bHoldBinding.Name = "bHoldBinding";
+            bHoldBinding.ReadOnly = true;
             bHoldBinding.Size = new System.Drawing.Size(169, 20);
             bHoldBinding.TabIndex = 33;
             bHoldBinding.Text = "Default Text Box";
@@ -945,6 +960,7 @@ namespace D360
             bPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             bPressBinding.Location = new System.Drawing.Point(3, 27);
             bPressBinding.Name = "bPressBinding";
+            bPressBinding.ReadOnly = true;
             bPressBinding.Size = new System.Drawing.Size(169, 20);
             bPressBinding.TabIndex = 29;
             bPressBinding.Text = "Default Text Box";
@@ -956,6 +972,7 @@ namespace D360
             yHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             yHoldBinding.Location = new System.Drawing.Point(3, 51);
             yHoldBinding.Name = "yHoldBinding";
+            yHoldBinding.ReadOnly = true;
             yHoldBinding.Size = new System.Drawing.Size(169, 20);
             yHoldBinding.TabIndex = 33;
             yHoldBinding.Text = "Default Text Box";
@@ -967,6 +984,7 @@ namespace D360
             yPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             yPressBinding.Location = new System.Drawing.Point(3, 27);
             yPressBinding.Name = "yPressBinding";
+            yPressBinding.ReadOnly = true;
             yPressBinding.Size = new System.Drawing.Size(169, 20);
             yPressBinding.TabIndex = 29;
             yPressBinding.Text = "Default Text Box";
@@ -978,6 +996,7 @@ namespace D360
             xHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             xHoldBinding.Location = new System.Drawing.Point(3, 51);
             xHoldBinding.Name = "xHoldBinding";
+            xHoldBinding.ReadOnly = true;
             xHoldBinding.Size = new System.Drawing.Size(169, 20);
             xHoldBinding.TabIndex = 33;
             xHoldBinding.Text = "Default Text Box";
@@ -989,6 +1008,7 @@ namespace D360
             xPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             xPressBinding.Location = new System.Drawing.Point(3, 27);
             xPressBinding.Name = "xPressBinding";
+            xPressBinding.ReadOnly = true;
             xPressBinding.Size = new System.Drawing.Size(169, 20);
             xPressBinding.TabIndex = 29;
             xPressBinding.Text = "Default Text Box";
@@ -1000,6 +1020,7 @@ namespace D360
             leftStickHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             leftStickHoldBinding.Location = new System.Drawing.Point(3, 51);
             leftStickHoldBinding.Name = "leftStickHoldBinding";
+            leftStickHoldBinding.ReadOnly = true;
             leftStickHoldBinding.Size = new System.Drawing.Size(169, 20);
             leftStickHoldBinding.TabIndex = 33;
             leftStickHoldBinding.Text = "Default Text Box";
@@ -1011,6 +1032,7 @@ namespace D360
             leftStickPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             leftStickPressBinding.Location = new System.Drawing.Point(3, 27);
             leftStickPressBinding.Name = "leftStickPressBinding";
+            leftStickPressBinding.ReadOnly = true;
             leftStickPressBinding.Size = new System.Drawing.Size(169, 20);
             leftStickPressBinding.TabIndex = 29;
             leftStickPressBinding.Text = "Default Text Box";
@@ -1022,6 +1044,7 @@ namespace D360
             rightShoulderHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             rightShoulderHoldBinding.Location = new System.Drawing.Point(3, 51);
             rightShoulderHoldBinding.Name = "rightShoulderHoldBinding";
+            rightShoulderHoldBinding.ReadOnly = true;
             rightShoulderHoldBinding.Size = new System.Drawing.Size(169, 20);
             rightShoulderHoldBinding.TabIndex = 33;
             rightShoulderHoldBinding.Text = "Default Text Box";
@@ -1033,6 +1056,7 @@ namespace D360
             rightShoulderPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             rightShoulderPressBinding.Location = new System.Drawing.Point(3, 27);
             rightShoulderPressBinding.Name = "rightShoulderPressBinding";
+            rightShoulderPressBinding.ReadOnly = true;
             rightShoulderPressBinding.Size = new System.Drawing.Size(169, 20);
             rightShoulderPressBinding.TabIndex = 29;
             rightShoulderPressBinding.Text = "Default Text Box";
@@ -1044,6 +1068,7 @@ namespace D360
             leftBumperHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             leftBumperHoldBinding.Location = new System.Drawing.Point(3, 51);
             leftBumperHoldBinding.Name = "leftBumperHoldBinding";
+            leftBumperHoldBinding.ReadOnly = true;
             leftBumperHoldBinding.Size = new System.Drawing.Size(169, 20);
             leftBumperHoldBinding.TabIndex = 33;
             leftBumperHoldBinding.Text = "Default Text Box";
@@ -1055,6 +1080,7 @@ namespace D360
             leftBumperPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             leftBumperPressBinding.Location = new System.Drawing.Point(3, 27);
             leftBumperPressBinding.Name = "leftBumperPressBinding";
+            leftBumperPressBinding.ReadOnly = true;
             leftBumperPressBinding.Size = new System.Drawing.Size(169, 20);
             leftBumperPressBinding.TabIndex = 29;
             leftBumperPressBinding.Text = "Default Text Box";
@@ -1066,6 +1092,7 @@ namespace D360
             leftTriggerHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             leftTriggerHoldBinding.Location = new System.Drawing.Point(3, 51);
             leftTriggerHoldBinding.Name = "leftTriggerHoldBinding";
+            leftTriggerHoldBinding.ReadOnly = true;
             leftTriggerHoldBinding.Size = new System.Drawing.Size(169, 20);
             leftTriggerHoldBinding.TabIndex = 33;
             leftTriggerHoldBinding.Text = "Default Text Box";
@@ -1077,6 +1104,7 @@ namespace D360
             leftTriggerPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             leftTriggerPressBinding.Location = new System.Drawing.Point(3, 27);
             leftTriggerPressBinding.Name = "leftTriggerPressBinding";
+            leftTriggerPressBinding.ReadOnly = true;
             leftTriggerPressBinding.Size = new System.Drawing.Size(169, 20);
             leftTriggerPressBinding.TabIndex = 29;
             leftTriggerPressBinding.Text = "Default Text Box";
@@ -1088,6 +1116,7 @@ namespace D360
             rightTriggerHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             rightTriggerHoldBinding.Location = new System.Drawing.Point(3, 51);
             rightTriggerHoldBinding.Name = "rightTriggerHoldBinding";
+            rightTriggerHoldBinding.ReadOnly = true;
             rightTriggerHoldBinding.Size = new System.Drawing.Size(169, 20);
             rightTriggerHoldBinding.TabIndex = 33;
             rightTriggerHoldBinding.Text = "Default Text Box";
@@ -1099,6 +1128,7 @@ namespace D360
             rightTriggerPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             rightTriggerPressBinding.Location = new System.Drawing.Point(3, 27);
             rightTriggerPressBinding.Name = "rightTriggerPressBinding";
+            rightTriggerPressBinding.ReadOnly = true;
             rightTriggerPressBinding.Size = new System.Drawing.Size(169, 20);
             rightTriggerPressBinding.TabIndex = 29;
             rightTriggerPressBinding.Text = "Default Text Box";
@@ -1110,6 +1140,7 @@ namespace D360
             startHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             startHoldBinding.Location = new System.Drawing.Point(3, 51);
             startHoldBinding.Name = "startHoldBinding";
+            startHoldBinding.ReadOnly = true;
             startHoldBinding.Size = new System.Drawing.Size(169, 20);
             startHoldBinding.TabIndex = 33;
             startHoldBinding.Text = "Default Text Box";
@@ -1121,6 +1152,7 @@ namespace D360
             startPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             startPressBinding.Location = new System.Drawing.Point(3, 27);
             startPressBinding.Name = "startPressBinding";
+            startPressBinding.ReadOnly = true;
             startPressBinding.Size = new System.Drawing.Size(169, 20);
             startPressBinding.TabIndex = 29;
             startPressBinding.Text = "Default Text Box";
@@ -1132,6 +1164,7 @@ namespace D360
             backHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             backHoldBinding.Location = new System.Drawing.Point(3, 51);
             backHoldBinding.Name = "backHoldBinding";
+            backHoldBinding.ReadOnly = true;
             backHoldBinding.Size = new System.Drawing.Size(169, 20);
             backHoldBinding.TabIndex = 33;
             backHoldBinding.Text = "Default Text Box";
@@ -1143,6 +1176,7 @@ namespace D360
             backPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             backPressBinding.Location = new System.Drawing.Point(3, 27);
             backPressBinding.Name = "backPressBinding";
+            backPressBinding.ReadOnly = true;
             backPressBinding.Size = new System.Drawing.Size(169, 20);
             backPressBinding.TabIndex = 29;
             backPressBinding.Text = "Default Text Box";
@@ -1154,6 +1188,7 @@ namespace D360
             defaultHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             defaultHoldBinding.Location = new System.Drawing.Point(3, 51);
             defaultHoldBinding.Name = "defaultHoldBinding";
+            defaultHoldBinding.ReadOnly = true;
             defaultHoldBinding.Size = new System.Drawing.Size(169, 20);
             defaultHoldBinding.TabIndex = 33;
             defaultHoldBinding.Text = "Default Text Box";
@@ -1165,6 +1200,7 @@ namespace D360
             defaultPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
             defaultPressBinding.Location = new System.Drawing.Point(3, 27);
             defaultPressBinding.Name = "defaultPressBinding";
+            defaultPressBinding.ReadOnly = true;
             defaultPressBinding.Size = new System.Drawing.Size(169, 20);
             defaultPressBinding.TabIndex = 29;
             defaultPressBinding.Text = "Default Text Box";
@@ -1205,7 +1241,10 @@ namespace D360
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "D360 Configuration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfigForm_FormClosing);
+            this.Shown += new System.EventHandler(this.OnShown);
             this.VisibleChanged += new System.EventHandler(this.ConfigForm_VisibleChanged);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OnKeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.defaultTable.ResumeLayout(false);
             this.defaultTable.PerformLayout();
