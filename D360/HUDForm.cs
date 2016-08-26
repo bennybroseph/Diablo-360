@@ -1,6 +1,6 @@
 using D360.Bindings;
 using D360.Display;
-using D360.SystemCode;
+using D360.SystemUtility;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.ComponentModel;
@@ -315,21 +315,21 @@ namespace D360
             {
                 switch (m.WParam.ToInt32())
                 {
-                    case CONFIG_HOTKEY:
-                        m_ConfigForm.Visible = !m_ConfigForm.Visible;
-                        break;
-                    case ACTIONS_HOTKEY:
-                        m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
-                        break;
-                    case EXIT_HOTKEY:
-                        Close();
-                        break;
+                case CONFIG_HOTKEY:
+                    m_ConfigForm.Visible = !m_ConfigForm.Visible;
+                    break;
+                case ACTIONS_HOTKEY:
+                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
+                    break;
+                case EXIT_HOTKEY:
+                    Close();
+                    break;
                 }
             }
             base.WndProc(ref m);
         }
 
-        private void WriteToLog(Exception exception)
+        public static void WriteToLog(Exception exception)
         {
             var crashPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\crash.txt";
             using (var outfile = new StreamWriter(crashPath, true))

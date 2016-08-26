@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Action = D360.Types.Action;
 using FormsKeys = System.Windows.Forms.Keys;
 
-namespace D360.SystemCode
+namespace D360.SystemUtility
 {
     [Serializable]
     public class Configuration
@@ -29,20 +29,64 @@ namespace D360.SystemCode
 
     public static partial class ButtonsExtensions
     {
-        public static string ParseButtonsDisplayName(this string str)
+        public static string ParseButtonsName(this string str)
         {
             if (string.IsNullOrEmpty(str))
                 return str;
 
             return str.ToPascal().Replace("Panel", "").Replace("Label", "");
         }
+        public static string ParseButtonsDisplayName(this string str)
+        {
+            switch (str.ParseButtons())
+            {
+            case Buttons.BigButton:
+                str = "XBox Button";
+                break;
+
+            case Buttons.DPadUp:
+                str = "DPad Up";
+                break;
+            case Buttons.DPadDown:
+                str = "DPad Down";
+                break;
+            case Buttons.DPadLeft:
+                str = "DPad Left";
+                break;
+            case Buttons.DPadRight:
+                str = "DPad Right";
+                break;
+
+            default:
+                for (var i = 0; i < str.Length; ++i)
+                {
+                    if (!char.IsUpper(str[i]))
+                        continue;
+
+                    str = str.Substring(0, i) + " " + str.Substring(i);
+                    ++i;
+                }
+                break;
+            }
+
+            return str.ToPascal().Replace("Panel", "").Replace("Label", "");
+        }
         public static Buttons ParseButtons(this string str)
         {
-            if (string.IsNullOrEmpty(str))
-                return Buttons.A;
+            var returnValue = Buttons.A;
 
-            var test = str.ParseButtonsDisplayName();
-            Buttons returnValue = (Buttons)Enum.Parse(typeof(Buttons), str.ParseButtonsDisplayName(), true);
+            if (string.IsNullOrEmpty(str))
+                return returnValue;
+
+            try
+            {
+                returnValue = (Buttons)Enum.Parse(typeof(Buttons), str.ParseButtonsName(), true);
+            }
+            catch (Exception e)
+            {
+                HUDForm.WriteToLog(e);
+            }
+
             return returnValue;
         }
     }

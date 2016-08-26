@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace D360.SystemCode
+namespace D360.SystemUtility
 {
     public class WindowFunctions
     {

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Action = D360.Types.Action;
 using FormsKeys = System.Windows.Forms.Keys;
 
-namespace D360.SystemCode
+namespace D360.SystemUtility
 {
     public class InputProcessor
     {

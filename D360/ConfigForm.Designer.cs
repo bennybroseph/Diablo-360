@@ -99,7 +99,7 @@ namespace D360
             this.startPanel = new System.Windows.Forms.TableLayoutPanel();
             this.rightTriggerPanel = new System.Windows.Forms.TableLayoutPanel();
             this.leftTriggerPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.leftBumperPanel = new System.Windows.Forms.TableLayoutPanel();
             this.rightShoulderPanel = new System.Windows.Forms.TableLayoutPanel();
             this.leftStickPanel = new System.Windows.Forms.TableLayoutPanel();
             this.xPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -172,7 +172,7 @@ namespace D360
             this.startPanel.SuspendLayout();
             this.rightTriggerPanel.SuspendLayout();
             this.leftTriggerPanel.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
+            this.leftBumperPanel.SuspendLayout();
             this.rightShoulderPanel.SuspendLayout();
             this.leftStickPanel.SuspendLayout();
             this.xPanel.SuspendLayout();
@@ -193,7 +193,7 @@ namespace D360
             defaultLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             defaultLabel.Location = new System.Drawing.Point(3, 0);
             defaultLabel.Name = "defaultLabel";
-            defaultLabel.Size = new System.Drawing.Size(169, 19);
+            defaultLabel.Size = new System.Drawing.Size(169, 24);
             defaultLabel.TabIndex = 27;
             defaultLabel.Text = "Default Press Label";
             defaultLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,7 +204,7 @@ namespace D360
             backLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             backLabel.Location = new System.Drawing.Point(3, 0);
             backLabel.Name = "backLabel";
-            backLabel.Size = new System.Drawing.Size(169, 19);
+            backLabel.Size = new System.Drawing.Size(169, 24);
             backLabel.TabIndex = 27;
             backLabel.Text = "Default Press Label";
             backLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -215,7 +215,7 @@ namespace D360
             startLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             startLabel.Location = new System.Drawing.Point(3, 0);
             startLabel.Name = "startLabel";
-            startLabel.Size = new System.Drawing.Size(169, 19);
+            startLabel.Size = new System.Drawing.Size(169, 24);
             startLabel.TabIndex = 27;
             startLabel.Text = "Default Press Label";
             startLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -226,7 +226,7 @@ namespace D360
             rightTriggerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             rightTriggerLabel.Location = new System.Drawing.Point(3, 0);
             rightTriggerLabel.Name = "rightTriggerLabel";
-            rightTriggerLabel.Size = new System.Drawing.Size(169, 19);
+            rightTriggerLabel.Size = new System.Drawing.Size(169, 24);
             rightTriggerLabel.TabIndex = 27;
             rightTriggerLabel.Text = "Default Press Label";
             rightTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -237,7 +237,7 @@ namespace D360
             leftTriggerLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             leftTriggerLabel.Location = new System.Drawing.Point(3, 0);
             leftTriggerLabel.Name = "leftTriggerLabel";
-            leftTriggerLabel.Size = new System.Drawing.Size(169, 19);
+            leftTriggerLabel.Size = new System.Drawing.Size(169, 24);
             leftTriggerLabel.TabIndex = 27;
             leftTriggerLabel.Text = "Default Press Label";
             leftTriggerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -248,7 +248,7 @@ namespace D360
             leftBumperLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             leftBumperLabel.Location = new System.Drawing.Point(3, 0);
             leftBumperLabel.Name = "leftBumperLabel";
-            leftBumperLabel.Size = new System.Drawing.Size(169, 19);
+            leftBumperLabel.Size = new System.Drawing.Size(169, 24);
             leftBumperLabel.TabIndex = 27;
             leftBumperLabel.Text = "Default Press Label";
             leftBumperLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -259,7 +259,7 @@ namespace D360
             rightBumperLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             rightBumperLabel.Location = new System.Drawing.Point(3, 0);
             rightBumperLabel.Name = "rightBumperLabel";
-            rightBumperLabel.Size = new System.Drawing.Size(169, 19);
+            rightBumperLabel.Size = new System.Drawing.Size(169, 24);
             rightBumperLabel.TabIndex = 27;
             rightBumperLabel.Text = "Default Press Label";
             rightBumperLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -270,7 +270,7 @@ namespace D360
             leftStickLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             leftStickLabel.Location = new System.Drawing.Point(3, 0);
             leftStickLabel.Name = "leftStickLabel";
-            leftStickLabel.Size = new System.Drawing.Size(169, 19);
+            leftStickLabel.Size = new System.Drawing.Size(169, 24);
             leftStickLabel.TabIndex = 27;
             leftStickLabel.Text = "Default Press Label";
             leftStickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -281,7 +281,7 @@ namespace D360
             xLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             xLabel.Location = new System.Drawing.Point(3, 0);
             xLabel.Name = "xLabel";
-            xLabel.Size = new System.Drawing.Size(169, 19);
+            xLabel.Size = new System.Drawing.Size(169, 24);
             xLabel.TabIndex = 27;
             xLabel.Text = "Default Press Label";
             xLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -292,7 +292,7 @@ namespace D360
             yLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             yLabel.Location = new System.Drawing.Point(3, 0);
             yLabel.Name = "yLabel";
-            yLabel.Size = new System.Drawing.Size(169, 19);
+            yLabel.Size = new System.Drawing.Size(169, 24);
             yLabel.TabIndex = 27;
             yLabel.Text = "Default Press Label";
             yLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -303,7 +303,7 @@ namespace D360
             bLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             bLabel.Location = new System.Drawing.Point(3, 0);
             bLabel.Name = "bLabel";
-            bLabel.Size = new System.Drawing.Size(169, 19);
+            bLabel.Size = new System.Drawing.Size(169, 24);
             bLabel.TabIndex = 27;
             bLabel.Text = "Default Press Label";
             bLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -314,7 +314,7 @@ namespace D360
             aLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             aLabel.Location = new System.Drawing.Point(3, 0);
             aLabel.Name = "aLabel";
-            aLabel.Size = new System.Drawing.Size(169, 19);
+            aLabel.Size = new System.Drawing.Size(169, 24);
             aLabel.TabIndex = 27;
             aLabel.Text = "Default Press Label";
             aLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -325,7 +325,7 @@ namespace D360
             dPadDownLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadDownLabel.Location = new System.Drawing.Point(3, 0);
             dPadDownLabel.Name = "dPadDownLabel";
-            dPadDownLabel.Size = new System.Drawing.Size(169, 19);
+            dPadDownLabel.Size = new System.Drawing.Size(169, 24);
             dPadDownLabel.TabIndex = 27;
             dPadDownLabel.Text = "Default Press Label";
             dPadDownLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -336,7 +336,7 @@ namespace D360
             dPadRightLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadRightLabel.Location = new System.Drawing.Point(3, 0);
             dPadRightLabel.Name = "dPadRightLabel";
-            dPadRightLabel.Size = new System.Drawing.Size(169, 19);
+            dPadRightLabel.Size = new System.Drawing.Size(169, 24);
             dPadRightLabel.TabIndex = 27;
             dPadRightLabel.Text = "Default Press Label";
             dPadRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -347,7 +347,7 @@ namespace D360
             rightStickLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             rightStickLabel.Location = new System.Drawing.Point(3, 0);
             rightStickLabel.Name = "rightStickLabel";
-            rightStickLabel.Size = new System.Drawing.Size(169, 19);
+            rightStickLabel.Size = new System.Drawing.Size(169, 24);
             rightStickLabel.TabIndex = 27;
             rightStickLabel.Text = "Default Press Label";
             rightStickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -358,7 +358,7 @@ namespace D360
             dPadUpLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadUpLabel.Location = new System.Drawing.Point(3, 0);
             dPadUpLabel.Name = "dPadUpLabel";
-            dPadUpLabel.Size = new System.Drawing.Size(169, 19);
+            dPadUpLabel.Size = new System.Drawing.Size(169, 24);
             dPadUpLabel.TabIndex = 27;
             dPadUpLabel.Text = "Default Press Label";
             dPadUpLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -369,7 +369,7 @@ namespace D360
             dPadLeftLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             dPadLeftLabel.Location = new System.Drawing.Point(3, 0);
             dPadLeftLabel.Name = "dPadLeftLabel";
-            dPadLeftLabel.Size = new System.Drawing.Size(169, 19);
+            dPadLeftLabel.Size = new System.Drawing.Size(169, 24);
             dPadLeftLabel.TabIndex = 27;
             dPadLeftLabel.Text = "Default Press Label";
             dPadLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -380,10 +380,406 @@ namespace D360
             bigButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             bigButtonLabel.Location = new System.Drawing.Point(3, 0);
             bigButtonLabel.Name = "bigButtonLabel";
-            bigButtonLabel.Size = new System.Drawing.Size(169, 19);
+            bigButtonLabel.Size = new System.Drawing.Size(169, 24);
             bigButtonLabel.TabIndex = 27;
             bigButtonLabel.Text = "Default Press Label";
             bigButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // bigButtonHoldBinding
+            // 
+            bigButtonHoldBinding.AllowDrop = true;
+            bigButtonHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            bigButtonHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            bigButtonHoldBinding.Location = new System.Drawing.Point(3, 51);
+            bigButtonHoldBinding.Name = "bigButtonHoldBinding";
+            bigButtonHoldBinding.Size = new System.Drawing.Size(169, 20);
+            bigButtonHoldBinding.TabIndex = 33;
+            bigButtonHoldBinding.Text = "Default Text Box";
+            // 
+            // bigButtonPressBinding
+            // 
+            bigButtonPressBinding.AllowDrop = true;
+            bigButtonPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            bigButtonPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            bigButtonPressBinding.Location = new System.Drawing.Point(3, 27);
+            bigButtonPressBinding.Name = "bigButtonPressBinding";
+            bigButtonPressBinding.Size = new System.Drawing.Size(169, 20);
+            bigButtonPressBinding.TabIndex = 29;
+            bigButtonPressBinding.Text = "Default Text Box";
+            // 
+            // dPadLeftHoldBinding
+            // 
+            dPadLeftHoldBinding.AllowDrop = true;
+            dPadLeftHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadLeftHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadLeftHoldBinding.Location = new System.Drawing.Point(3, 51);
+            dPadLeftHoldBinding.Name = "dPadLeftHoldBinding";
+            dPadLeftHoldBinding.Size = new System.Drawing.Size(169, 20);
+            dPadLeftHoldBinding.TabIndex = 33;
+            dPadLeftHoldBinding.Text = "Default Text Box";
+            // 
+            // dPadLeftPressBinding
+            // 
+            dPadLeftPressBinding.AllowDrop = true;
+            dPadLeftPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadLeftPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadLeftPressBinding.Location = new System.Drawing.Point(3, 27);
+            dPadLeftPressBinding.Name = "dPadLeftPressBinding";
+            dPadLeftPressBinding.Size = new System.Drawing.Size(169, 20);
+            dPadLeftPressBinding.TabIndex = 29;
+            dPadLeftPressBinding.Text = "Default Text Box";
+            // 
+            // dPadUpHoldBinding
+            // 
+            dPadUpHoldBinding.AllowDrop = true;
+            dPadUpHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadUpHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadUpHoldBinding.Location = new System.Drawing.Point(3, 51);
+            dPadUpHoldBinding.Name = "dPadUpHoldBinding";
+            dPadUpHoldBinding.Size = new System.Drawing.Size(169, 20);
+            dPadUpHoldBinding.TabIndex = 33;
+            dPadUpHoldBinding.Text = "Default Text Box";
+            // 
+            // dPadUpPressBinding
+            // 
+            dPadUpPressBinding.AllowDrop = true;
+            dPadUpPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadUpPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadUpPressBinding.Location = new System.Drawing.Point(3, 27);
+            dPadUpPressBinding.Name = "dPadUpPressBinding";
+            dPadUpPressBinding.Size = new System.Drawing.Size(169, 20);
+            dPadUpPressBinding.TabIndex = 29;
+            dPadUpPressBinding.Text = "Default Text Box";
+            // 
+            // rightStickHoldBinding
+            // 
+            rightStickHoldBinding.AllowDrop = true;
+            rightStickHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            rightStickHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightStickHoldBinding.Location = new System.Drawing.Point(3, 51);
+            rightStickHoldBinding.Name = "rightStickHoldBinding";
+            rightStickHoldBinding.Size = new System.Drawing.Size(169, 20);
+            rightStickHoldBinding.TabIndex = 33;
+            rightStickHoldBinding.Text = "Default Text Box";
+            // 
+            // rightStickPressBinding
+            // 
+            rightStickPressBinding.AllowDrop = true;
+            rightStickPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            rightStickPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightStickPressBinding.Location = new System.Drawing.Point(3, 27);
+            rightStickPressBinding.Name = "rightStickPressBinding";
+            rightStickPressBinding.Size = new System.Drawing.Size(169, 20);
+            rightStickPressBinding.TabIndex = 29;
+            rightStickPressBinding.Text = "Default Text Box";
+            // 
+            // dPadRightHoldBinding
+            // 
+            dPadRightHoldBinding.AllowDrop = true;
+            dPadRightHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadRightHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadRightHoldBinding.Location = new System.Drawing.Point(3, 51);
+            dPadRightHoldBinding.Name = "dPadRightHoldBinding";
+            dPadRightHoldBinding.Size = new System.Drawing.Size(169, 20);
+            dPadRightHoldBinding.TabIndex = 33;
+            dPadRightHoldBinding.Text = "Default Text Box";
+            // 
+            // dPadRightPressBinding
+            // 
+            dPadRightPressBinding.AllowDrop = true;
+            dPadRightPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadRightPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadRightPressBinding.Location = new System.Drawing.Point(3, 27);
+            dPadRightPressBinding.Name = "dPadRightPressBinding";
+            dPadRightPressBinding.Size = new System.Drawing.Size(169, 20);
+            dPadRightPressBinding.TabIndex = 29;
+            dPadRightPressBinding.Text = "Default Text Box";
+            // 
+            // dPadDownHoldBinding
+            // 
+            dPadDownHoldBinding.AllowDrop = true;
+            dPadDownHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadDownHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadDownHoldBinding.Location = new System.Drawing.Point(3, 51);
+            dPadDownHoldBinding.Name = "dPadDownHoldBinding";
+            dPadDownHoldBinding.Size = new System.Drawing.Size(169, 20);
+            dPadDownHoldBinding.TabIndex = 33;
+            dPadDownHoldBinding.Text = "Default Text Box";
+            // 
+            // dPadDownPressBinding
+            // 
+            dPadDownPressBinding.AllowDrop = true;
+            dPadDownPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            dPadDownPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            dPadDownPressBinding.Location = new System.Drawing.Point(3, 27);
+            dPadDownPressBinding.Name = "dPadDownPressBinding";
+            dPadDownPressBinding.Size = new System.Drawing.Size(169, 20);
+            dPadDownPressBinding.TabIndex = 29;
+            dPadDownPressBinding.Text = "Default Text Box";
+            // 
+            // aHoldBinding
+            // 
+            aHoldBinding.AllowDrop = true;
+            aHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            aHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            aHoldBinding.Location = new System.Drawing.Point(3, 51);
+            aHoldBinding.Name = "aHoldBinding";
+            aHoldBinding.Size = new System.Drawing.Size(169, 20);
+            aHoldBinding.TabIndex = 33;
+            aHoldBinding.Text = "Default Text Box";
+            // 
+            // aPressBinding
+            // 
+            aPressBinding.AllowDrop = true;
+            aPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            aPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            aPressBinding.Location = new System.Drawing.Point(3, 27);
+            aPressBinding.Name = "aPressBinding";
+            aPressBinding.Size = new System.Drawing.Size(169, 20);
+            aPressBinding.TabIndex = 29;
+            aPressBinding.Text = "Default Text Box";
+            // 
+            // bHoldBinding
+            // 
+            bHoldBinding.AllowDrop = true;
+            bHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            bHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            bHoldBinding.Location = new System.Drawing.Point(3, 51);
+            bHoldBinding.Name = "bHoldBinding";
+            bHoldBinding.Size = new System.Drawing.Size(169, 20);
+            bHoldBinding.TabIndex = 33;
+            bHoldBinding.Text = "Default Text Box";
+            // 
+            // bPressBinding
+            // 
+            bPressBinding.AllowDrop = true;
+            bPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            bPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            bPressBinding.Location = new System.Drawing.Point(3, 27);
+            bPressBinding.Name = "bPressBinding";
+            bPressBinding.Size = new System.Drawing.Size(169, 20);
+            bPressBinding.TabIndex = 29;
+            bPressBinding.Text = "Default Text Box";
+            // 
+            // yHoldBinding
+            // 
+            yHoldBinding.AllowDrop = true;
+            yHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            yHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            yHoldBinding.Location = new System.Drawing.Point(3, 51);
+            yHoldBinding.Name = "yHoldBinding";
+            yHoldBinding.Size = new System.Drawing.Size(169, 20);
+            yHoldBinding.TabIndex = 33;
+            yHoldBinding.Text = "Default Text Box";
+            // 
+            // yPressBinding
+            // 
+            yPressBinding.AllowDrop = true;
+            yPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            yPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            yPressBinding.Location = new System.Drawing.Point(3, 27);
+            yPressBinding.Name = "yPressBinding";
+            yPressBinding.Size = new System.Drawing.Size(169, 20);
+            yPressBinding.TabIndex = 29;
+            yPressBinding.Text = "Default Text Box";
+            // 
+            // xHoldBinding
+            // 
+            xHoldBinding.AllowDrop = true;
+            xHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            xHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            xHoldBinding.Location = new System.Drawing.Point(3, 51);
+            xHoldBinding.Name = "xHoldBinding";
+            xHoldBinding.Size = new System.Drawing.Size(169, 20);
+            xHoldBinding.TabIndex = 33;
+            xHoldBinding.Text = "Default Text Box";
+            // 
+            // xPressBinding
+            // 
+            xPressBinding.AllowDrop = true;
+            xPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            xPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            xPressBinding.Location = new System.Drawing.Point(3, 27);
+            xPressBinding.Name = "xPressBinding";
+            xPressBinding.Size = new System.Drawing.Size(169, 20);
+            xPressBinding.TabIndex = 29;
+            xPressBinding.Text = "Default Text Box";
+            // 
+            // leftStickHoldBinding
+            // 
+            leftStickHoldBinding.AllowDrop = true;
+            leftStickHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftStickHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftStickHoldBinding.Location = new System.Drawing.Point(3, 51);
+            leftStickHoldBinding.Name = "leftStickHoldBinding";
+            leftStickHoldBinding.Size = new System.Drawing.Size(169, 20);
+            leftStickHoldBinding.TabIndex = 33;
+            leftStickHoldBinding.Text = "Default Text Box";
+            // 
+            // leftStickPressBinding
+            // 
+            leftStickPressBinding.AllowDrop = true;
+            leftStickPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftStickPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftStickPressBinding.Location = new System.Drawing.Point(3, 27);
+            leftStickPressBinding.Name = "leftStickPressBinding";
+            leftStickPressBinding.Size = new System.Drawing.Size(169, 20);
+            leftStickPressBinding.TabIndex = 29;
+            leftStickPressBinding.Text = "Default Text Box";
+            // 
+            // rightShoulderHoldBinding
+            // 
+            rightShoulderHoldBinding.AllowDrop = true;
+            rightShoulderHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            rightShoulderHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightShoulderHoldBinding.Location = new System.Drawing.Point(3, 51);
+            rightShoulderHoldBinding.Name = "rightShoulderHoldBinding";
+            rightShoulderHoldBinding.Size = new System.Drawing.Size(169, 20);
+            rightShoulderHoldBinding.TabIndex = 33;
+            rightShoulderHoldBinding.Text = "Default Text Box";
+            // 
+            // rightShoulderPressBinding
+            // 
+            rightShoulderPressBinding.AllowDrop = true;
+            rightShoulderPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            rightShoulderPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightShoulderPressBinding.Location = new System.Drawing.Point(3, 27);
+            rightShoulderPressBinding.Name = "rightShoulderPressBinding";
+            rightShoulderPressBinding.Size = new System.Drawing.Size(169, 20);
+            rightShoulderPressBinding.TabIndex = 29;
+            rightShoulderPressBinding.Text = "Default Text Box";
+            // 
+            // leftBumperHoldBinding
+            // 
+            leftBumperHoldBinding.AllowDrop = true;
+            leftBumperHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftBumperHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftBumperHoldBinding.Location = new System.Drawing.Point(3, 51);
+            leftBumperHoldBinding.Name = "leftBumperHoldBinding";
+            leftBumperHoldBinding.Size = new System.Drawing.Size(169, 20);
+            leftBumperHoldBinding.TabIndex = 33;
+            leftBumperHoldBinding.Text = "Default Text Box";
+            // 
+            // leftBumperPressBinding
+            // 
+            leftBumperPressBinding.AllowDrop = true;
+            leftBumperPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftBumperPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftBumperPressBinding.Location = new System.Drawing.Point(3, 27);
+            leftBumperPressBinding.Name = "leftBumperPressBinding";
+            leftBumperPressBinding.Size = new System.Drawing.Size(169, 20);
+            leftBumperPressBinding.TabIndex = 29;
+            leftBumperPressBinding.Text = "Default Text Box";
+            // 
+            // leftTriggerHoldBinding
+            // 
+            leftTriggerHoldBinding.AllowDrop = true;
+            leftTriggerHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftTriggerHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftTriggerHoldBinding.Location = new System.Drawing.Point(3, 51);
+            leftTriggerHoldBinding.Name = "leftTriggerHoldBinding";
+            leftTriggerHoldBinding.Size = new System.Drawing.Size(169, 20);
+            leftTriggerHoldBinding.TabIndex = 33;
+            leftTriggerHoldBinding.Text = "Default Text Box";
+            // 
+            // leftTriggerPressBinding
+            // 
+            leftTriggerPressBinding.AllowDrop = true;
+            leftTriggerPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            leftTriggerPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftTriggerPressBinding.Location = new System.Drawing.Point(3, 27);
+            leftTriggerPressBinding.Name = "leftTriggerPressBinding";
+            leftTriggerPressBinding.Size = new System.Drawing.Size(169, 20);
+            leftTriggerPressBinding.TabIndex = 29;
+            leftTriggerPressBinding.Text = "Default Text Box";
+            // 
+            // rightTriggerHoldBinding
+            // 
+            rightTriggerHoldBinding.AllowDrop = true;
+            rightTriggerHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            rightTriggerHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightTriggerHoldBinding.Location = new System.Drawing.Point(3, 51);
+            rightTriggerHoldBinding.Name = "rightTriggerHoldBinding";
+            rightTriggerHoldBinding.Size = new System.Drawing.Size(169, 20);
+            rightTriggerHoldBinding.TabIndex = 33;
+            rightTriggerHoldBinding.Text = "Default Text Box";
+            // 
+            // rightTriggerPressBinding
+            // 
+            rightTriggerPressBinding.AllowDrop = true;
+            rightTriggerPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            rightTriggerPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightTriggerPressBinding.Location = new System.Drawing.Point(3, 27);
+            rightTriggerPressBinding.Name = "rightTriggerPressBinding";
+            rightTriggerPressBinding.Size = new System.Drawing.Size(169, 20);
+            rightTriggerPressBinding.TabIndex = 29;
+            rightTriggerPressBinding.Text = "Default Text Box";
+            // 
+            // startHoldBinding
+            // 
+            startHoldBinding.AllowDrop = true;
+            startHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            startHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            startHoldBinding.Location = new System.Drawing.Point(3, 51);
+            startHoldBinding.Name = "startHoldBinding";
+            startHoldBinding.Size = new System.Drawing.Size(169, 20);
+            startHoldBinding.TabIndex = 33;
+            startHoldBinding.Text = "Default Text Box";
+            // 
+            // startPressBinding
+            // 
+            startPressBinding.AllowDrop = true;
+            startPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            startPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            startPressBinding.Location = new System.Drawing.Point(3, 27);
+            startPressBinding.Name = "startPressBinding";
+            startPressBinding.Size = new System.Drawing.Size(169, 20);
+            startPressBinding.TabIndex = 29;
+            startPressBinding.Text = "Default Text Box";
+            // 
+            // backHoldBinding
+            // 
+            backHoldBinding.AllowDrop = true;
+            backHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            backHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            backHoldBinding.Location = new System.Drawing.Point(3, 51);
+            backHoldBinding.Name = "backHoldBinding";
+            backHoldBinding.Size = new System.Drawing.Size(169, 20);
+            backHoldBinding.TabIndex = 33;
+            backHoldBinding.Text = "Default Text Box";
+            // 
+            // backPressBinding
+            // 
+            backPressBinding.AllowDrop = true;
+            backPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            backPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            backPressBinding.Location = new System.Drawing.Point(3, 27);
+            backPressBinding.Name = "backPressBinding";
+            backPressBinding.Size = new System.Drawing.Size(169, 20);
+            backPressBinding.TabIndex = 29;
+            backPressBinding.Text = "Default Text Box";
+            // 
+            // defaultHoldBinding
+            // 
+            defaultHoldBinding.AllowDrop = true;
+            defaultHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            defaultHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            defaultHoldBinding.Location = new System.Drawing.Point(3, 51);
+            defaultHoldBinding.Name = "defaultHoldBinding";
+            defaultHoldBinding.Size = new System.Drawing.Size(169, 20);
+            defaultHoldBinding.TabIndex = 33;
+            defaultHoldBinding.Text = "Default Text Box";
+            // 
+            // defaultPressBinding
+            // 
+            defaultPressBinding.AllowDrop = true;
+            defaultPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
+            defaultPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
+            defaultPressBinding.Location = new System.Drawing.Point(3, 27);
+            defaultPressBinding.Name = "defaultPressBinding";
+            defaultPressBinding.Size = new System.Drawing.Size(169, 20);
+            defaultPressBinding.TabIndex = 29;
+            defaultPressBinding.Text = "Default Text Box";
             // 
             // OldLeftTriggerLabel
             // 
@@ -477,7 +873,7 @@ namespace D360
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = global::D360.Properties.Resources.XBoxOneControllerOutline1;
-            this.pictureBox1.Location = new System.Drawing.Point(96, 108);
+            this.pictureBox1.Location = new System.Drawing.Point(98, 99);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1067, 617);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -494,10 +890,10 @@ namespace D360
             this.defaultTable.Location = new System.Drawing.Point(348, 12);
             this.defaultTable.Name = "defaultTable";
             this.defaultTable.RowCount = 3;
-            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.defaultTable.Size = new System.Drawing.Size(175, 66);
+            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.defaultTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.defaultTable.Size = new System.Drawing.Size(175, 72);
             this.defaultTable.TabIndex = 33;
             this.defaultTable.Visible = false;
             // 
@@ -508,13 +904,13 @@ namespace D360
             this.backPanel.Controls.Add(backHoldBinding, 0, 2);
             this.backPanel.Controls.Add(backPressBinding, 0, 1);
             this.backPanel.Controls.Add(backLabel, 0, 0);
-            this.backPanel.Location = new System.Drawing.Point(441, 175);
+            this.backPanel.Location = new System.Drawing.Point(443, 166);
             this.backPanel.Name = "backPanel";
             this.backPanel.RowCount = 3;
-            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.backPanel.Size = new System.Drawing.Size(175, 66);
+            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.backPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.backPanel.Size = new System.Drawing.Size(175, 72);
             this.backPanel.TabIndex = 34;
             // 
             // startPanel
@@ -524,13 +920,13 @@ namespace D360
             this.startPanel.Controls.Add(startHoldBinding, 0, 2);
             this.startPanel.Controls.Add(startPressBinding, 0, 1);
             this.startPanel.Controls.Add(startLabel, 0, 0);
-            this.startPanel.Location = new System.Drawing.Point(638, 175);
+            this.startPanel.Location = new System.Drawing.Point(640, 166);
             this.startPanel.Name = "startPanel";
             this.startPanel.RowCount = 3;
-            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.startPanel.Size = new System.Drawing.Size(175, 66);
+            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.startPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.startPanel.Size = new System.Drawing.Size(175, 72);
             this.startPanel.TabIndex = 35;
             // 
             // rightTriggerPanel
@@ -540,13 +936,13 @@ namespace D360
             this.rightTriggerPanel.Controls.Add(rightTriggerHoldBinding, 0, 2);
             this.rightTriggerPanel.Controls.Add(rightTriggerPressBinding, 0, 1);
             this.rightTriggerPanel.Controls.Add(rightTriggerLabel, 0, 0);
-            this.rightTriggerPanel.Location = new System.Drawing.Point(949, 75);
+            this.rightTriggerPanel.Location = new System.Drawing.Point(951, 66);
             this.rightTriggerPanel.Name = "rightTriggerPanel";
             this.rightTriggerPanel.RowCount = 3;
-            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.rightTriggerPanel.Size = new System.Drawing.Size(175, 66);
+            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightTriggerPanel.Size = new System.Drawing.Size(175, 72);
             this.rightTriggerPanel.TabIndex = 36;
             // 
             // leftTriggerPanel
@@ -556,31 +952,30 @@ namespace D360
             this.leftTriggerPanel.Controls.Add(leftTriggerHoldBinding, 0, 2);
             this.leftTriggerPanel.Controls.Add(leftTriggerPressBinding, 0, 1);
             this.leftTriggerPanel.Controls.Add(leftTriggerLabel, 0, 0);
-            this.leftTriggerPanel.Location = new System.Drawing.Point(155, 75);
+            this.leftTriggerPanel.Location = new System.Drawing.Point(157, 66);
             this.leftTriggerPanel.Name = "leftTriggerPanel";
             this.leftTriggerPanel.RowCount = 3;
-            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.leftTriggerPanel.Size = new System.Drawing.Size(175, 66);
+            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftTriggerPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftTriggerPanel.Size = new System.Drawing.Size(175, 72);
             this.leftTriggerPanel.TabIndex = 37;
             // 
-            // tableLayoutPanel6
+            // leftBumperPanel
             // 
-            this.tableLayoutPanel6.ColumnCount = 1;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel6.Controls.Add(leftBumperHoldBinding, 0, 2);
-            this.tableLayoutPanel6.Controls.Add(leftBumperPressBinding, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(leftBumperLabel, 0, 0);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(112, 177);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 3;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(175, 66);
-            this.tableLayoutPanel6.TabIndex = 38;
+            this.leftBumperPanel.ColumnCount = 1;
+            this.leftBumperPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.leftBumperPanel.Controls.Add(leftBumperHoldBinding, 0, 2);
+            this.leftBumperPanel.Controls.Add(leftBumperPressBinding, 0, 1);
+            this.leftBumperPanel.Controls.Add(leftBumperLabel, 0, 0);
+            this.leftBumperPanel.Location = new System.Drawing.Point(114, 168);
+            this.leftBumperPanel.Name = "leftBumperPanel";
+            this.leftBumperPanel.RowCount = 3;
+            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftBumperPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftBumperPanel.Size = new System.Drawing.Size(175, 72);
+            this.leftBumperPanel.TabIndex = 38;
             // 
             // rightShoulderPanel
             // 
@@ -589,13 +984,13 @@ namespace D360
             this.rightShoulderPanel.Controls.Add(rightShoulderHoldBinding, 0, 2);
             this.rightShoulderPanel.Controls.Add(rightShoulderPressBinding, 0, 1);
             this.rightShoulderPanel.Controls.Add(rightBumperLabel, 0, 0);
-            this.rightShoulderPanel.Location = new System.Drawing.Point(970, 179);
+            this.rightShoulderPanel.Location = new System.Drawing.Point(972, 170);
             this.rightShoulderPanel.Name = "rightShoulderPanel";
             this.rightShoulderPanel.RowCount = 3;
-            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.rightShoulderPanel.Size = new System.Drawing.Size(175, 66);
+            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightShoulderPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightShoulderPanel.Size = new System.Drawing.Size(175, 72);
             this.rightShoulderPanel.TabIndex = 39;
             // 
             // leftStickPanel
@@ -605,13 +1000,13 @@ namespace D360
             this.leftStickPanel.Controls.Add(leftStickHoldBinding, 0, 2);
             this.leftStickPanel.Controls.Add(leftStickPressBinding, 0, 1);
             this.leftStickPanel.Controls.Add(leftStickLabel, 0, 0);
-            this.leftStickPanel.Location = new System.Drawing.Point(82, 316);
+            this.leftStickPanel.Location = new System.Drawing.Point(84, 307);
             this.leftStickPanel.Name = "leftStickPanel";
             this.leftStickPanel.RowCount = 3;
-            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.leftStickPanel.Size = new System.Drawing.Size(175, 66);
+            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.leftStickPanel.Size = new System.Drawing.Size(175, 72);
             this.leftStickPanel.TabIndex = 40;
             // 
             // xPanel
@@ -621,13 +1016,13 @@ namespace D360
             this.xPanel.Controls.Add(xHoldBinding, 0, 2);
             this.xPanel.Controls.Add(xPressBinding, 0, 1);
             this.xPanel.Controls.Add(xLabel, 0, 0);
-            this.xPanel.Location = new System.Drawing.Point(955, 280);
+            this.xPanel.Location = new System.Drawing.Point(957, 271);
             this.xPanel.Name = "xPanel";
             this.xPanel.RowCount = 3;
-            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.xPanel.Size = new System.Drawing.Size(175, 66);
+            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.xPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.xPanel.Size = new System.Drawing.Size(175, 72);
             this.xPanel.TabIndex = 41;
             // 
             // yPanel
@@ -637,13 +1032,13 @@ namespace D360
             this.yPanel.Controls.Add(yHoldBinding, 0, 2);
             this.yPanel.Controls.Add(yPressBinding, 0, 1);
             this.yPanel.Controls.Add(yLabel, 0, 0);
-            this.yPanel.Location = new System.Drawing.Point(1023, 354);
+            this.yPanel.Location = new System.Drawing.Point(1025, 345);
             this.yPanel.Name = "yPanel";
             this.yPanel.RowCount = 3;
-            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.yPanel.Size = new System.Drawing.Size(175, 66);
+            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.yPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.yPanel.Size = new System.Drawing.Size(175, 72);
             this.yPanel.TabIndex = 42;
             // 
             // bPanel
@@ -653,13 +1048,13 @@ namespace D360
             this.bPanel.Controls.Add(bHoldBinding, 0, 2);
             this.bPanel.Controls.Add(bPressBinding, 0, 1);
             this.bPanel.Controls.Add(bLabel, 0, 0);
-            this.bPanel.Location = new System.Drawing.Point(1041, 428);
+            this.bPanel.Location = new System.Drawing.Point(1043, 419);
             this.bPanel.Name = "bPanel";
             this.bPanel.RowCount = 3;
-            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.bPanel.Size = new System.Drawing.Size(175, 66);
+            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bPanel.Size = new System.Drawing.Size(175, 72);
             this.bPanel.TabIndex = 43;
             // 
             // aPanel
@@ -669,13 +1064,13 @@ namespace D360
             this.aPanel.Controls.Add(aHoldBinding, 0, 2);
             this.aPanel.Controls.Add(aPressBinding, 0, 1);
             this.aPanel.Controls.Add(aLabel, 0, 0);
-            this.aPanel.Location = new System.Drawing.Point(1020, 511);
+            this.aPanel.Location = new System.Drawing.Point(1022, 499);
             this.aPanel.Name = "aPanel";
             this.aPanel.RowCount = 3;
-            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.aPanel.Size = new System.Drawing.Size(175, 66);
+            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.aPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.aPanel.Size = new System.Drawing.Size(175, 72);
             this.aPanel.TabIndex = 44;
             // 
             // dPadDownPanel
@@ -685,13 +1080,13 @@ namespace D360
             this.dPadDownPanel.Controls.Add(dPadDownHoldBinding, 0, 2);
             this.dPadDownPanel.Controls.Add(dPadDownPressBinding, 0, 1);
             this.dPadDownPanel.Controls.Add(dPadDownLabel, 0, 0);
-            this.dPadDownPanel.Location = new System.Drawing.Point(264, 688);
+            this.dPadDownPanel.Location = new System.Drawing.Point(272, 682);
             this.dPadDownPanel.Name = "dPadDownPanel";
             this.dPadDownPanel.RowCount = 3;
-            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.dPadDownPanel.Size = new System.Drawing.Size(175, 66);
+            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadDownPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadDownPanel.Size = new System.Drawing.Size(175, 72);
             this.dPadDownPanel.TabIndex = 45;
             // 
             // dPadRightPanel
@@ -701,13 +1096,13 @@ namespace D360
             this.dPadRightPanel.Controls.Add(dPadRightHoldBinding, 0, 2);
             this.dPadRightPanel.Controls.Add(dPadRightPressBinding, 0, 1);
             this.dPadRightPanel.Controls.Add(dPadRightLabel, 0, 0);
-            this.dPadRightPanel.Location = new System.Drawing.Point(587, 688);
+            this.dPadRightPanel.Location = new System.Drawing.Point(590, 680);
             this.dPadRightPanel.Name = "dPadRightPanel";
             this.dPadRightPanel.RowCount = 3;
-            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.dPadRightPanel.Size = new System.Drawing.Size(175, 66);
+            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadRightPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadRightPanel.Size = new System.Drawing.Size(175, 72);
             this.dPadRightPanel.TabIndex = 46;
             // 
             // rightStickPanel
@@ -717,13 +1112,13 @@ namespace D360
             this.rightStickPanel.Controls.Add(rightStickHoldBinding, 0, 2);
             this.rightStickPanel.Controls.Add(rightStickPressBinding, 0, 1);
             this.rightStickPanel.Controls.Add(rightStickLabel, 0, 0);
-            this.rightStickPanel.Location = new System.Drawing.Point(819, 690);
+            this.rightStickPanel.Location = new System.Drawing.Point(822, 682);
             this.rightStickPanel.Name = "rightStickPanel";
             this.rightStickPanel.RowCount = 3;
-            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.rightStickPanel.Size = new System.Drawing.Size(175, 66);
+            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightStickPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.rightStickPanel.Size = new System.Drawing.Size(175, 72);
             this.rightStickPanel.TabIndex = 47;
             // 
             // dPadUpPanel
@@ -733,13 +1128,13 @@ namespace D360
             this.dPadUpPanel.Controls.Add(dPadUpHoldBinding, 0, 2);
             this.dPadUpPanel.Controls.Add(dPadUpPressBinding, 0, 1);
             this.dPadUpPanel.Controls.Add(dPadUpLabel, 0, 0);
-            this.dPadUpPanel.Location = new System.Drawing.Point(23, 450);
+            this.dPadUpPanel.Location = new System.Drawing.Point(25, 441);
             this.dPadUpPanel.Name = "dPadUpPanel";
             this.dPadUpPanel.RowCount = 3;
-            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.dPadUpPanel.Size = new System.Drawing.Size(175, 66);
+            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadUpPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadUpPanel.Size = new System.Drawing.Size(175, 72);
             this.dPadUpPanel.TabIndex = 48;
             // 
             // dPadLeftPanel
@@ -749,13 +1144,13 @@ namespace D360
             this.dPadLeftPanel.Controls.Add(dPadLeftHoldBinding, 0, 2);
             this.dPadLeftPanel.Controls.Add(dPadLeftPressBinding, 0, 1);
             this.dPadLeftPanel.Controls.Add(dPadLeftLabel, 0, 0);
-            this.dPadLeftPanel.Location = new System.Drawing.Point(26, 536);
+            this.dPadLeftPanel.Location = new System.Drawing.Point(28, 527);
             this.dPadLeftPanel.Name = "dPadLeftPanel";
             this.dPadLeftPanel.RowCount = 3;
-            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.dPadLeftPanel.Size = new System.Drawing.Size(175, 66);
+            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadLeftPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.dPadLeftPanel.Size = new System.Drawing.Size(175, 72);
             this.dPadLeftPanel.TabIndex = 49;
             // 
             // bigButtonPanel
@@ -768,407 +1163,11 @@ namespace D360
             this.bigButtonPanel.Location = new System.Drawing.Point(543, 12);
             this.bigButtonPanel.Name = "bigButtonPanel";
             this.bigButtonPanel.RowCount = 3;
-            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.22222F));
-            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 57.77778F));
-            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.bigButtonPanel.Size = new System.Drawing.Size(175, 66);
+            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bigButtonPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.bigButtonPanel.Size = new System.Drawing.Size(175, 72);
             this.bigButtonPanel.TabIndex = 50;
-            // 
-            // bigButtonHoldBinding
-            // 
-            bigButtonHoldBinding.AllowDrop = true;
-            bigButtonHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            bigButtonHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            bigButtonHoldBinding.Location = new System.Drawing.Point(3, 48);
-            bigButtonHoldBinding.Name = "bigButtonHoldBinding";
-            bigButtonHoldBinding.Size = new System.Drawing.Size(169, 20);
-            bigButtonHoldBinding.TabIndex = 33;
-            bigButtonHoldBinding.Text = "Default Text Box";
-            // 
-            // bigButtonPressBinding
-            // 
-            bigButtonPressBinding.AllowDrop = true;
-            bigButtonPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            bigButtonPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            bigButtonPressBinding.Location = new System.Drawing.Point(3, 22);
-            bigButtonPressBinding.Name = "bigButtonPressBinding";
-            bigButtonPressBinding.Size = new System.Drawing.Size(169, 20);
-            bigButtonPressBinding.TabIndex = 29;
-            bigButtonPressBinding.Text = "Default Text Box";
-            // 
-            // dPadLeftHoldBinding
-            // 
-            dPadLeftHoldBinding.AllowDrop = true;
-            dPadLeftHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadLeftHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadLeftHoldBinding.Location = new System.Drawing.Point(3, 48);
-            dPadLeftHoldBinding.Name = "dPadLeftHoldBinding";
-            dPadLeftHoldBinding.Size = new System.Drawing.Size(169, 20);
-            dPadLeftHoldBinding.TabIndex = 33;
-            dPadLeftHoldBinding.Text = "Default Text Box";
-            // 
-            // dPadLeftPressBinding
-            // 
-            dPadLeftPressBinding.AllowDrop = true;
-            dPadLeftPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadLeftPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadLeftPressBinding.Location = new System.Drawing.Point(3, 22);
-            dPadLeftPressBinding.Name = "dPadLeftPressBinding";
-            dPadLeftPressBinding.Size = new System.Drawing.Size(169, 20);
-            dPadLeftPressBinding.TabIndex = 29;
-            dPadLeftPressBinding.Text = "Default Text Box";
-            // 
-            // dPadUpHoldBinding
-            // 
-            dPadUpHoldBinding.AllowDrop = true;
-            dPadUpHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadUpHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadUpHoldBinding.Location = new System.Drawing.Point(3, 48);
-            dPadUpHoldBinding.Name = "dPadUpHoldBinding";
-            dPadUpHoldBinding.Size = new System.Drawing.Size(169, 20);
-            dPadUpHoldBinding.TabIndex = 33;
-            dPadUpHoldBinding.Text = "Default Text Box";
-            // 
-            // dPadUpPressBinding
-            // 
-            dPadUpPressBinding.AllowDrop = true;
-            dPadUpPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadUpPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadUpPressBinding.Location = new System.Drawing.Point(3, 22);
-            dPadUpPressBinding.Name = "dPadUpPressBinding";
-            dPadUpPressBinding.Size = new System.Drawing.Size(169, 20);
-            dPadUpPressBinding.TabIndex = 29;
-            dPadUpPressBinding.Text = "Default Text Box";
-            // 
-            // rightStickHoldBinding
-            // 
-            rightStickHoldBinding.AllowDrop = true;
-            rightStickHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            rightStickHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightStickHoldBinding.Location = new System.Drawing.Point(3, 48);
-            rightStickHoldBinding.Name = "rightStickHoldBinding";
-            rightStickHoldBinding.Size = new System.Drawing.Size(169, 20);
-            rightStickHoldBinding.TabIndex = 33;
-            rightStickHoldBinding.Text = "Default Text Box";
-            // 
-            // rightStickPressBinding
-            // 
-            rightStickPressBinding.AllowDrop = true;
-            rightStickPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            rightStickPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightStickPressBinding.Location = new System.Drawing.Point(3, 22);
-            rightStickPressBinding.Name = "rightStickPressBinding";
-            rightStickPressBinding.Size = new System.Drawing.Size(169, 20);
-            rightStickPressBinding.TabIndex = 29;
-            rightStickPressBinding.Text = "Default Text Box";
-            // 
-            // dPadRightHoldBinding
-            // 
-            dPadRightHoldBinding.AllowDrop = true;
-            dPadRightHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadRightHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadRightHoldBinding.Location = new System.Drawing.Point(3, 48);
-            dPadRightHoldBinding.Name = "dPadRightHoldBinding";
-            dPadRightHoldBinding.Size = new System.Drawing.Size(169, 20);
-            dPadRightHoldBinding.TabIndex = 33;
-            dPadRightHoldBinding.Text = "Default Text Box";
-            // 
-            // dPadRightPressBinding
-            // 
-            dPadRightPressBinding.AllowDrop = true;
-            dPadRightPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadRightPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadRightPressBinding.Location = new System.Drawing.Point(3, 22);
-            dPadRightPressBinding.Name = "dPadRightPressBinding";
-            dPadRightPressBinding.Size = new System.Drawing.Size(169, 20);
-            dPadRightPressBinding.TabIndex = 29;
-            dPadRightPressBinding.Text = "Default Text Box";
-            // 
-            // dPadDownHoldBinding
-            // 
-            dPadDownHoldBinding.AllowDrop = true;
-            dPadDownHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadDownHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadDownHoldBinding.Location = new System.Drawing.Point(3, 48);
-            dPadDownHoldBinding.Name = "dPadDownHoldBinding";
-            dPadDownHoldBinding.Size = new System.Drawing.Size(169, 20);
-            dPadDownHoldBinding.TabIndex = 33;
-            dPadDownHoldBinding.Text = "Default Text Box";
-            // 
-            // dPadDownPressBinding
-            // 
-            dPadDownPressBinding.AllowDrop = true;
-            dPadDownPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            dPadDownPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            dPadDownPressBinding.Location = new System.Drawing.Point(3, 22);
-            dPadDownPressBinding.Name = "dPadDownPressBinding";
-            dPadDownPressBinding.Size = new System.Drawing.Size(169, 20);
-            dPadDownPressBinding.TabIndex = 29;
-            dPadDownPressBinding.Text = "Default Text Box";
-            // 
-            // aHoldBinding
-            // 
-            aHoldBinding.AllowDrop = true;
-            aHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            aHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            aHoldBinding.Location = new System.Drawing.Point(3, 48);
-            aHoldBinding.Name = "aHoldBinding";
-            aHoldBinding.Size = new System.Drawing.Size(169, 20);
-            aHoldBinding.TabIndex = 33;
-            aHoldBinding.Text = "Default Text Box";
-            // 
-            // aPressBinding
-            // 
-            aPressBinding.AllowDrop = true;
-            aPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            aPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            aPressBinding.Location = new System.Drawing.Point(3, 22);
-            aPressBinding.Name = "aPressBinding";
-            aPressBinding.Size = new System.Drawing.Size(169, 20);
-            aPressBinding.TabIndex = 29;
-            aPressBinding.Text = "Default Text Box";
-            // 
-            // bHoldBinding
-            // 
-            bHoldBinding.AllowDrop = true;
-            bHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            bHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            bHoldBinding.Location = new System.Drawing.Point(3, 48);
-            bHoldBinding.Name = "bHoldBinding";
-            bHoldBinding.Size = new System.Drawing.Size(169, 20);
-            bHoldBinding.TabIndex = 33;
-            bHoldBinding.Text = "Default Text Box";
-            // 
-            // bPressBinding
-            // 
-            bPressBinding.AllowDrop = true;
-            bPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            bPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            bPressBinding.Location = new System.Drawing.Point(3, 22);
-            bPressBinding.Name = "bPressBinding";
-            bPressBinding.Size = new System.Drawing.Size(169, 20);
-            bPressBinding.TabIndex = 29;
-            bPressBinding.Text = "Default Text Box";
-            // 
-            // yHoldBinding
-            // 
-            yHoldBinding.AllowDrop = true;
-            yHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            yHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            yHoldBinding.Location = new System.Drawing.Point(3, 48);
-            yHoldBinding.Name = "yHoldBinding";
-            yHoldBinding.Size = new System.Drawing.Size(169, 20);
-            yHoldBinding.TabIndex = 33;
-            yHoldBinding.Text = "Default Text Box";
-            // 
-            // yPressBinding
-            // 
-            yPressBinding.AllowDrop = true;
-            yPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            yPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            yPressBinding.Location = new System.Drawing.Point(3, 22);
-            yPressBinding.Name = "yPressBinding";
-            yPressBinding.Size = new System.Drawing.Size(169, 20);
-            yPressBinding.TabIndex = 29;
-            yPressBinding.Text = "Default Text Box";
-            // 
-            // xHoldBinding
-            // 
-            xHoldBinding.AllowDrop = true;
-            xHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            xHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            xHoldBinding.Location = new System.Drawing.Point(3, 48);
-            xHoldBinding.Name = "xHoldBinding";
-            xHoldBinding.Size = new System.Drawing.Size(169, 20);
-            xHoldBinding.TabIndex = 33;
-            xHoldBinding.Text = "Default Text Box";
-            // 
-            // xPressBinding
-            // 
-            xPressBinding.AllowDrop = true;
-            xPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            xPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            xPressBinding.Location = new System.Drawing.Point(3, 22);
-            xPressBinding.Name = "xPressBinding";
-            xPressBinding.Size = new System.Drawing.Size(169, 20);
-            xPressBinding.TabIndex = 29;
-            xPressBinding.Text = "Default Text Box";
-            // 
-            // leftStickHoldBinding
-            // 
-            leftStickHoldBinding.AllowDrop = true;
-            leftStickHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            leftStickHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftStickHoldBinding.Location = new System.Drawing.Point(3, 48);
-            leftStickHoldBinding.Name = "leftStickHoldBinding";
-            leftStickHoldBinding.Size = new System.Drawing.Size(169, 20);
-            leftStickHoldBinding.TabIndex = 33;
-            leftStickHoldBinding.Text = "Default Text Box";
-            // 
-            // leftStickPressBinding
-            // 
-            leftStickPressBinding.AllowDrop = true;
-            leftStickPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            leftStickPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftStickPressBinding.Location = new System.Drawing.Point(3, 22);
-            leftStickPressBinding.Name = "leftStickPressBinding";
-            leftStickPressBinding.Size = new System.Drawing.Size(169, 20);
-            leftStickPressBinding.TabIndex = 29;
-            leftStickPressBinding.Text = "Default Text Box";
-            // 
-            // rightShoulderHoldBinding
-            // 
-            rightShoulderHoldBinding.AllowDrop = true;
-            rightShoulderHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            rightShoulderHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightShoulderHoldBinding.Location = new System.Drawing.Point(3, 48);
-            rightShoulderHoldBinding.Name = "rightShoulderHoldBinding";
-            rightShoulderHoldBinding.Size = new System.Drawing.Size(169, 20);
-            rightShoulderHoldBinding.TabIndex = 33;
-            rightShoulderHoldBinding.Text = "Default Text Box";
-            // 
-            // rightShoulderPressBinding
-            // 
-            rightShoulderPressBinding.AllowDrop = true;
-            rightShoulderPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            rightShoulderPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightShoulderPressBinding.Location = new System.Drawing.Point(3, 22);
-            rightShoulderPressBinding.Name = "rightShoulderPressBinding";
-            rightShoulderPressBinding.Size = new System.Drawing.Size(169, 20);
-            rightShoulderPressBinding.TabIndex = 29;
-            rightShoulderPressBinding.Text = "Default Text Box";
-            // 
-            // leftBumperHoldBinding
-            // 
-            leftBumperHoldBinding.AllowDrop = true;
-            leftBumperHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            leftBumperHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftBumperHoldBinding.Location = new System.Drawing.Point(3, 48);
-            leftBumperHoldBinding.Name = "leftBumperHoldBinding";
-            leftBumperHoldBinding.Size = new System.Drawing.Size(169, 20);
-            leftBumperHoldBinding.TabIndex = 33;
-            leftBumperHoldBinding.Text = "Default Text Box";
-            // 
-            // leftBumperPressBinding
-            // 
-            leftBumperPressBinding.AllowDrop = true;
-            leftBumperPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            leftBumperPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftBumperPressBinding.Location = new System.Drawing.Point(3, 22);
-            leftBumperPressBinding.Name = "leftBumperPressBinding";
-            leftBumperPressBinding.Size = new System.Drawing.Size(169, 20);
-            leftBumperPressBinding.TabIndex = 29;
-            leftBumperPressBinding.Text = "Default Text Box";
-            // 
-            // leftTriggerHoldBinding
-            // 
-            leftTriggerHoldBinding.AllowDrop = true;
-            leftTriggerHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            leftTriggerHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftTriggerHoldBinding.Location = new System.Drawing.Point(3, 48);
-            leftTriggerHoldBinding.Name = "leftTriggerHoldBinding";
-            leftTriggerHoldBinding.Size = new System.Drawing.Size(169, 20);
-            leftTriggerHoldBinding.TabIndex = 33;
-            leftTriggerHoldBinding.Text = "Default Text Box";
-            // 
-            // leftTriggerPressBinding
-            // 
-            leftTriggerPressBinding.AllowDrop = true;
-            leftTriggerPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            leftTriggerPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftTriggerPressBinding.Location = new System.Drawing.Point(3, 22);
-            leftTriggerPressBinding.Name = "leftTriggerPressBinding";
-            leftTriggerPressBinding.Size = new System.Drawing.Size(169, 20);
-            leftTriggerPressBinding.TabIndex = 29;
-            leftTriggerPressBinding.Text = "Default Text Box";
-            // 
-            // rightTriggerHoldBinding
-            // 
-            rightTriggerHoldBinding.AllowDrop = true;
-            rightTriggerHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            rightTriggerHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightTriggerHoldBinding.Location = new System.Drawing.Point(3, 48);
-            rightTriggerHoldBinding.Name = "rightTriggerHoldBinding";
-            rightTriggerHoldBinding.Size = new System.Drawing.Size(169, 20);
-            rightTriggerHoldBinding.TabIndex = 33;
-            rightTriggerHoldBinding.Text = "Default Text Box";
-            // 
-            // rightTriggerPressBinding
-            // 
-            rightTriggerPressBinding.AllowDrop = true;
-            rightTriggerPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            rightTriggerPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightTriggerPressBinding.Location = new System.Drawing.Point(3, 22);
-            rightTriggerPressBinding.Name = "rightTriggerPressBinding";
-            rightTriggerPressBinding.Size = new System.Drawing.Size(169, 20);
-            rightTriggerPressBinding.TabIndex = 29;
-            rightTriggerPressBinding.Text = "Default Text Box";
-            // 
-            // startHoldBinding
-            // 
-            startHoldBinding.AllowDrop = true;
-            startHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            startHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            startHoldBinding.Location = new System.Drawing.Point(3, 48);
-            startHoldBinding.Name = "startHoldBinding";
-            startHoldBinding.Size = new System.Drawing.Size(169, 20);
-            startHoldBinding.TabIndex = 33;
-            startHoldBinding.Text = "Default Text Box";
-            // 
-            // startPressBinding
-            // 
-            startPressBinding.AllowDrop = true;
-            startPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            startPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            startPressBinding.Location = new System.Drawing.Point(3, 22);
-            startPressBinding.Name = "startPressBinding";
-            startPressBinding.Size = new System.Drawing.Size(169, 20);
-            startPressBinding.TabIndex = 29;
-            startPressBinding.Text = "Default Text Box";
-            // 
-            // backHoldBinding
-            // 
-            backHoldBinding.AllowDrop = true;
-            backHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            backHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            backHoldBinding.Location = new System.Drawing.Point(3, 48);
-            backHoldBinding.Name = "backHoldBinding";
-            backHoldBinding.Size = new System.Drawing.Size(169, 20);
-            backHoldBinding.TabIndex = 33;
-            backHoldBinding.Text = "Default Text Box";
-            // 
-            // backPressBinding
-            // 
-            backPressBinding.AllowDrop = true;
-            backPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            backPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            backPressBinding.Location = new System.Drawing.Point(3, 22);
-            backPressBinding.Name = "backPressBinding";
-            backPressBinding.Size = new System.Drawing.Size(169, 20);
-            backPressBinding.TabIndex = 29;
-            backPressBinding.Text = "Default Text Box";
-            // 
-            // defaultHoldBinding
-            // 
-            defaultHoldBinding.AllowDrop = true;
-            defaultHoldBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            defaultHoldBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            defaultHoldBinding.Location = new System.Drawing.Point(3, 48);
-            defaultHoldBinding.Name = "defaultHoldBinding";
-            defaultHoldBinding.Size = new System.Drawing.Size(169, 20);
-            defaultHoldBinding.TabIndex = 33;
-            defaultHoldBinding.Text = "Default Text Box";
-            // 
-            // defaultPressBinding
-            // 
-            defaultPressBinding.AllowDrop = true;
-            defaultPressBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            defaultPressBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            defaultPressBinding.Location = new System.Drawing.Point(3, 22);
-            defaultPressBinding.Name = "defaultPressBinding";
-            defaultPressBinding.Size = new System.Drawing.Size(169, 20);
-            defaultPressBinding.TabIndex = 29;
-            defaultPressBinding.Text = "Default Text Box";
             // 
             // ConfigForm
             // 
@@ -1187,7 +1186,7 @@ namespace D360
             this.Controls.Add(this.xPanel);
             this.Controls.Add(this.leftStickPanel);
             this.Controls.Add(this.rightShoulderPanel);
-            this.Controls.Add(this.tableLayoutPanel6);
+            this.Controls.Add(this.leftBumperPanel);
             this.Controls.Add(this.leftTriggerPanel);
             this.Controls.Add(this.rightTriggerPanel);
             this.Controls.Add(this.startPanel);
@@ -1218,8 +1217,8 @@ namespace D360
             this.rightTriggerPanel.PerformLayout();
             this.leftTriggerPanel.ResumeLayout(false);
             this.leftTriggerPanel.PerformLayout();
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
+            this.leftBumperPanel.ResumeLayout(false);
+            this.leftBumperPanel.PerformLayout();
             this.rightShoulderPanel.ResumeLayout(false);
             this.rightShoulderPanel.PerformLayout();
             this.leftStickPanel.ResumeLayout(false);
@@ -1259,7 +1258,7 @@ namespace D360
         private TableLayoutPanel startPanel;
         private TableLayoutPanel rightTriggerPanel;
         private TableLayoutPanel leftTriggerPanel;
-        private TableLayoutPanel tableLayoutPanel6;
+        private TableLayoutPanel leftBumperPanel;
         private TableLayoutPanel rightShoulderPanel;
         private TableLayoutPanel leftStickPanel;
         private TableLayoutPanel xPanel;
