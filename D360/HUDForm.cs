@@ -35,6 +35,7 @@ namespace D360
 
         private readonly HUD m_HUD;
         private readonly InputProcessor m_InputProcessor;
+        private InputManager m_InputManager;
 
         private readonly ActionBindingsForm m_ActionBindingsForm;
         private readonly ConfigForm m_ConfigForm;
@@ -74,6 +75,7 @@ namespace D360
                 m_HUDDisabled = true;
 
             m_InputProcessor = new InputProcessor(GamePad.GetState(0));
+            m_InputManager = new InputManager();
 
             m_HUD = new HUD(Handle)
             {
@@ -281,7 +283,8 @@ namespace D360
 
         public void LogicUpdate()
         {
-            m_InputProcessor.Update(GamePad.GetState(0, GamePadDeadZone.Circular));
+            //m_InputProcessor.Update(GamePad.GetState(0, GamePadDeadZone.Circular));
+            m_InputManager.Update();
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -319,15 +322,15 @@ namespace D360
             {
                 switch (m.WParam.ToInt32())
                 {
-                    case CONFIG_HOTKEY:
-                        m_ConfigForm.Visible = !m_ConfigForm.Visible;
-                        break;
-                    case ACTIONS_HOTKEY:
-                        m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
-                        break;
-                    case EXIT_HOTKEY:
-                        Close();
-                        break;
+                case CONFIG_HOTKEY:
+                    m_ConfigForm.Visible = !m_ConfigForm.Visible;
+                    break;
+                case ACTIONS_HOTKEY:
+                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
+                    break;
+                case EXIT_HOTKEY:
+                    Close();
+                    break;
                 }
             }
             base.WndProc(ref m);
