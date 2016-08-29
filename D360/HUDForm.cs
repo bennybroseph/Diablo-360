@@ -196,6 +196,7 @@ namespace D360
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            Time.Update();
 #if !DEBUG
             var foregroundWindowString = WindowFunctions.GetActiveWindowTitle();
 

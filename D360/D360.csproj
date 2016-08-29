@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SystemUtility\InputManager.cs" />
+    <Compile Include="SystemUtility\Time.cs" />
     <Compile Include="Types\Action.cs" />
     <Compile Include="Bindings\ControllerStickBinding.cs" />
     <Compile Include="Bindings\ControllerTriggerBinding.cs" />
