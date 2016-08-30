@@ -8,11 +8,9 @@ using D360.InputEmulation;
 using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
-using Action = D360.Types.Action;
 using FormsKeys = System.Windows.Forms.Keys;
 
-namespace D360.SystemUtility
+namespace D360.Utility
 {
     public class InputProcessor
     {

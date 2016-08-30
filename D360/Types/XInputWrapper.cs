@@ -1,5 +1,5 @@
 ﻿using System;
-using D360.SystemUtility;
+using D360.Utility;
 
 namespace D360.Types
 {
@@ -41,45 +41,37 @@ namespace D360.Types
         Up = 1 << 3,
     }
 
-    public static partial class GamePadButtonsExtensions
+    public static class GamePadUtility
     {
-        public static string ParseButtonName(this string str)
+        private static string ParseButtonName(string str)
         {
             if (string.IsNullOrEmpty(str))
                 return str;
 
-            return str.ToPascal().Replace("Panel", "").Replace("Label", "");
+            return
+                str.ToPascal().
+                    Replace("Panel", "").
+                    Replace("Label", "").
+                    Replace("EditButton", "");
         }
-        public static string ParseButtonDisplayName(this string str)
-        {
-            for (var i = 0; i < str.Length; ++i)
-            {
-                if (!char.IsUpper(str[i]))
-                    continue;
 
-                str = str.Substring(0, i) + " " + str.Substring(i);
-                ++i;
-            }
-
-            return str.ToPascal().Replace("Panel", "").Replace("Label", "");
-        }
-        public static GamePadButton ParseButton(this string str)
+        public static TButton ParseButton<TButton>(string str)
         {
-            var returnValue = GamePadButton.None;
+            object returnValue = 0;
 
             if (string.IsNullOrEmpty(str))
-                return returnValue;
+                return (TButton)returnValue;
 
             try
             {
-                returnValue = (GamePadButton)Enum.Parse(typeof(GamePadButton), str.ParseButtonName(), true);
+                return (TButton)Enum.Parse(typeof(TButton), ParseButtonName(str), true);
             }
             catch (Exception e)
             {
                 HUDForm.WriteToLog(e);
             }
 
-            return returnValue;
+            return (TButton)returnValue;
         }
     }
 }

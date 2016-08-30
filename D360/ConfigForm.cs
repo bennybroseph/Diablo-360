@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
-using D360.SystemUtility;
-using D360.Types;
+using D360.Utility;
 using Microsoft.Xna.Framework.Input;
-using Action = D360.Types.Action;
+
 using Keys = System.Windows.Forms.Keys;
 
 namespace D360
@@ -22,6 +19,7 @@ namespace D360
             public TextBox textBox;
         }
 
+        private ButtonConfig m_ButtonConfig;
         public InputProcessor inputProcessor;
 
         private bool m_EditingConfig;
@@ -33,14 +31,7 @@ namespace D360
         {
             InitializeComponent();
 
-            LeftTriggerComboBox.Items.Clear();
-            RightTriggerComboBox.Items.Clear();
-
-            foreach (Action name in Enum.GetValues(typeof(Action)))
-            {
-                LeftTriggerComboBox.Items.Add(name.ParseDisplayName());
-                RightTriggerComboBox.Items.Add(name.ParseDisplayName());
-            }
+            defaultPanel.Hide();
         }
 
         private void saveAndCloseButton_Click(object sender, EventArgs e)
@@ -53,7 +44,7 @@ namespace D360
 
             m_EditingConfig = false;
 
-            SaveConfig(inputProcessor.config);
+            BinarySerializer.SaveObject(inputProcessor.config, "Config.dat");
 
             inputProcessor.loadChanges();
 
@@ -158,78 +149,28 @@ namespace D360
             m_EditingConfig = false;
         }
 
-        private Configuration copyConfig(Configuration config)
-        {
-            var resultConfig = new Configuration
-            {
-                leftTriggerBinding = config.leftTriggerBinding,
-                rightTriggerBinding = config.rightTriggerBinding
-            };
-
-            return resultConfig;
-        }
-
-        private void SaveConfig(Configuration configuration)
-        {
-            var configurationFileStream = new FileStream(Application.StartupPath + @"\Config.dat", FileMode.Create);
-            var bindingBinaryFormatter = new BinaryFormatter();
-            bindingBinaryFormatter.Serialize(configurationFileStream, configuration);
-            configurationFileStream.Close();
-        }
-
-        private void LeftTriggerComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (LeftTriggerComboBox.SelectedItem != null)
-            //{
-            //    m_EditingConfig = true;
-
-            //    if (m_TempConfig == null)
-            //    {
-            //        m_TempConfig = copyConfig(inputProcessor.config);
-            //    }
-
-            //    m_TempConfig.leftTriggerBinding = (LeftTriggerComboBox.SelectedItem as string).ParseAction();
-            //}
-        }
-
-        private void RightTriggerComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (RightTriggerComboBox.SelectedItem != null)
-            //{
-            //    m_EditingConfig = true;
-
-            //    if (m_TempConfig == null)
-            //    {
-            //        m_TempConfig = copyConfig(inputProcessor.config);
-            //    }
-
-            //    m_TempConfig.rightTriggerBinding = (RightTriggerComboBox.SelectedItem as string).ParseAction();
-            //}
-        }
-
         private void ConfigForm_VisibleChanged(object sender, EventArgs e)
         {
-            if (Visible)
-            {
-                LeftTriggerComboBox.SelectedIndex =
-                    LeftTriggerComboBox.Items.IndexOf(inputProcessor.config.leftTriggerBinding.ParseDisplayName());
-                RightTriggerComboBox.SelectedIndex =
-                    RightTriggerComboBox.Items.IndexOf(inputProcessor.config.rightTriggerBinding.ParseDisplayName());
+            if (!Visible)
+                return;
 
-                foreach (var table in Controls.OfType<TableLayoutPanel>())
-                {
-                    foreach (Control control in table.Controls)
-                    {
-                        if (control.GetType() == typeof(Label))
-                            control.Text = control.Name.ParseButtonsDisplayName();
-                        else
-                        {
-                            control.Text = inputProcessor.config.gamepadBindings[table.Name.ParseButtons()].ToString();
-                            control.MouseDoubleClick += OnTextBoxMouseDoubleClick;
-                            control.KeyUp += OnKeyUp;
-                        }
-                    }
-                }
+            foreach (var table in Controls.OfType<TableLayoutPanel>())
+            {
+                //foreach (Control control in table.Controls)
+                //{
+                //    if (control.GetType() == typeof(Label))
+                //        control.Text = control.Name.ParseButtonsDisplayName();
+                //    else
+                //    {
+                //        if (inputProcessor.config.gamepadBindings.ContainsKey(table.Name.ParseButtons()))
+                //        {
+                //            control.Text =
+                //                inputProcessor.config.gamepadBindings[table.Name.ParseButtons()].ToString();
+                //            control.MouseDoubleClick += OnTextBoxMouseDoubleClick;
+                //            control.KeyUp += OnKeyUp;
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -237,13 +178,29 @@ namespace D360
         {
             e.Cancel = true;
             CancelEditing();
+            m_ButtonConfig.Hide();
             Hide();
         }
 
         private void OnShown(object sender, EventArgs e)
         {
             m_TempConfig.gamepadBindings = new Dictionary<Buttons, Keys>(inputProcessor.config.gamepadBindings);
+
+            m_ButtonConfig = new ButtonConfig { parentForm = this };
+            m_ButtonConfig.Show();
+
             Refresh();
+        }
+
+        private void OnMove(object sender, EventArgs e)
+        {
+            m_ButtonConfig?.OnParentMove();
+        }
+
+        private void OnResize(object sender, EventArgs e)
+        {
+            if (m_ButtonConfig != null)
+                m_ButtonConfig.WindowState = WindowState;
         }
     }
 }

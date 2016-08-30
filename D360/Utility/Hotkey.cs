@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace D360.SystemUtility
+namespace D360.Utility
 {
     public class Hotkey : IMessageFilter
     {

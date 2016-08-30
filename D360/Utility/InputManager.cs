@@ -6,7 +6,7 @@ using XInputDotNetPure;
 
 using ButtonState = XInputDotNetPure.ButtonState;
 
-namespace D360.SystemUtility
+namespace D360.Utility
 {
     public class InputManager
     {
@@ -29,9 +29,14 @@ namespace D360.SystemUtility
             public GamePadState state;
             public GamePadState prevState;
 
-            public readonly Dictionary<GamePadButton, GamePadButtonState> buttonStates =
+            public Dictionary<GamePadButton, GamePadButtonState> buttonStates =
                 new Dictionary<GamePadButton, GamePadButtonState>();
-            public readonly Dictionary<GamePadDPadButton, GamePadButtonState> dPadButtonStates =
+            public Dictionary<GamePadButton, GamePadButtonState> prevButtonStates =
+                new Dictionary<GamePadButton, GamePadButtonState>();
+
+            public Dictionary<GamePadDPadButton, GamePadButtonState> dPadButtonStates =
+                new Dictionary<GamePadDPadButton, GamePadButtonState>();
+            public Dictionary<GamePadDPadButton, GamePadButtonState> prevDPadButtonStates =
                 new Dictionary<GamePadDPadButton, GamePadButtonState>();
         }
 
@@ -85,8 +90,13 @@ namespace D360.SystemUtility
         private static void ParseInput(PlayerGamePad playerGamePad)
         {
             SetButtonState(playerGamePad, "Buttons", playerGamePad.buttonStates);
-
+            
             SetButtonState(playerGamePad, "DPad", playerGamePad.dPadButtonStates);
+
+            playerGamePad.prevButtonStates = 
+                new Dictionary<GamePadButton, GamePadButtonState>(playerGamePad.buttonStates);
+            playerGamePad.prevDPadButtonStates = 
+                new Dictionary<GamePadDPadButton, GamePadButtonState>(playerGamePad.dPadButtonStates);
         }
 
         private static void SetButtonState<TButton>(
@@ -116,7 +126,8 @@ namespace D360.SystemUtility
                 var parsedPrevButtonState = (ButtonState)buttonProperty.GetMethod.Invoke(prevState, null);
 
                 var buttonState = buttonStates[button];
-                ParseButtonState(playerGamePad, buttonState, parsedButtonState, parsedPrevButtonState);
+                ParseButtonState(buttonState, parsedButtonState, parsedPrevButtonState);
+                DoActions(buttonState, playerGamePad.playerIndex);
 
                 if (buttonState.gamePadButtonState != GamePadButtonStates.Releasing)
                     Console.WriteLine(button + @":" + buttonState.gamePadButtonState + @", " + buttonState.timeHeld);
@@ -124,7 +135,6 @@ namespace D360.SystemUtility
         }
 
         private static void ParseButtonState(
-            PlayerGamePad playerGamePad,
             GamePadButtonState buttonState,
             ButtonState parsedButtonState,
             ButtonState parsedPrevButtonState)
@@ -137,26 +147,9 @@ namespace D360.SystemUtility
                     {
                     case ButtonState.Pressed:
                         {
-                            buttonState.gamePadButtonState = GamePadButtonStates.Held;
                             buttonState.timeHeld += Time.deltaTime;
-                            if (!buttonState.timerRan && buttonState.timeHeld >= HOLD_TIME)
-                            {
-                                GamePad.SetVibration(playerGamePad.playerIndex, 1f, 1f);
-                                var newTimer = new Timer
-                                {
-                                    Interval = VIBRATION_TIME
-                                };
-
-                                newTimer.Elapsed +=
-                                    (sender, args) =>
-                                    {
-                                        GamePad.SetVibration(playerGamePad.playerIndex, 0f, 0f);
-                                        newTimer.Stop();
-                                    };
-
-                                newTimer.Start();
-                                buttonState.timerRan = true;
-                            }
+                            if (buttonState.timeHeld >= HOLD_TIME)
+                                buttonState.gamePadButtonState = GamePadButtonStates.Held;
                         }
                         break;
                     case ButtonState.Released:
@@ -188,7 +181,45 @@ namespace D360.SystemUtility
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(parsedButtonState), parsedButtonState, null);
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private static void DoActions(GamePadButtonState buttonState, PlayerIndex playerIndex)
+        {
+            switch (buttonState.gamePadButtonState)
+            {
+            case GamePadButtonStates.Pressed:
+                break;
+
+            case GamePadButtonStates.Released:
+                break;
+
+            case GamePadButtonStates.Held:
+                {
+                    if (!buttonState.timerRan)
+                    {
+                        GamePad.SetVibration(playerIndex, 1f, 1f);
+                        var newTimer = new Timer
+                        {
+                            Interval = VIBRATION_TIME
+                        };
+
+                        newTimer.Elapsed +=
+                            (sender, args) =>
+                            {
+                                GamePad.SetVibration(playerIndex, 0f, 0f);
+                                newTimer.Stop();
+                            };
+
+                        newTimer.Start();
+                        buttonState.timerRan = true;
+                    }
+                }
+                break;
+
+            case GamePadButtonStates.Releasing:
+                break;
             }
         }
     }

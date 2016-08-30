@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace D360.SystemUtility
+namespace D360.Utility
 {
     public static class Time
     {
@@ -11,7 +11,7 @@ namespace D360.SystemUtility
         private static float s_TimeScale = 1f;
 
         private static float s_LastFpsTime = Environment.TickCount;
-        private static int s_Fps = 1;
+        private static int s_FPS = 1;
         private static int s_Frames;
 
         public static float deltaTime
@@ -26,7 +26,7 @@ namespace D360.SystemUtility
 
         public static int fps
         {
-            get { return s_Fps; }
+            get { return s_FPS; }
         }
 
         public static void Update()
@@ -36,9 +36,10 @@ namespace D360.SystemUtility
 
             if (s_CurrentTime - s_LastFpsTime >= 1000)
             {
-                s_Fps = s_Frames;
+                s_FPS = s_Frames;
                 s_Frames = 0;
                 s_LastFpsTime = s_CurrentTime;
+                Console.WriteLine(s_FPS);
             }
             s_Frames++;
 

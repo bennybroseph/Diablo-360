@@ -1,6 +1,5 @@
-using D360.Bindings;
 using D360.Display;
-using D360.SystemUtility;
+using D360.Utility;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.ComponentModel;
@@ -8,7 +7,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 using Keys = System.Windows.Forms.Keys;
@@ -89,20 +87,20 @@ namespace D360
             m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = m_InputProcessor };
 
             if (File.Exists(@"ActionBindings.dat"))
-                m_InputProcessor.actionBindings = LoadActionBindings();
+                BinarySerializer.LoadObject(ref m_InputProcessor.actionBindings, @"ActionBindings.dat");
             else
             {
-                SaveActionBindings(m_InputProcessor.actionBindings);
+                BinarySerializer.SaveObject(m_InputProcessor.actionBindings, @"ActionBindings.dat");
                 m_ActionBindingsForm.Show();
             }
 
             m_ConfigForm = new ConfigForm { inputProcessor = m_InputProcessor };
 
             if (File.Exists(@"Config.dat"))
-                m_InputProcessor.config = LoadConfig();
+                BinarySerializer.LoadObject(ref m_InputProcessor.config, @"Config.dat");
             else
             {
-                SaveConfig(m_InputProcessor.config);
+                BinarySerializer.SaveObject(m_InputProcessor.config, @"Config.dat");
                 m_ConfigForm.Show();
             }
 
@@ -126,47 +124,6 @@ namespace D360
             RegisterHotKey(Handle, ACTIONS_HOTKEY, 2, (int)Keys.F10);
             RegisterHotKey(Handle, CONFIG_HOTKEY, 2, (int)Keys.F11);
             RegisterHotKey(Handle, EXIT_HOTKEY, 2, (int)Keys.F12);
-        }
-
-        private void SaveActionBindings(ActionBindings bindings)
-        {
-            var bindingsFileStream =
-                new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Create);
-            var bindingsBinaryFormatter = new BinaryFormatter();
-
-            bindingsBinaryFormatter.Serialize(bindingsFileStream, bindings);
-            bindingsFileStream.Close();
-        }
-
-        private ActionBindings LoadActionBindings()
-        {
-            var bindingsFileStream =
-                new FileStream(Application.StartupPath + @"\ActionBindings.dat", FileMode.Open);
-            var bindingsBinaryFormatter = new BinaryFormatter();
-            var result = (ActionBindings)bindingsBinaryFormatter.Deserialize(bindingsFileStream);
-
-            bindingsFileStream.Close();
-            return result;
-        }
-
-
-        private void SaveConfig(Configuration config)
-        {
-            var configFileStream = new FileStream(Application.StartupPath + @"\Config.dat", FileMode.Create);
-            var configBinaryFormatter = new BinaryFormatter();
-
-            configBinaryFormatter.Serialize(configFileStream, config);
-            configFileStream.Close();
-        }
-
-        private Configuration LoadConfig()
-        {
-            var configFileStream = new FileStream(Application.StartupPath + @"\Config.dat", FileMode.Open);
-            var configBinaryFormatter = new BinaryFormatter();
-            var result = (Configuration)configBinaryFormatter.Deserialize(configFileStream);
-
-            configFileStream.Close();
-            return result;
         }
 
         protected override void OnResize(EventArgs e)
@@ -251,12 +208,6 @@ namespace D360
                 MessageBox.Show(@"Exception in Logic update. Written to crash.txt.");
                 Close();
             }
-
-            if (m_ActionBindingsForm.Visible)
-                m_ActionBindingsForm.Refresh();
-
-            if (m_ConfigForm.Visible)
-                m_ConfigForm.Refresh();
         }
 
 

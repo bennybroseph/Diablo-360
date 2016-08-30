@@ -5,7 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 using D360.Bindings;
-using D360.SystemUtility;
+using D360.Utility;
 using D360.Types;
 
 using Action = D360.Types.Action;
@@ -205,7 +205,7 @@ namespace D360
         }
     }
 
-    class CustomTextBox : TextBox
+    public class CustomTextBox : TextBox
     {
         protected override bool IsInputKey(Keys keyData)
         {

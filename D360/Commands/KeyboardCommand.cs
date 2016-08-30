@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 using D360.InputEmulation;
-using D360.SystemUtility;
+using D360.Utility;
 
 using ButtonState = D360.Types.ButtonState;
 

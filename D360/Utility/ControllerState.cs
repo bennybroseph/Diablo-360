@@ -1,6 +1,6 @@
 ﻿using D360.Types;
 
-namespace D360.SystemUtility
+namespace D360.Utility
 {
     public class ControllerState
     {

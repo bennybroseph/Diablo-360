@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using D360.SystemUtility;
+using D360.Utility;
 using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
