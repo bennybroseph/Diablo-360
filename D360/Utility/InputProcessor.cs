@@ -62,12 +62,12 @@ namespace D360.Utility
 
         private void CreateDefaultBindings()
         {
-            foreach (Buttons buttons in Enum.GetValues(typeof(Buttons)))
-            {
-                if (config.gamepadBindings.ContainsKey(buttons))
-                    AddButtonKeyBinding(
-                        buttons, config.gamepadBindings[buttons], InputMode.Move, CommandTarget.TargetReticule);
-            }
+            //foreach (Buttons buttons in Enum.GetValues(typeof(Buttons)))
+            //{
+            //    if (config.gamepadBindings.ContainsKey(buttons))
+            //        AddButtonKeyBinding(
+            //            buttons, config.gamepadBindings[buttons], InputMode.Move, CommandTarget.TargetReticule);
+            //}
 
             //// Primary Skill Key
             //AddButtonKeyBinding(Buttons.LeftShoulder, actionBindings.bindings[Action.ForceMove], InputMode.Move, CommandTarget.TargetReticule);

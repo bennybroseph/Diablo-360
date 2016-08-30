@@ -94,13 +94,13 @@ namespace D360
                 m_ActionBindingsForm.Show();
             }
 
-            m_ConfigForm = new ConfigForm { inputProcessor = m_InputProcessor };
+            m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
 
             if (File.Exists(@"Config.dat"))
-                BinarySerializer.LoadObject(ref m_InputProcessor.config, @"Config.dat");
+                BinarySerializer.LoadObject(ref m_InputManager.configuration, @"Config.dat");
             else
             {
-                BinarySerializer.SaveObject(m_InputProcessor.config, @"Config.dat");
+                BinarySerializer.SaveObject(m_InputManager.configuration, @"Config.dat");
                 m_ConfigForm.Show();
             }
 

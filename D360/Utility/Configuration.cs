@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using D360.Types;
-using Microsoft.Xna.Framework.Input;
 using Action = D360.Types.Action;
-using FormsKeys = System.Windows.Forms.Keys;
+using System.Windows.Forms;
 
 namespace D360.Utility
 {
@@ -23,10 +22,10 @@ namespace D360.Utility
         {
             public List<GamePadBinding> bindings = new List<GamePadBinding>();
         }
-
+        [Serializable]
         public class GamePadBinding
         {
-            public FormsKeys keys;
+            public Keys keys;
 
             public bool onHold;
             public BindingMode bindingMode;
@@ -34,8 +33,6 @@ namespace D360.Utility
 
         public Action leftTriggerBinding;
         public Action rightTriggerBinding;
-
-        public Dictionary<Buttons, FormsKeys> gamepadBindings = new Dictionary<Buttons, FormsKeys>();
 
         public Dictionary<GamePadButton, Binding> buttonBindings = new Dictionary<GamePadButton, Binding>();
         public Dictionary<GamePadDPadButton, Binding> dPadBindings = new Dictionary<GamePadDPadButton, Binding>();
@@ -56,7 +53,7 @@ namespace D360.Utility
                     {
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.Escape,
+                            keys = Keys.Escape,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
@@ -67,7 +64,7 @@ namespace D360.Utility
                     {
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.I,
+                            keys = Keys.I,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
@@ -79,14 +76,14 @@ namespace D360.Utility
                     {
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.D1,
+                            keys = Keys.D1,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
                         newBinding.bindings.Add(newGamePadBinding);
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.D2,
+                            keys = Keys.D2,
                             onHold = true,
                             bindingMode = BindingMode.Move
                         };
@@ -97,14 +94,14 @@ namespace D360.Utility
                     {
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.D3,
+                            keys = Keys.D3,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
                         newBinding.bindings.Add(newGamePadBinding);
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.D4,
+                            keys = Keys.D4,
                             onHold = true,
                             bindingMode = BindingMode.Move
                         };
@@ -124,7 +121,7 @@ namespace D360.Utility
                     {
                         newGamePadBinding = new GamePadBinding
                         {
-                            keys = FormsKeys.None,
+                            keys = Keys.None,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
@@ -134,70 +131,6 @@ namespace D360.Utility
                 }
                 buttonBindings.Add(value, newBinding);
             }
-        }
-    }
-
-    public static class ButtonsExtensions
-    {
-        public static string ParseButtonsName(this string str)
-        {
-            if (string.IsNullOrEmpty(str))
-                return str;
-
-            return str.ToPascal().Replace("Panel", "").Replace("Label", "");
-        }
-        public static string ParseButtonsDisplayName(this string str)
-        {
-            switch (str.ParseButtons())
-            {
-            case Buttons.BigButton:
-                str = "XBox Button";
-                break;
-
-            case Buttons.DPadUp:
-                str = "DPad Up";
-                break;
-            case Buttons.DPadDown:
-                str = "DPad Down";
-                break;
-            case Buttons.DPadLeft:
-                str = "DPad Left";
-                break;
-            case Buttons.DPadRight:
-                str = "DPad Right";
-                break;
-
-            default:
-                for (var i = 0; i < str.Length; ++i)
-                {
-                    if (!char.IsUpper(str[i]))
-                        continue;
-
-                    str = str.Substring(0, i) + " " + str.Substring(i);
-                    ++i;
-                }
-                break;
-            }
-
-            return str.ToPascal().Replace("Panel", "").Replace("Label", "");
-        }
-        public static Buttons ParseButtons(this string str)
-        {
-            var returnValue = Buttons.DPadUp;
-
-            if (string.IsNullOrEmpty(str))
-                return returnValue;
-
-            try
-            {
-                returnValue = (Buttons)Enum.Parse(typeof(Buttons), str.ParseButtonsName(), true);
-            }
-            catch (Exception e)
-            {
-                HUDForm.WriteToLog(e);
-            }
-
-            return returnValue;
         }
     }
 

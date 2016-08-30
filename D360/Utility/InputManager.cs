@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
+using D360.Bindings;
 using D360.Types;
 using XInputDotNetPure;
 
@@ -42,6 +43,9 @@ namespace D360.Utility
 
         private readonly Dictionary<PlayerIndex, PlayerGamePad> m_PlayerStates =
             new Dictionary<PlayerIndex, PlayerGamePad>();
+
+        public Configuration configuration = new Configuration();
+        public ActionBindings actionBindings = new ActionBindings();
 
         public InputManager()
         {
@@ -90,12 +94,12 @@ namespace D360.Utility
         private static void ParseInput(PlayerGamePad playerGamePad)
         {
             SetButtonState(playerGamePad, "Buttons", playerGamePad.buttonStates);
-            
+
             SetButtonState(playerGamePad, "DPad", playerGamePad.dPadButtonStates);
 
-            playerGamePad.prevButtonStates = 
+            playerGamePad.prevButtonStates =
                 new Dictionary<GamePadButton, GamePadButtonState>(playerGamePad.buttonStates);
-            playerGamePad.prevDPadButtonStates = 
+            playerGamePad.prevDPadButtonStates =
                 new Dictionary<GamePadDPadButton, GamePadButtonState>(playerGamePad.dPadButtonStates);
         }
 

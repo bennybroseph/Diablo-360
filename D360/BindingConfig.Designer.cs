@@ -1,6 +1,6 @@
 ﻿namespace D360
 {
-    partial class ButtonConfig
+    partial class BindingConfig
     {
         /// <summary>
         /// Required designer variable.
@@ -28,15 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ButtonConfig));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BindingConfig));
             this.defaultLabel = new System.Windows.Forms.Label();
             this.defaultHeldCheck = new System.Windows.Forms.CheckBox();
             this.defaultPointerRadio = new System.Windows.Forms.RadioButton();
             this.defaultMoveRadio = new System.Windows.Forms.RadioButton();
             this.defaultPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.defaultBinding = new D360.CustomTextBox();
+            this.defaultTextBox = new D360.CustomTextBox();
             this.defaultDelete = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.addButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.defaultPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +69,7 @@
             // 
             this.defaultPointerRadio.AutoSize = true;
             this.defaultPointerRadio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultPointerRadio.Location = new System.Drawing.Point(3, 80);
+            this.defaultPointerRadio.Location = new System.Drawing.Point(107, 80);
             this.defaultPointerRadio.Name = "defaultPointerRadio";
             this.defaultPointerRadio.Size = new System.Drawing.Size(98, 20);
             this.defaultPointerRadio.TabIndex = 31;
@@ -79,7 +81,7 @@
             // 
             this.defaultMoveRadio.AutoSize = true;
             this.defaultMoveRadio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultMoveRadio.Location = new System.Drawing.Point(107, 80);
+            this.defaultMoveRadio.Location = new System.Drawing.Point(3, 80);
             this.defaultMoveRadio.Name = "defaultMoveRadio";
             this.defaultMoveRadio.Size = new System.Drawing.Size(98, 20);
             this.defaultMoveRadio.TabIndex = 32;
@@ -92,11 +94,11 @@
             this.defaultPanel.ColumnCount = 2;
             this.defaultPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.defaultPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.defaultPanel.Controls.Add(this.defaultBinding, 0, 1);
+            this.defaultPanel.Controls.Add(this.defaultTextBox, 0, 1);
             this.defaultPanel.Controls.Add(this.defaultLabel, 0, 0);
             this.defaultPanel.Controls.Add(this.defaultHeldCheck, 0, 2);
             this.defaultPanel.Controls.Add(this.defaultPointerRadio, 0, 3);
-            this.defaultPanel.Controls.Add(this.defaultMoveRadio, 1, 3);
+            this.defaultPanel.Controls.Add(this.defaultMoveRadio, 0, 3);
             this.defaultPanel.Controls.Add(this.defaultDelete, 0, 4);
             this.defaultPanel.Location = new System.Drawing.Point(12, 42);
             this.defaultPanel.Name = "defaultPanel";
@@ -109,18 +111,18 @@
             this.defaultPanel.Size = new System.Drawing.Size(208, 131);
             this.defaultPanel.TabIndex = 36;
             // 
-            // defaultBinding
+            // defaultTextBox
             // 
-            this.defaultBinding.AllowDrop = true;
-            this.defaultPanel.SetColumnSpan(this.defaultBinding, 2);
-            this.defaultBinding.Cursor = System.Windows.Forms.Cursors.Default;
-            this.defaultBinding.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultBinding.Location = new System.Drawing.Point(3, 22);
-            this.defaultBinding.Name = "defaultBinding";
-            this.defaultBinding.ReadOnly = true;
-            this.defaultBinding.Size = new System.Drawing.Size(202, 20);
-            this.defaultBinding.TabIndex = 29;
-            this.defaultBinding.Text = "Default Binding";
+            this.defaultTextBox.AllowDrop = true;
+            this.defaultPanel.SetColumnSpan(this.defaultTextBox, 2);
+            this.defaultTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.defaultTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.defaultTextBox.Location = new System.Drawing.Point(3, 22);
+            this.defaultTextBox.Name = "defaultTextBox";
+            this.defaultTextBox.ReadOnly = true;
+            this.defaultTextBox.Size = new System.Drawing.Size(202, 20);
+            this.defaultTextBox.TabIndex = 29;
+            this.defaultTextBox.Text = "Default Binding";
             // 
             // defaultDelete
             // 
@@ -133,28 +135,53 @@
             this.defaultDelete.Text = "Delete Binding";
             this.defaultDelete.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // addButton
             // 
-            this.button1.Location = new System.Drawing.Point(12, 13);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(208, 23);
-            this.button1.TabIndex = 37;
-            this.button1.Text = "Add New Binding";
-            this.button1.UseVisualStyleBackColor = true;
+            this.addButton.Location = new System.Drawing.Point(12, 13);
+            this.addButton.Name = "addButton";
+            this.addButton.Size = new System.Drawing.Size(208, 23);
+            this.addButton.TabIndex = 37;
+            this.addButton.Text = "Add New Binding";
+            this.addButton.UseVisualStyleBackColor = true;
+            this.addButton.Click += new System.EventHandler(this.OnAddClick);
             // 
-            // ButtonConfig
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveButton.Location = new System.Drawing.Point(13, 184);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.TabIndex = 38;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.OnSaveClick);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelButton.Location = new System.Drawing.Point(145, 184);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 39;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.OnCancelClick);
+            // 
+            // BindingConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(232, 185);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(232, 219);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.addButton);
             this.Controls.Add(this.defaultPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ButtonConfig";
-            this.Text = "Button Config";
+            this.Name = "BindingConfig";
+            this.Text = "Binding Config";
             this.Load += new System.EventHandler(this.OnLoad);
             this.Shown += new System.EventHandler(this.OnShow);
             this.defaultPanel.ResumeLayout(false);
@@ -166,12 +193,14 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel defaultPanel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Label defaultLabel;
-        private CustomTextBox defaultBinding;
+        private CustomTextBox defaultTextBox;
         private System.Windows.Forms.CheckBox defaultHeldCheck;
         private System.Windows.Forms.RadioButton defaultPointerRadio;
         private System.Windows.Forms.RadioButton defaultMoveRadio;
         private System.Windows.Forms.Button defaultDelete;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
