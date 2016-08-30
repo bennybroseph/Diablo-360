@@ -18,6 +18,17 @@ namespace D360
 
         private Size m_DefaultSize;
 
+        private int m_ChangedControls;
+        private int changedControls
+        {
+            get { return m_ChangedControls; }
+            set
+            {
+                m_ChangedControls = value;
+                SetSaveText();
+            }
+        }
+
         public BindingConfig()
         {
             InitializeComponent();
@@ -31,10 +42,9 @@ namespace D360
                     - defaultPanel.Margin.Bottom * 2);
         }
 
-        private void OnShow(object sender, System.EventArgs e)
+        private void OnShow(object sender, EventArgs e)
         {
             m_TempBinding.bindings.Clear();
-
             foreach (var gamePadBinding in binding.bindings)
             {
                 m_TempBinding.bindings.Add(
@@ -50,22 +60,35 @@ namespace D360
             ProperResize();
         }
 
-        private void OnSaveClick(object sender, System.EventArgs e)
+        private void OnSaveClick(object sender, EventArgs e)
         {
-            binding.bindings = m_TempBinding.bindings.ToList();
-            saveButton.Text = saveButton.Text.TrimEnd('*');
+            binding.bindings.Clear();
+            foreach (var gamePadBinding in m_TempBinding.bindings)
+            {
+                binding.bindings.Add(
+                    new Configuration.GamePadBinding
+                    {
+                        keys = gamePadBinding.keys,
+                        onHold = gamePadBinding.onHold,
+                        bindingMode = gamePadBinding.bindingMode
+                    });
+            }
+
+            changedControls = 0;
 
             foreach (var table in Controls.OfType<TableLayoutPanel>())
                 foreach (var textBox in table.Controls.OfType<TextBox>())
                     textBox.ForeColor = defaultTextBox.ForeColor;
+
+            Refresh();
         }
 
-        private void OnCancelClick(object sender, System.EventArgs e)
+        private void OnCancelClick(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void OnAddClick(object sender, System.EventArgs e)
+        private void OnAddClick(object sender, EventArgs e)
         {
             var newBinding = new Configuration.GamePadBinding();
             m_TempBinding.bindings.Add(newBinding);
@@ -74,7 +97,7 @@ namespace D360
             ProperResize();
         }
 
-        private void OnDeleteClick(object sender, System.EventArgs e)
+        private void OnDeleteClick(object sender, EventArgs e)
         {
             var senderButton = sender as Button;
 
@@ -94,7 +117,7 @@ namespace D360
             ProperResize();
         }
 
-        private void OnTextBoxDoubleClick(object sender, System.EventArgs e)
+        private void OnTextBoxDoubleClick(object sender, EventArgs e)
         {
             var senderTextBox = sender as TextBox;
 
@@ -126,16 +149,103 @@ namespace D360
 
             m_TempBinding.bindings[index].keys = e.KeyData;
 
+            var isDifferent =
+                binding.bindings.Count <= index || m_TempBinding.bindings[index].keys != binding.bindings[index].keys;
+
             senderTextBox.Text = e.KeyData.ToString();
             senderTextBox.BackColor = defaultTextBox.BackColor;
-            senderTextBox.ForeColor =
-                m_TempBinding.bindings[index].keys == binding.bindings[index].keys ?
-                SystemColors.ControlText : Color.DodgerBlue;
+            senderTextBox.ForeColor = isDifferent ? Color.DodgerBlue : SystemColors.ControlText;
+
+            if (isDifferent)
+                changedControls++;
+            else
+                changedControls--;
 
             m_EditingConfig = false;
+
+            Refresh();
         }
 
-        private void OnLoad(object sender, System.EventArgs e)
+        private void OnCheckStateChanges(object sender, EventArgs e)
+        {
+            var senderCheck = sender as CheckBox;
+
+            if (senderCheck == null)
+                return;
+
+            var index =
+                Controls.OfType<TableLayoutPanel>().
+                    TakeWhile(table => table.Controls.OfType<CheckBox>().All(checkBox => checkBox != senderCheck)).
+                        Count() - 1;
+
+            m_TempBinding.bindings[index].onHold = senderCheck.Checked;
+
+            var isDifferent =
+                binding.bindings.Count <= index || m_TempBinding.bindings[index].onHold != binding.bindings[index].onHold;
+
+            senderCheck.Text = senderCheck.Text.TrimEnd('*');
+            if (isDifferent)
+            {
+                senderCheck.Text += '*';
+                changedControls++;
+            }
+            else
+                changedControls--;
+
+            Refresh();
+        }
+
+        private void OnRadioChanged(object sender, EventArgs e)
+        {
+            var senderRadio = sender as RadioButton;
+
+            if (senderRadio == null || senderRadio.Checked)
+                return;
+
+            var parentTable = senderRadio.Parent as TableLayoutPanel;
+
+            if (parentTable == null)
+                return;
+
+            var index =
+                Controls.OfType<TableLayoutPanel>().
+                    TakeWhile(table => table.Controls.OfType<RadioButton>().All(radioButton => radioButton != senderRadio)).
+                        Count() - 1;
+
+            m_TempBinding.bindings[index].bindingMode = (Configuration.BindingMode)parentTable.GetColumn(senderRadio) + 1;
+
+            var isDifferent =
+                binding.bindings.Count <= index ||
+                m_TempBinding.bindings[index].bindingMode != binding.bindings[index].bindingMode;
+
+            var panel =
+                Controls.OfType<TableLayoutPanel>().ElementAt(index);
+
+            var otherRadio = panel.Controls.OfType<RadioButton>().
+                First(radio => radio != senderRadio);
+
+            otherRadio.Text = otherRadio.Text.TrimEnd('*');
+            if (isDifferent)
+            {
+                otherRadio.Text += '*';
+                changedControls++;
+            }
+            else
+            {
+                changedControls--;
+            }
+
+            Refresh();
+        }
+
+        private void SetSaveText()
+        {
+            saveButton.Text = saveButton.Text.TrimEnd('*');
+            if (m_ChangedControls > 0)
+                saveButton.Text += '*';
+        }
+
+        private void OnLoad(object sender, EventArgs e)
         {
             AnchorToParent();
         }
@@ -163,26 +273,13 @@ namespace D360
             var tables = Controls.OfType<TableLayoutPanel>().Where(x => x.Name != "defaultPanel").ToArray();
             for (var i = 0; i < tables.Length; ++i)
             {
+                tables[i].Name = @"Binding " + (i + 1);
                 tables[i].Location =
                     new Point(
                         defaultPanel.Location.X,
                         defaultPanel.Location.Y
                         + defaultPanel.Size.Height * i
                         + defaultPanel.Margin.Bottom * i * 2);
-            }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            for (var i = 0; i < m_TempBinding.bindings.Count; ++i)
-            {
-                if (m_TempBinding.bindings[i].keys == binding.bindings[i].keys &&
-                    m_TempBinding.bindings[i].onHold == binding.bindings[i].onHold &&
-                    m_TempBinding.bindings[i].bindingMode == binding.bindings[i].bindingMode)
-                    continue;
-
-                saveButton.Text = saveButton.Text.TrimEnd('*');
-                saveButton.Text += '*';
             }
         }
 
@@ -233,6 +330,7 @@ namespace D360
                 Text = defaultHeldCheck.Text,
                 Checked = gamePadBinding.onHold
             };
+            newCheck.CheckStateChanged += OnCheckStateChanges;
 
             var newMoveRadio = new RadioButton
             {
@@ -240,13 +338,14 @@ namespace D360
                 Text = defaultMoveRadio.Text,
                 Checked = gamePadBinding.bindingMode == Configuration.BindingMode.Move
             };
-
+            newMoveRadio.CheckedChanged += OnRadioChanged;
             var newPointerRadio = new RadioButton
             {
                 Name = "newPointerRadio" + m_TableCount,
                 Text = defaultPointerRadio.Text,
                 Checked = gamePadBinding.bindingMode == Configuration.BindingMode.Pointer
             };
+            newPointerRadio.CheckedChanged += OnRadioChanged;
 
             var newDelete = new Button
             {

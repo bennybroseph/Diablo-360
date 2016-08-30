@@ -42,11 +42,11 @@ namespace D360.Utility
             leftTriggerBinding = Action.ActionbarSkill1;
             rightTriggerBinding = Action.ActionbarSkill2;
 
-            foreach (GamePadButton value in Enum.GetValues(typeof(GamePadButton)))
+            foreach (GamePadButton button in Enum.GetValues(typeof(GamePadButton)))
             {
                 var newBinding = new Binding();
                 GamePadBinding newGamePadBinding;
-                switch (value)
+                switch (button)
                 {
 
                 case GamePadButton.Start:
@@ -129,7 +129,26 @@ namespace D360.Utility
                     }
                     break;
                 }
-                buttonBindings.Add(value, newBinding);
+                buttonBindings.Add(button, newBinding);
+            }
+
+            foreach (GamePadDPadButton button in Enum.GetValues(typeof(GamePadDPadButton)))
+            {
+                var newBinding = new Binding();
+                GamePadBinding newGamePadBinding;
+                switch (button)
+                {
+                default:
+                    newGamePadBinding = new GamePadBinding
+                    {
+                        keys = Keys.None,
+                        onHold = false,
+                        bindingMode = BindingMode.Move
+                    };
+                    newBinding.bindings.Add(newGamePadBinding);
+                    break;
+                }
+                dPadBindings.Add(button, newBinding);
             }
         }
     }

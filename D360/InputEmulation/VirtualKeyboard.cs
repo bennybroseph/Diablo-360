@@ -7,20 +7,17 @@ namespace D360.InputEmulation
 {
     public static class VirtualKeyboard
     {
-        private static List<Keys> s_DownKeys;
+        private static List<Keys> s_DownKeys = new List<Keys>();
 
         [DllImport("user32.dll")]
         private static extern uint keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
         public static void KeyDown(Keys key)
         {
-            if (s_DownKeys == null)
-                s_DownKeys = new List<Keys>();
-
             if (s_DownKeys.Contains(key))
                 return;
 
             s_DownKeys.Add(key);
-            keybd_event((byte)key, 0, 0, 0);
+            keybd_event((byte)key, 0, 0x0001, 0);
         }
 
         public static void KeyUp(Keys key)
@@ -36,7 +33,13 @@ namespace D360.InputEmulation
             s_DownKeys.Remove(key);
         }
 
-        internal static void AllUp()
+        public static void Update()
+        {
+            foreach (var downKey in s_DownKeys)
+                keybd_event((byte)downKey, 0, 0, 0);
+        }
+
+        public static void AllUp()
         {
             if (s_DownKeys == null)
                 return;
