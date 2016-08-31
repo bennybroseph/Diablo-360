@@ -8,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using D360.InputEmulation;
 using Keys = System.Windows.Forms.Keys;
 
 namespace D360
@@ -239,7 +238,6 @@ namespace D360
         {
             //m_InputProcessor.Update(GamePad.GetState(0, GamePadDeadZone.Circular));
             m_InputManager.Update();
-            VirtualKeyboard.Update();
         }
 
         [DllImport("user32.dll", SetLastError = true)]

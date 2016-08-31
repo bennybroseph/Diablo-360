@@ -395,7 +395,7 @@ namespace D360.Utility
 
             while (m_StateChangeCommands.Count > 0)
             {
-                //VirtualKeyboard.AllUp();
+                //VirtualKeyboard.ReleaseAll();
 
                 currentControllerState.targetingReticulePosition = currentControllerState.centerPosition;
                 //currentControllerState.cursorPosition = currentControllerState.centerPosition;

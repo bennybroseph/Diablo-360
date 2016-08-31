@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
 using D360.Bindings;
 using D360.InputEmulation;
 using D360.Types;
 using XInputDotNetPure;
 
 using ButtonState = XInputDotNetPure.ButtonState;
+using Timer = System.Timers.Timer;
 
 namespace D360.Utility
 {
@@ -20,7 +20,7 @@ namespace D360.Utility
         {
             public float timeHeld;
             public bool timerRan;
-            public GamePadButtonStates gamePadButtonState = GamePadButtonStates.Releasing;
+            public GamePadButtonStates gamePadButtonState = GamePadButtonStates.Released;
         }
 
         private class PlayerGamePad
@@ -114,9 +114,14 @@ namespace D360.Utility
             else
                 VirtualMouse.LeftUp();
 
+            if (playerGamePad.state.Triggers.Left >= 0.8f)
+                VirtualMouse.RightDown();
+            else
+                VirtualMouse.RightUp();
+
             VirtualMouse.MoveRelative(
-                (int)(playerGamePad.state.ThumbSticks.Left.X * 10f),
-                (int)(-playerGamePad.state.ThumbSticks.Left.Y * 10f));
+                (int)(playerGamePad.state.ThumbSticks.Left.X * 1000f * Time.deltaTime),
+                (int)(-playerGamePad.state.ThumbSticks.Left.Y * 1000f * Time.deltaTime));
 
             playerGamePad.prevButtonStates.Clear();
             foreach (var pair in playerGamePad.buttonStates)
@@ -174,8 +179,8 @@ namespace D360.Utility
                 var buttonState = buttonStates[button];
                 ParseButtonState(buttonState, parsedButtonState, parsedPrevButtonState);
 
-                if (buttonState.gamePadButtonState != GamePadButtonStates.Releasing)
-                    Console.WriteLine(button + @":" + buttonState.gamePadButtonState + @", " + buttonState.timeHeld);
+                //if (buttonState.gamePadButtonState != GamePadButtonStates.Released)
+                //  Console.WriteLine(button + @":" + buttonState.gamePadButtonState + @", " + buttonState.timeHeld);
             }
         }
 
@@ -194,11 +199,11 @@ namespace D360.Utility
                         {
                             buttonState.timeHeld += Time.deltaTime;
                             if (buttonState.timeHeld >= HOLD_TIME)
-                                buttonState.gamePadButtonState = GamePadButtonStates.Held;
+                                buttonState.gamePadButtonState = GamePadButtonStates.Pressed;
                         }
                         break;
                     case ButtonState.Released:
-                        buttonState.gamePadButtonState = GamePadButtonStates.Pressed;
+                        buttonState.gamePadButtonState = GamePadButtonStates.OnPress;
                         break;
 
                     default:
@@ -213,10 +218,10 @@ namespace D360.Utility
                     switch (parsedPrevButtonState)
                     {
                     case ButtonState.Pressed:
-                        buttonState.gamePadButtonState = GamePadButtonStates.Released;
+                        buttonState.gamePadButtonState = GamePadButtonStates.OnRelease;
                         break;
                     case ButtonState.Released:
-                        buttonState.gamePadButtonState = GamePadButtonStates.Releasing;
+                        buttonState.gamePadButtonState = GamePadButtonStates.Released;
                         break;
 
                     default:
@@ -233,7 +238,7 @@ namespace D360.Utility
         private void DoActions<TButton>(
             IReadOnlyDictionary<TButton, GamePadButtonState> buttonStates,
             IReadOnlyDictionary<TButton, GamePadButtonState> prevButtonStates,
-            IReadOnlyDictionary<TButton, Configuration.Binding> bindings,
+            IReadOnlyDictionary<TButton, List<ButtonBinding>> bindings,
             PlayerIndex playerIndex)
         {
             foreach (TButton button in Enum.GetValues(typeof(TButton)))
@@ -248,30 +253,30 @@ namespace D360.Utility
 
                 var binding = bindings[button];
 
-                foreach (var gamePadBinding in binding.bindings)
+                foreach (var gamePadBinding in bindings[button])
                 {
-                    var hasHoldBinding = binding.bindings.Any(x => x.onHold);
+                    var hasHoldBinding = bindings[button].Any(x => x.onHold);
                     switch (buttonState.gamePadButtonState)
                     {
-                    case GamePadButtonStates.Pressed:
-                        if (!hasHoldBinding)
+                    case GamePadButtonStates.OnPress:
+                        if (!hasHoldBinding && prevButtonState.gamePadButtonState == GamePadButtonStates.Released)
                             VirtualKeyboard.KeyDown(gamePadBinding.keys);
                         break;
 
-                    case GamePadButtonStates.Released:
+                    case GamePadButtonStates.OnRelease:
                         if (!hasHoldBinding)
                             VirtualKeyboard.KeyUp(gamePadBinding.keys);
                         else if (!gamePadBinding.onHold &&
-                                 prevButtonState.gamePadButtonState == GamePadButtonStates.Pressed)
+                                 prevButtonState.gamePadButtonState == GamePadButtonStates.OnPress)
                         {
                             VirtualKeyboard.KeyDown(gamePadBinding.keys);
                             VirtualKeyboard.KeyUp(gamePadBinding.keys);
                         }
-                        else if (prevButtonState.gamePadButtonState == GamePadButtonStates.Held)
+                        else if (prevButtonState.gamePadButtonState == GamePadButtonStates.Pressed)
                             VirtualKeyboard.KeyUp(gamePadBinding.keys);
                         break;
 
-                    case GamePadButtonStates.Held:
+                    case GamePadButtonStates.Pressed:
                         {
                             if (gamePadBinding.onHold)
                             {
@@ -298,7 +303,7 @@ namespace D360.Utility
                         }
                         break;
 
-                    case GamePadButtonStates.Releasing:
+                    case GamePadButtonStates.Released:
                         break;
                     }
                 }

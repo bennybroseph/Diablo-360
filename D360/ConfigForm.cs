@@ -52,7 +52,7 @@ namespace D360
             m_BindingConfig = new BindingConfig
             {
                 parentForm = this,
-                binding =
+                bindings =
                     button != GamePadButton.None ?
                         m_TempConfig.buttonBindings[button] :
                         m_TempConfig.dPadBindings[dPadButton]
@@ -63,9 +63,7 @@ namespace D360
         private void OnVisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
-                return;
-
-            m_BindingConfig?.Show();
+                m_BindingConfig?.Close();
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
@@ -79,7 +77,7 @@ namespace D360
         private void OnShown(object sender, EventArgs e)
         {
             m_TempConfig.buttonBindings =
-                new Dictionary<GamePadButton, Configuration.Binding>(inputManager.configuration.buttonBindings);
+                new Dictionary<GamePadButton, List<ButtonBinding>>(inputManager.configuration.buttonBindings);
 
             Refresh();
         }

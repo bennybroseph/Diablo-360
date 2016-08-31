@@ -5,10 +5,14 @@ namespace D360.Types
 {
     public enum GamePadButtonStates
     {
-        Releasing,
+        /// Button is not pressed
         Released,
-        Pressed,
-        Held
+        /// Button was released this frame
+        OnRelease,
+        /// Button was pressed this frame
+        OnPress,
+        /// Button is being held down
+        Pressed
     }
     public enum GamePadButton
     {

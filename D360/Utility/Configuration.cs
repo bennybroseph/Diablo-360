@@ -7,6 +7,15 @@ using System.Windows.Forms;
 namespace D360.Utility
 {
     [Serializable]
+    public class ButtonBinding
+    {
+        public Keys keys;
+
+        public bool onHold;
+        public Configuration.BindingMode bindingMode;
+    }
+
+    [Serializable]
     public class Configuration
     {
         public enum BindingMode
@@ -17,25 +26,13 @@ namespace D360.Utility
             Move
         }
 
-        [Serializable]
-        public class Binding
-        {
-            public List<GamePadBinding> bindings = new List<GamePadBinding>();
-        }
-        [Serializable]
-        public class GamePadBinding
-        {
-            public Keys keys;
-
-            public bool onHold;
-            public BindingMode bindingMode;
-        }
-
         public Action leftTriggerBinding;
         public Action rightTriggerBinding;
 
-        public Dictionary<GamePadButton, Binding> buttonBindings = new Dictionary<GamePadButton, Binding>();
-        public Dictionary<GamePadDPadButton, Binding> dPadBindings = new Dictionary<GamePadDPadButton, Binding>();
+        public Dictionary<GamePadButton, List<ButtonBinding>> buttonBindings =
+            new Dictionary<GamePadButton, List<ButtonBinding>>();
+        public Dictionary<GamePadDPadButton, List<ButtonBinding>> dPadBindings =
+            new Dictionary<GamePadDPadButton, List<ButtonBinding>>();
 
         public Configuration()
         {
@@ -44,68 +41,68 @@ namespace D360.Utility
 
             foreach (GamePadButton button in Enum.GetValues(typeof(GamePadButton)))
             {
-                var newBinding = new Binding();
-                GamePadBinding newGamePadBinding;
+                var newBindings = new List<ButtonBinding>();
+                ButtonBinding newButtonBinding;
                 switch (button)
                 {
 
                 case GamePadButton.Start:
                     {
-                        newGamePadBinding = new GamePadBinding
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.Escape,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
+                        newBindings.Add(newButtonBinding);
                     }
                     break;
                 case GamePadButton.Back:
                     {
-                        newGamePadBinding = new GamePadBinding
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.I,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
+                        newBindings.Add(newButtonBinding);
                     }
                     break;
 
                 case GamePadButton.LeftShoulder:
                     {
-                        newGamePadBinding = new GamePadBinding
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.D1,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
-                        newGamePadBinding = new GamePadBinding
+                        newBindings.Add(newButtonBinding);
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.D2,
                             onHold = true,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
+                        newBindings.Add(newButtonBinding);
                     }
                     break;
                 case GamePadButton.RightShoulder:
                     {
-                        newGamePadBinding = new GamePadBinding
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.D3,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
-                        newGamePadBinding = new GamePadBinding
+                        newBindings.Add(newButtonBinding);
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.D4,
                             onHold = true,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
+                        newBindings.Add(newButtonBinding);
                     }
                     break;
 
@@ -119,36 +116,36 @@ namespace D360.Utility
 
                 default:
                     {
-                        newGamePadBinding = new GamePadBinding
+                        newButtonBinding = new ButtonBinding
                         {
                             keys = Keys.None,
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBinding.bindings.Add(newGamePadBinding);
+                        newBindings.Add(newButtonBinding);
                     }
                     break;
                 }
-                buttonBindings.Add(button, newBinding);
+                buttonBindings.Add(button, newBindings);
             }
 
             foreach (GamePadDPadButton button in Enum.GetValues(typeof(GamePadDPadButton)))
             {
-                var newBinding = new Binding();
-                GamePadBinding newGamePadBinding;
+                var newBindings = new List<ButtonBinding>();
+                ButtonBinding newButtonBinding;
                 switch (button)
                 {
                 default:
-                    newGamePadBinding = new GamePadBinding
+                    newButtonBinding = new ButtonBinding
                     {
                         keys = Keys.None,
                         onHold = false,
                         bindingMode = BindingMode.Move
                     };
-                    newBinding.bindings.Add(newGamePadBinding);
+                    newBindings.Add(newButtonBinding);
                     break;
                 }
-                dPadBindings.Add(button, newBinding);
+                dPadBindings.Add(button, newBindings);
             }
         }
     }

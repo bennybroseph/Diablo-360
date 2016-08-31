@@ -1,16 +1,17 @@
 ﻿using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace D360.InputEmulation
 {
     public static class VirtualMouse
     {
-        private const int MOUSEEVENTF_ABSOLUTE = 0x8000; /* mouse move */
+        private const int MOUSEEVENTF_ABSOLUTE = 0x8000;    // mouse move
 
-        private const int MOUSEEVENTF_MOVE = 0x0001; /* mouse move */
-        private const int MOUSEEVENTF_LEFTDOWN = 0x0002; /* left button down */
-        private const int MOUSEEVENTF_LEFTUP = 0x0004; /* left button up */
-        private const int MOUSEEVENTF_RIGHTDOWN = 0x0008; /* right button down */
-        private const int MOUSEEVENTF_RIGHTUP = 0x0010; /* right button down */
+        private const int MOUSEEVENTF_MOVE = 0x0001;        // mouse move
+        private const int MOUSEEVENTF_LEFTDOWN = 0x0002;    // left button down
+        private const int MOUSEEVENTF_LEFTUP = 0x0004;      // left button up
+        private const int MOUSEEVENTF_RIGHTDOWN = 0x0008;   // right button down
+        private const int MOUSEEVENTF_RIGHTUP = 0x0010;     // right button down
 
 
         [DllImport("user32.dll")]
@@ -33,13 +34,12 @@ namespace D360.InputEmulation
 
         public static void MoveRelative(uint xValue, uint yValue)
         {
-            mouse_event(MOUSEEVENTF_MOVE, (uint)xValue, (uint)yValue, 0, 0);
+            mouse_event(MOUSEEVENTF_MOVE, xValue, yValue, 0, 0);
         }
-
 
         public static void LeftDown()
         {
-            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            VirtualKeyboard.KeyDown(Keys.LButton);
         }
 
         public static void LeftDown(uint xValue, uint yValue)
@@ -48,10 +48,9 @@ namespace D360.InputEmulation
             LeftDown();
         }
 
-
         public static void LeftUp()
         {
-            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+            VirtualKeyboard.KeyUp(Keys.LButton);
         }
 
         public static void LeftUp(uint xValue, uint yValue)
@@ -60,10 +59,9 @@ namespace D360.InputEmulation
             LeftUp();
         }
 
-
         public static void RightDown()
         {
-            mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+            VirtualKeyboard.KeyDown(Keys.RButton);
         }
 
         public static void RightDown(uint xValue, uint yValue)
@@ -72,10 +70,9 @@ namespace D360.InputEmulation
             RightDown();
         }
 
-
         public static void RightUp()
         {
-            mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+            VirtualKeyboard.KeyUp(Keys.RButton);
         }
 
         public static void RightUp(uint xValue, uint yValue)
@@ -83,6 +80,5 @@ namespace D360.InputEmulation
             MoveRelative(xValue, yValue);
             RightUp();
         }
-
     }
 }

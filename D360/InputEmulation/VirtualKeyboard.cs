@@ -1,55 +1,111 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Windows.Forms;
+using AutoHotkey.Interop;           // The AutoHotkey Wrapper for C#
 
-//TODO: This entire class could use a rework using lists
 namespace D360.InputEmulation
 {
+    /// <summary>
+    /// Class which takes in 'System.Windows.Forms.Keys' values and sends an appropriate
+    /// script to be executed by AutoHotkey in an attempt to provide keyboard emulation
+    /// </summary>
     public static class VirtualKeyboard
     {
+        /// A container for all the currently pressed keys
         private static List<Keys> s_DownKeys = new List<Keys>();
 
-        [DllImport("user32.dll")]
-        private static extern uint keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
-        public static void KeyDown(Keys key)
+        /// An instance of the AutoHotkey Engine
+        private static readonly AutoHotkeyEngine s_AutoHotkey = new AutoHotkeyEngine();
+
+        /// <summary>
+        /// Sends AutoHotkey a script which executes a press down of a given key.<para/>
+        /// Don't forget to release the key or it will be held down until the program stops
+        /// </summary>
+        /// <param name="keys">The keys to be pressed down</param>
+        public static void KeyDown(Keys keys)
         {
-            if (s_DownKeys.Contains(key))
+            // Don't press the key down again if it already is
+            if (s_DownKeys.Contains(keys))
                 return;
 
-            s_DownKeys.Add(key);
-            keybd_event((byte)key, 0, 0x0001, 0);
+            // Save as a currently pressed key
+            s_DownKeys.Add(keys);
+
+            // Convert the keys into a string and send it to AutoHotkey
+            foreach (var key in keys.ParseToStrings())
+                s_AutoHotkey.ExecRaw("Send {" + key + " down}");
         }
 
-        public static void KeyUp(Keys key)
+        /// <summary>
+        /// Sends AutoHotkey a script which executes the release of a given key
+        /// </summary>
+        /// <param name="keys">The keys to be released</param>
+        public static void KeyUp(Keys keys)
         {
-            if (s_DownKeys == null)
-                s_DownKeys = new List<Keys>();
-
-            if (!s_DownKeys.Contains(key))
+            // Don't release a key that isn't currently pressed
+            if (!s_DownKeys.Contains(keys))
                 return;
 
-            // key is down, send up signal
-            keybd_event((byte)key, 0, 0x0002, 0);
-            s_DownKeys.Remove(key);
+            // Convert the keys into a string and send it to AutoHotkey
+            foreach (var key in keys.ParseToStrings())
+                s_AutoHotkey.ExecRaw("Send {" + key + " up}");
+
+            // Remove the key as a currently pressed keys and allow the keys to be pressed again
+            s_DownKeys.Remove(keys);
         }
 
-        public static void Update()
+        /// <summary>
+        /// Releases all currently pressed keys
+        /// </summary>
+        public static void ReleaseAll()
         {
-            foreach (var downKey in s_DownKeys)
-                keybd_event((byte)downKey, 0, 0, 0);
-        }
-
-        public static void AllUp()
-        {
-            if (s_DownKeys == null)
-                return;
-
-            var downKeysArray = new Keys[s_DownKeys.Count];
-            s_DownKeys.CopyTo(downKeysArray);
-
-            foreach (var key in downKeysArray)
-            {
+            // Release all keys stored as currently pressed
+            foreach (var key in s_DownKeys)
                 KeyUp(key);
+
+            // Removes all keys as currently pressed so they are all allowed to be pressed again
+            s_DownKeys.Clear();
+        }
+    }
+
+    public static class KeysExtension
+    {
+        /// An Instance of a key converter for 'System.Windows.Forms.Keys'
+        private static readonly KeysConverter s_KeysConverter = new KeysConverter();
+
+        public static IEnumerable<Keys> ParseFlags(this Keys keys)
+        {
+            if ((keys & Keys.Control) == Keys.Control)
+                yield return Keys.Control;
+
+            if ((keys & Keys.Shift) == Keys.Shift)
+                yield return Keys.Shift;
+
+            if ((keys & Keys.Alt) == Keys.Alt)
+                yield return Keys.Alt;
+
+            keys &= ~Keys.Shift & ~Keys.Control & ~Keys.Alt;
+
+            yield return keys;
+        }
+
+        public static IEnumerable<string> ParseToStrings(this Keys keys)
+        {
+            foreach (var key in keys.ParseFlags())
+            {
+                switch (key)
+                {
+                case Keys.Shift:
+                case Keys.Control:
+                case Keys.Alt:
+                    yield return key.ToString();
+                    break;
+
+                default:
+                    yield return s_KeysConverter.ConvertToString(key);
+                    break;
+                }
             }
         }
     }

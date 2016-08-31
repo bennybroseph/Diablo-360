@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 #endif
 using System.Windows.Forms;
+using D360.InputEmulation;
 
 namespace D360
 {
@@ -50,6 +51,7 @@ namespace D360
                 }
             }
 #endif
+            VirtualKeyboard.ReleaseAll();
         }
     }
 }

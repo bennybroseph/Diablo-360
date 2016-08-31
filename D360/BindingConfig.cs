@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,8 +14,8 @@ namespace D360
 
         private bool m_EditingConfig;
 
-        public Configuration.Binding binding;
-        private Configuration.Binding m_TempBinding = new Configuration.Binding();
+        public List<ButtonBinding> bindings;
+        private List<ButtonBinding> m_TempBinding = new List<ButtonBinding>();
 
         private Size m_DefaultSize;
 
@@ -44,17 +45,17 @@ namespace D360
 
         private void OnShow(object sender, EventArgs e)
         {
-            m_TempBinding.bindings.Clear();
-            foreach (var gamePadBinding in binding.bindings)
+            m_TempBinding.Clear();
+            foreach (var binding in bindings)
             {
-                m_TempBinding.bindings.Add(
-                    new Configuration.GamePadBinding
+                m_TempBinding.Add(
+                    new ButtonBinding
                     {
-                        keys = gamePadBinding.keys,
-                        onHold = gamePadBinding.onHold,
-                        bindingMode = gamePadBinding.bindingMode
+                        keys = binding.keys,
+                        onHold = binding.onHold,
+                        bindingMode = binding.bindingMode
                     });
-                Controls.Add(CreateNewBinding(gamePadBinding));
+                Controls.Add(CreateNewBinding(binding));
             }
 
             ProperResize();
@@ -62,11 +63,11 @@ namespace D360
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            binding.bindings.Clear();
-            foreach (var gamePadBinding in m_TempBinding.bindings)
+            bindings.Clear();
+            foreach (var gamePadBinding in m_TempBinding)
             {
-                binding.bindings.Add(
-                    new Configuration.GamePadBinding
+                bindings.Add(
+                    new ButtonBinding
                     {
                         keys = gamePadBinding.keys,
                         onHold = gamePadBinding.onHold,
@@ -77,8 +78,13 @@ namespace D360
             changedControls = 0;
 
             foreach (var table in Controls.OfType<TableLayoutPanel>())
-                foreach (var textBox in table.Controls.OfType<TextBox>())
-                    textBox.ForeColor = defaultTextBox.ForeColor;
+                foreach (var textBox in table.Controls.OfType<Control>())
+                {
+                    if (textBox is TextBox)
+                        textBox.ForeColor = defaultTextBox.ForeColor;
+
+                    textBox.Text = textBox.Text.TrimEnd('*');
+                }
 
             Refresh();
         }
@@ -90,8 +96,8 @@ namespace D360
 
         private void OnAddClick(object sender, EventArgs e)
         {
-            var newBinding = new Configuration.GamePadBinding();
-            m_TempBinding.bindings.Add(newBinding);
+            var newBinding = new ButtonBinding();
+            m_TempBinding.Add(newBinding);
             Controls.Add(CreateNewBinding(newBinding));
 
             ProperResize();
@@ -109,7 +115,7 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<Button>().All(button => button != senderButton)).
                         Count() - 1;
 
-            m_TempBinding.bindings.RemoveAt(index);
+            m_TempBinding.RemoveAt(index);
 
             Controls.Remove(senderButton.Parent);
             --m_TableCount;
@@ -147,10 +153,10 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<TextBox>().All(textBox => textBox != senderTextBox)).
                         Count() - 1;
 
-            m_TempBinding.bindings[index].keys = e.KeyData;
+            m_TempBinding[index].keys = e.KeyData;
 
             var isDifferent =
-                binding.bindings.Count <= index || m_TempBinding.bindings[index].keys != binding.bindings[index].keys;
+                bindings.Count <= index || m_TempBinding[index].keys != bindings[index].keys;
 
             senderTextBox.Text = e.KeyData.ToString();
             senderTextBox.BackColor = defaultTextBox.BackColor;
@@ -178,10 +184,10 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<CheckBox>().All(checkBox => checkBox != senderCheck)).
                         Count() - 1;
 
-            m_TempBinding.bindings[index].onHold = senderCheck.Checked;
+            m_TempBinding[index].onHold = senderCheck.Checked;
 
             var isDifferent =
-                binding.bindings.Count <= index || m_TempBinding.bindings[index].onHold != binding.bindings[index].onHold;
+                bindings.Count <= index || m_TempBinding[index].onHold != bindings[index].onHold;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -209,14 +215,15 @@ namespace D360
 
             var index =
                 Controls.OfType<TableLayoutPanel>().
-                    TakeWhile(table => table.Controls.OfType<RadioButton>().All(radioButton => radioButton != senderRadio)).
-                        Count() - 1;
+                    TakeWhile(table => table.Controls.OfType<RadioButton>().
+                        All(radioButton => radioButton != senderRadio)).
+                    Count() - 1;
 
-            m_TempBinding.bindings[index].bindingMode = (Configuration.BindingMode)parentTable.GetColumn(senderRadio) + 1;
+            m_TempBinding[index].bindingMode = (Configuration.BindingMode)parentTable.GetColumn(senderRadio) + 1;
 
             var isDifferent =
-                binding.bindings.Count <= index ||
-                m_TempBinding.bindings[index].bindingMode != binding.bindings[index].bindingMode;
+                bindings.Count <= index ||
+                m_TempBinding[index].bindingMode != bindings[index].bindingMode;
 
             var panel =
                 Controls.OfType<TableLayoutPanel>().ElementAt(index);
@@ -283,7 +290,7 @@ namespace D360
             }
         }
 
-        private TableLayoutPanel CreateNewBinding(Configuration.GamePadBinding gamePadBinding)
+        private TableLayoutPanel CreateNewBinding(ButtonBinding buttonBinding)
         {
             var newPanel = new TableLayoutPanel
             {
@@ -315,7 +322,7 @@ namespace D360
             var newTextBox = new CustomTextBox
             {
                 Name = "newTextBox" + m_TableCount,
-                Text = gamePadBinding.keys.ToString(),
+                Text = buttonBinding.keys.ToString(),
                 AutoSize = defaultTextBox.AutoSize,
                 Dock = defaultTextBox.Dock,
                 ReadOnly = defaultTextBox.ReadOnly,
@@ -328,7 +335,7 @@ namespace D360
             {
                 Name = "newCheck" + m_TableCount,
                 Text = defaultHeldCheck.Text,
-                Checked = gamePadBinding.onHold
+                Checked = buttonBinding.onHold
             };
             newCheck.CheckStateChanged += OnCheckStateChanges;
 
@@ -336,14 +343,14 @@ namespace D360
             {
                 Name = "newMoveRadio" + m_TableCount,
                 Text = defaultMoveRadio.Text,
-                Checked = gamePadBinding.bindingMode == Configuration.BindingMode.Move
+                Checked = buttonBinding.bindingMode == Configuration.BindingMode.Move
             };
             newMoveRadio.CheckedChanged += OnRadioChanged;
             var newPointerRadio = new RadioButton
             {
                 Name = "newPointerRadio" + m_TableCount,
                 Text = defaultPointerRadio.Text,
-                Checked = gamePadBinding.bindingMode == Configuration.BindingMode.Pointer
+                Checked = buttonBinding.bindingMode == Configuration.BindingMode.Pointer
             };
             newPointerRadio.CheckedChanged += OnRadioChanged;
 
