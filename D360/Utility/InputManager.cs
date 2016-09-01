@@ -238,7 +238,7 @@ namespace D360.Utility
         private void DoActions<TButton>(
             IReadOnlyDictionary<TButton, GamePadButtonState> buttonStates,
             IReadOnlyDictionary<TButton, GamePadButtonState> prevButtonStates,
-            IReadOnlyDictionary<TButton, List<ButtonBinding>> bindings,
+            IReadOnlyDictionary<TButton, List<ControlBinding>> bindings,
             PlayerIndex playerIndex)
         {
             foreach (TButton button in Enum.GetValues(typeof(TButton)))

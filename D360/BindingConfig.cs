@@ -14,8 +14,8 @@ namespace D360
 
         private bool m_EditingConfig;
 
-        public List<ButtonBinding> bindings;
-        private List<ButtonBinding> m_TempBinding = new List<ButtonBinding>();
+        public List<ControlBinding> bindings;
+        private List<ControlBinding> m_TempBinding = new List<ControlBinding>();
 
         private Size m_DefaultSize;
 
@@ -49,7 +49,7 @@ namespace D360
             foreach (var binding in bindings)
             {
                 m_TempBinding.Add(
-                    new ButtonBinding
+                    new ControlBinding
                     {
                         keys = binding.keys,
                         onHold = binding.onHold,
@@ -67,7 +67,7 @@ namespace D360
             foreach (var gamePadBinding in m_TempBinding)
             {
                 bindings.Add(
-                    new ButtonBinding
+                    new ControlBinding
                     {
                         keys = gamePadBinding.keys,
                         onHold = gamePadBinding.onHold,
@@ -96,7 +96,7 @@ namespace D360
 
         private void OnAddClick(object sender, EventArgs e)
         {
-            var newBinding = new ButtonBinding();
+            var newBinding = new ControlBinding();
             m_TempBinding.Add(newBinding);
             Controls.Add(CreateNewBinding(newBinding));
 
@@ -219,7 +219,7 @@ namespace D360
                         All(radioButton => radioButton != senderRadio)).
                     Count() - 1;
 
-            m_TempBinding[index].bindingMode = (Configuration.BindingMode)parentTable.GetColumn(senderRadio) + 1;
+            m_TempBinding[index].bindingMode = (BindingMode)parentTable.GetColumn(senderRadio) + 1;
 
             var isDifferent =
                 bindings.Count <= index ||
@@ -290,7 +290,7 @@ namespace D360
             }
         }
 
-        private TableLayoutPanel CreateNewBinding(ButtonBinding buttonBinding)
+        private TableLayoutPanel CreateNewBinding(ControlBinding controlBinding)
         {
             var newPanel = new TableLayoutPanel
             {
@@ -322,7 +322,7 @@ namespace D360
             var newTextBox = new CustomTextBox
             {
                 Name = "newTextBox" + m_TableCount,
-                Text = buttonBinding.keys.ToString(),
+                Text = controlBinding.keys.ToString(),
                 AutoSize = defaultTextBox.AutoSize,
                 Dock = defaultTextBox.Dock,
                 ReadOnly = defaultTextBox.ReadOnly,
@@ -335,7 +335,7 @@ namespace D360
             {
                 Name = "newCheck" + m_TableCount,
                 Text = defaultHeldCheck.Text,
-                Checked = buttonBinding.onHold
+                Checked = controlBinding.onHold
             };
             newCheck.CheckStateChanged += OnCheckStateChanges;
 
@@ -343,14 +343,14 @@ namespace D360
             {
                 Name = "newMoveRadio" + m_TableCount,
                 Text = defaultMoveRadio.Text,
-                Checked = buttonBinding.bindingMode == Configuration.BindingMode.Move
+                Checked = controlBinding.bindingMode == BindingMode.Move
             };
             newMoveRadio.CheckedChanged += OnRadioChanged;
             var newPointerRadio = new RadioButton
             {
                 Name = "newPointerRadio" + m_TableCount,
                 Text = defaultPointerRadio.Text,
-                Checked = buttonBinding.bindingMode == Configuration.BindingMode.Pointer
+                Checked = controlBinding.bindingMode == BindingMode.Pointer
             };
             newPointerRadio.CheckedChanged += OnRadioChanged;
 

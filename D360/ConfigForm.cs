@@ -46,8 +46,8 @@ namespace D360
 
             m_BindingConfig?.Close();
 
-            var button = GamePadUtility.ParseButton<GamePadButton>(senderButton.Name);
-            var dPadButton = GamePadUtility.ParseButton<GamePadDPadButton>(senderButton.Name);
+            var button = GamePadUtility.ParseControl<GamePadButton>(senderButton.Name);
+            var dPadButton = GamePadUtility.ParseControl<GamePadDPadButton>(senderButton.Name);
 
             m_BindingConfig = new BindingConfig
             {
@@ -77,7 +77,7 @@ namespace D360
         private void OnShown(object sender, EventArgs e)
         {
             m_TempConfig.buttonBindings =
-                new Dictionary<GamePadButton, List<ButtonBinding>>(inputManager.configuration.buttonBindings);
+                new Dictionary<GamePadButton, List<ControlBinding>>(inputManager.configuration.buttonBindings);
 
             Refresh();
         }

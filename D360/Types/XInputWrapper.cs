@@ -14,6 +14,39 @@ namespace D360.Types
         /// Button is being held down
         Pressed
     }
+
+    public enum GamePadControl
+    {
+        None = 0,
+
+        A = 1 << 0,
+        B = 1 << 1,
+        X = 1 << 2,
+        Y = 1 << 3,
+
+        Down = 1 << 4,
+        Left = 1 << 5,
+        Right = 1 << 6,
+        Up = 1 << 7,
+
+        Start = 1 << 8,
+        Back = 1 << 9,
+
+        LeftTrigger = 1 << 10,
+        RightTrigger = 1 << 11,
+
+        LeftShoulder = 1 << 12,
+        RightShoulder = 1 << 13,
+
+        LeftStick = 1 << 14,
+        RightStick = 1 << 15,
+
+        LeftStickButton = 1 << 16,
+        RightStickButton = 1 << 17,
+
+        Guide = 1 << 18
+    }
+
     public enum GamePadButton
     {
         None = 0,
@@ -47,7 +80,7 @@ namespace D360.Types
 
     public static class GamePadUtility
     {
-        private static string ParseButtonName(string str)
+        private static string ParseControlName(string str)
         {
             if (string.IsNullOrEmpty(str))
                 return str;
@@ -59,23 +92,23 @@ namespace D360.Types
                     Replace("EditButton", "");
         }
 
-        public static TButton ParseButton<TButton>(string str)
+        public static TControl ParseControl<TControl>(string str)
         {
             object returnValue = 0;
 
             if (string.IsNullOrEmpty(str))
-                return (TButton)returnValue;
+                return (TControl)returnValue;
 
             try
             {
-                return (TButton)Enum.Parse(typeof(TButton), ParseButtonName(str), true);
+                return (TControl)Enum.Parse(typeof(TControl), ParseControlName(str), true);
             }
             catch (Exception e)
             {
                 HUDForm.WriteToLog(e);
             }
 
-            return (TButton)returnValue;
+            return (TControl)returnValue;
         }
     }
 }
