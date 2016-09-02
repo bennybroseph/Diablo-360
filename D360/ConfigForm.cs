@@ -11,8 +11,7 @@ namespace D360
 
         private BindingConfigForm m_BindingConfigForm;
         public InputManager inputManager;
-
-
+        
         private Configuration m_TempConfig = new Configuration();
 
         public ConfigForm()
@@ -73,7 +72,7 @@ namespace D360
         private void OnShown(object sender, EventArgs e)
         {
             m_TempConfig.bindingConfigs =
-                new Dictionary<GamePadControl, Utility.BindingConfig>(inputManager.configuration.bindingConfigs);
+                new Dictionary<GamePadControl, BindingConfig>(inputManager.configuration.bindingConfigs);
 
             Refresh();
         }

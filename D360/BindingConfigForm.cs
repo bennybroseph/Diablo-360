@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using D360.Bindings;
 using D360.Utility;
 
 namespace D360
@@ -15,7 +14,7 @@ namespace D360
         private bool m_EditingConfig;
 
         public BindingConfig bindings;
-        private BindingConfig m_TempBinding = new BindingConfig();
+        private BindingConfig m_TempBinding;
 
         private Size m_DefaultSize;
 
@@ -30,66 +29,73 @@ namespace D360
             }
         }
 
+        private bool initialized;
+
         public BindingConfigForm()
         {
             InitializeComponent();
-            defaultPanel.Hide();
-            
+
             m_DefaultSize =
-                new Size(
-                    Size.Width,
-                    Size.Height
-                    - defaultPanel.Size.Height
-                    - defaultPanel.Margin.Bottom * 2);
+                    new Size(
+                        Size.Width,
+                        Size.Height
+                        - defaultPanel.Size.Height
+                        - defaultPanel.Margin.Bottom * 2);
         }
 
         private void OnShow(object sender, EventArgs e)
         {
-            m_TempBinding.controlBindings.Clear();
-            foreach (var binding in bindings.controlBindings)
-            {
-                m_TempBinding.controlBindings.Add(
-                    new ControlBinding
-                    {
-                        keys = binding.keys,
-                        script = binding.script,
-
-                        onHold = binding.onHold,
-                        bindingMode = binding.bindingMode,
-                        bindingType = binding.bindingType
-                    });
-                bindingsTabPage.Controls.Add(CreateNewBinding(binding));
-            }
+            InitializeTempConfig();
+            CopyConfig(bindings, m_TempBinding);
 
             ProperResize();
+
+            var triggerBinding = m_TempBinding as TriggerConfig;
+            var stickConfig = m_TempBinding as StickConfig;
+            if (triggerBinding == null && stickConfig == null)
+                return;
+
+            deadZoneLabel.Visible = true;
+            deadZoneValueLabel.Visible = true;
+            deadZoneTrackBar.Visible = true;
+
+            deadZoneTrackBar.Value =
+                (triggerBinding != null) ?
+                (int)(triggerBinding.deadzone * 100f) : (int)Math.Round(stickConfig.moveDeadzone * 100f);
+            deadZoneValueLabel.Text = deadZoneTrackBar.Value + @"%";
+
+            if (triggerBinding != null)
+                return;
+
+            actionZoneLabel.Visible = true;
+            actionZoneValueLabel.Visible = true;
+            actionZoneTrackBar.Visible = true;
+            actionZoneTrackBar.Value = (int)(stickConfig.actionDeadzone * 100f);
+            actionZoneValueLabel.Text = actionZoneTrackBar.Value + @"%";
+
+            modeLabel.Visible = true;
+            modeComboBox.Visible = true;
+            foreach (StickMode stickMode in Enum.GetValues(typeof(StickMode)))
+                modeComboBox.Items.Add(stickMode);
+            modeComboBox.SelectedItem = stickConfig.mode;
+
+            initialized = true;
         }
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            bindings.controlBindings.Clear();
-            foreach (var binding in m_TempBinding.controlBindings)
-            {
-                bindings.controlBindings.Add(
-                    new ControlBinding
-                    {
-                        keys = binding.keys,
-                        script = binding.script,
-
-                        onHold = binding.onHold,
-                        bindingMode = binding.bindingMode,
-                        bindingType = binding.bindingType
-                    });
-            }
+            CopyConfig(m_TempBinding, bindings);
 
             changedControls = 0;
 
-            foreach (var table in bindingsTabPage.Controls.OfType<TableLayoutPanel>())
-                foreach (var textBox in table.Controls.OfType<Control>())
-                {
-                    if (textBox is TextBox)
-                        textBox.ForeColor = defaultTextBox.ForeColor;
+            foreach (Control control in otherTabPage.Controls)
+                control.Text = control.Text.TrimEnd('*');
 
-                    textBox.Text = textBox.Text.TrimEnd('*');
+            foreach (var table in bindingsTabPage.Controls.OfType<TableLayoutPanel>())
+                foreach (var control in table.Controls.OfType<Control>())
+                {
+                    control.ForeColor = DefaultForeColor;
+                    control.Text = control.Text.TrimEnd('*');
                 }
 
             Refresh();
@@ -133,7 +139,7 @@ namespace D360
         {
             var senderComboBox = sender as ComboBox;
 
-            if (senderComboBox == null)
+            if (senderComboBox == null || !initialized)
                 return;
 
             var index =
@@ -152,30 +158,30 @@ namespace D360
             else
                 changedControls--;
 
-            foreach (var table in bindingsTabPage.Controls.OfType<TableLayoutPanel>())
-            {
-                var textBox = table.Controls.OfType<TextBox>().FirstOrDefault(x => !x.Multiline);
-                if (textBox != null)
-                    textBox.Visible = m_TempBinding.controlBindings[index].bindingType == BindingType.Key;
+            var panel =
+                bindingsTabPage.Controls.OfType<TableLayoutPanel>().First(x => x.Contains(senderComboBox));
 
-                var multilineBox = table.Controls.OfType<TextBox>().FirstOrDefault(x => x.Multiline);
-                if (multilineBox != null)
-                    multilineBox.Visible = m_TempBinding.controlBindings[index].bindingType == BindingType.Script;
+            var textBox = panel.Controls.OfType<TextBox>().FirstOrDefault(x => !x.Multiline);
+            if (textBox != null)
+                textBox.Visible = m_TempBinding.controlBindings[index].bindingType == BindingType.Key;
 
-                var specialComboBox = table.Controls.OfType<ComboBox>().FirstOrDefault(x => table.GetRow(x) == 2);
-                if (specialComboBox != null)
-                    specialComboBox.Visible =
-                        m_TempBinding.controlBindings[index].bindingType == BindingType.SpecialAction;
-            }
+            var multilineBox = panel.Controls.OfType<TextBox>().FirstOrDefault(x => x.Multiline);
+            if (multilineBox != null)
+                multilineBox.Visible = m_TempBinding.controlBindings[index].bindingType == BindingType.Script;
 
-            Refresh(); ;
+            var specialComboBox = panel.Controls.OfType<ComboBox>().FirstOrDefault(x => panel.GetRow(x) == 2);
+            if (specialComboBox != null)
+                specialComboBox.Visible =
+                    m_TempBinding.controlBindings[index].bindingType == BindingType.SpecialAction;
+
+            Refresh();
         }
 
         private void OnScriptChanged(object sender, EventArgs e)
         {
             var senderTextBox = sender as TextBox;
 
-            if (senderTextBox == null || senderTextBox.Multiline == false)
+            if (senderTextBox == null || senderTextBox.Multiline == false || !initialized)
                 return;
 
             var index =
@@ -219,7 +225,7 @@ namespace D360
         {
             var senderTextBox = sender as TextBox;
 
-            if (!m_EditingConfig || senderTextBox == null)
+            if (!m_EditingConfig || senderTextBox == null || !initialized)
                 return;
 
             var index =
@@ -251,7 +257,7 @@ namespace D360
         {
             var senderCheck = sender as CheckBox;
 
-            if (senderCheck == null)
+            if (senderCheck == null || !initialized)
                 return;
 
             var index =
@@ -281,7 +287,7 @@ namespace D360
         {
             var senderCheckBox = sender as CheckBox;
 
-            if (senderCheckBox == null)
+            if (senderCheckBox == null || !initialized)
                 return;
 
             var parentTable = senderCheckBox.Parent as TableLayoutPanel;
@@ -310,9 +316,95 @@ namespace D360
                 changedControls++;
             }
             else
+                changedControls--;
+
+            Refresh();
+        }
+
+        private void OnDeadZoneValueChanged(object sender, EventArgs e)
+        {
+            var tempTriggerConfig = m_TempBinding as TriggerConfig;
+            var tempStickConfig = m_TempBinding as StickConfig;
+
+            if (tempTriggerConfig == null && tempStickConfig == null || !initialized)
+                return;
+
+            deadZoneValueLabel.Text = deadZoneTrackBar.Value + @"%";
+
+            var isDifferent = false;
+            if (tempTriggerConfig != null)
+            {
+                tempTriggerConfig.deadzone = deadZoneTrackBar.Value / 100f;
+
+                var triggerConfig = bindings as TriggerConfig;
+                if (triggerConfig != null)
+                    isDifferent = Math.Abs(tempTriggerConfig.deadzone - triggerConfig.deadzone) > float.Epsilon;
+            }
+            if (tempStickConfig != null)
+            {
+                tempStickConfig.moveDeadzone = deadZoneTrackBar.Value / 100f;
+
+                var stickConfig = bindings as StickConfig;
+                if (stickConfig != null)
+                    isDifferent = Math.Abs(tempStickConfig.moveDeadzone - stickConfig.moveDeadzone) > float.Epsilon;
+            }
+
+            if (isDifferent && !deadZoneLabel.Text.Contains("*"))
+            {
+                changedControls++;
+                deadZoneLabel.Text += '*';
+            }
+            else if (!isDifferent)
             {
                 changedControls--;
+                deadZoneLabel.Text = deadZoneLabel.Text.TrimEnd('*');
             }
+
+            Refresh();
+        }
+
+        private void OnActionZoneValueChanged(object sender, EventArgs e)
+        {
+            var tempStickConfig = m_TempBinding as StickConfig;
+            var stickConfig = bindings as StickConfig;
+
+            if (tempStickConfig == null || stickConfig == null || !initialized)
+                return;
+
+            actionZoneValueLabel.Text = actionZoneTrackBar.Value + @"%";
+
+            tempStickConfig.actionDeadzone = actionZoneTrackBar.Value / 100f;
+
+            var isDifferent = Math.Abs(tempStickConfig.actionDeadzone - stickConfig.actionDeadzone) > float.Epsilon;
+            if (isDifferent && !actionZoneLabel.Text.Contains("*"))
+            {
+                changedControls++;
+                actionZoneLabel.Text += '*';
+            }
+            else if (!isDifferent)
+            {
+                changedControls--;
+                actionZoneLabel.Text = actionZoneLabel.Text.TrimEnd('*');
+            }
+
+            Refresh();
+        }
+
+        private void OnStickModeChanged(object sender, EventArgs e)
+        {
+            var tempStickConfig = m_TempBinding as StickConfig;
+            var stickConfig = bindings as StickConfig;
+
+            if (tempStickConfig == null || stickConfig == null || !initialized)
+                return;
+
+            tempStickConfig.mode = (StickMode)modeComboBox.SelectedItem;
+
+            var isDifferent = tempStickConfig.mode != stickConfig.mode;
+            if (isDifferent)
+                changedControls++;
+            else
+                changedControls--;
 
             Refresh();
         }
@@ -489,6 +581,52 @@ namespace D360
             m_TableCount++;
 
             return newPanel;
+        }
+
+        private void CopyConfig(BindingConfig source, BindingConfig destination)
+        {
+            var triggerBinding = source as TriggerConfig;
+            var destTriggerBinding = destination as TriggerConfig;
+
+            var stickConfig = source as StickConfig;
+            var destStickConfig = destination as StickConfig;
+
+            if (triggerBinding != null && destTriggerBinding != null)
+                destTriggerBinding.deadzone = triggerBinding.deadzone;
+            else if (stickConfig != null && destStickConfig != null)
+            {
+                destStickConfig.moveDeadzone = stickConfig.moveDeadzone;
+                destStickConfig.actionDeadzone = stickConfig.actionDeadzone;
+                destStickConfig.mode = stickConfig.mode;
+            }
+
+            destination.controlBindings.Clear();
+            foreach (var binding in source.controlBindings)
+            {
+                destination.controlBindings.Add(
+                    new ControlBinding
+                    {
+                        keys = binding.keys,
+                        script = binding.script,
+
+                        onHold = binding.onHold,
+                        bindingMode = binding.bindingMode,
+                        bindingType = binding.bindingType
+                    });
+                bindingsTabPage.Controls.Add(CreateNewBinding(binding));
+            }
+        }
+        private void InitializeTempConfig()
+        {
+            var triggerBinding = bindings as TriggerConfig;
+            var stickConfig = bindings as StickConfig;
+
+            if (triggerBinding != null)
+                m_TempBinding = new TriggerConfig();
+            else if (stickConfig != null)
+                m_TempBinding = new StickConfig();
+            else
+                m_TempBinding = new BindingConfig();
         }
     }
 }

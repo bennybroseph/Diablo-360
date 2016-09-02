@@ -35,28 +35,30 @@
             this.defaultMoveRadio = new System.Windows.Forms.RadioButton();
             this.defaultPanel = new System.Windows.Forms.TableLayoutPanel();
             this.defaultDelete = new System.Windows.Forms.Button();
+            this.defaultComboBox = new System.Windows.Forms.ComboBox();
             this.addButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.bindingsTabPage = new System.Windows.Forms.TabPage();
             this.otherTabPage = new System.Windows.Forms.TabPage();
-            this.deadZoneTrackBar = new System.Windows.Forms.TrackBar();
-            this.deadZoneLabel = new System.Windows.Forms.Label();
-            this.defaultComboBox = new System.Windows.Forms.ComboBox();
-            this.defaultTextBox = new D360.CustomTextBox();
+            this.modeLabel = new System.Windows.Forms.Label();
+            this.actionZoneValueLabel = new System.Windows.Forms.Label();
+            this.deadZoneValueLabel = new System.Windows.Forms.Label();
+            this.modeComboBox = new System.Windows.Forms.ComboBox();
             this.actionZoneLabel = new System.Windows.Forms.Label();
             this.actionZoneTrackBar = new System.Windows.Forms.TrackBar();
-            this.modeComboBox = new System.Windows.Forms.ComboBox();
-            this.deadZoneValueLabel = new System.Windows.Forms.Label();
-            this.actionZoneValueLabel = new System.Windows.Forms.Label();
-            this.modeLabel = new System.Windows.Forms.Label();
+            this.deadZoneLabel = new System.Windows.Forms.Label();
+            this.deadZoneTrackBar = new System.Windows.Forms.TrackBar();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.defaultTextBox = new D360.CustomTextBox();
             this.defaultPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.bindingsTabPage.SuspendLayout();
             this.otherTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.deadZoneTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.actionZoneTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deadZoneTrackBar)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // defaultLabel
@@ -129,6 +131,7 @@
             this.defaultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.5F));
             this.defaultPanel.Size = new System.Drawing.Size(209, 145);
             this.defaultPanel.TabIndex = 36;
+            this.defaultPanel.Visible = false;
             // 
             // defaultDelete
             // 
@@ -140,6 +143,17 @@
             this.defaultDelete.TabIndex = 33;
             this.defaultDelete.Text = "Delete Binding";
             this.defaultDelete.UseVisualStyleBackColor = true;
+            // 
+            // defaultComboBox
+            // 
+            this.defaultPanel.SetColumnSpan(this.defaultComboBox, 2);
+            this.defaultComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.defaultComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultComboBox.FormattingEnabled = true;
+            this.defaultComboBox.Location = new System.Drawing.Point(3, 24);
+            this.defaultComboBox.Name = "defaultComboBox";
+            this.defaultComboBox.Size = new System.Drawing.Size(203, 21);
+            this.defaultComboBox.TabIndex = 34;
             // 
             // addButton
             // 
@@ -155,7 +169,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveButton.Location = new System.Drawing.Point(6, 183);
+            this.saveButton.Location = new System.Drawing.Point(3, 3);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 38;
@@ -166,7 +180,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(140, 183);
+            this.cancelButton.Location = new System.Drawing.Point(151, 3);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 39;
@@ -182,73 +196,140 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(229, 238);
+            this.tabControl1.Size = new System.Drawing.Size(229, 233);
             this.tabControl1.TabIndex = 40;
             // 
             // bindingsTabPage
             // 
             this.bindingsTabPage.Controls.Add(this.defaultPanel);
             this.bindingsTabPage.Controls.Add(this.addButton);
-            this.bindingsTabPage.Controls.Add(this.cancelButton);
-            this.bindingsTabPage.Controls.Add(this.saveButton);
             this.bindingsTabPage.Location = new System.Drawing.Point(4, 22);
             this.bindingsTabPage.Name = "bindingsTabPage";
             this.bindingsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.bindingsTabPage.Size = new System.Drawing.Size(221, 212);
+            this.bindingsTabPage.Size = new System.Drawing.Size(221, 207);
             this.bindingsTabPage.TabIndex = 0;
             this.bindingsTabPage.Text = "Bindings";
             this.bindingsTabPage.UseVisualStyleBackColor = true;
             // 
             // otherTabPage
             // 
+            this.otherTabPage.Controls.Add(this.actionZoneLabel);
             this.otherTabPage.Controls.Add(this.modeLabel);
             this.otherTabPage.Controls.Add(this.actionZoneValueLabel);
             this.otherTabPage.Controls.Add(this.deadZoneValueLabel);
             this.otherTabPage.Controls.Add(this.modeComboBox);
-            this.otherTabPage.Controls.Add(this.actionZoneLabel);
             this.otherTabPage.Controls.Add(this.actionZoneTrackBar);
             this.otherTabPage.Controls.Add(this.deadZoneLabel);
             this.otherTabPage.Controls.Add(this.deadZoneTrackBar);
             this.otherTabPage.Location = new System.Drawing.Point(4, 22);
             this.otherTabPage.Name = "otherTabPage";
             this.otherTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.otherTabPage.Size = new System.Drawing.Size(221, 212);
+            this.otherTabPage.Size = new System.Drawing.Size(221, 207);
             this.otherTabPage.TabIndex = 1;
             this.otherTabPage.Text = "Other";
             this.otherTabPage.UseVisualStyleBackColor = true;
             // 
-            // deadZoneTrackBar
+            // modeLabel
             // 
-            this.deadZoneTrackBar.AutoSize = false;
-            this.deadZoneTrackBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.deadZoneTrackBar.Location = new System.Drawing.Point(6, 45);
-            this.deadZoneTrackBar.Margin = new System.Windows.Forms.Padding(3, 3, 3, 6);
-            this.deadZoneTrackBar.Maximum = 100;
-            this.deadZoneTrackBar.Name = "deadZoneTrackBar";
-            this.deadZoneTrackBar.Size = new System.Drawing.Size(209, 25);
-            this.deadZoneTrackBar.TabIndex = 0;
-            this.deadZoneTrackBar.TickFrequency = 10;
+            this.modeLabel.Location = new System.Drawing.Point(6, 138);
+            this.modeLabel.Name = "modeLabel";
+            this.modeLabel.Size = new System.Drawing.Size(209, 13);
+            this.modeLabel.TabIndex = 6;
+            this.modeLabel.Text = "Mode";
+            this.modeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.modeLabel.Visible = false;
+            // 
+            // actionZoneValueLabel
+            // 
+            this.actionZoneValueLabel.Location = new System.Drawing.Point(6, 91);
+            this.actionZoneValueLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.actionZoneValueLabel.Name = "actionZoneValueLabel";
+            this.actionZoneValueLabel.Size = new System.Drawing.Size(209, 13);
+            this.actionZoneValueLabel.TabIndex = 5;
+            this.actionZoneValueLabel.Text = "Value%";
+            this.actionZoneValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.actionZoneValueLabel.Visible = false;
+            // 
+            // deadZoneValueLabel
+            // 
+            this.deadZoneValueLabel.Location = new System.Drawing.Point(6, 19);
+            this.deadZoneValueLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.deadZoneValueLabel.Name = "deadZoneValueLabel";
+            this.deadZoneValueLabel.Size = new System.Drawing.Size(209, 13);
+            this.deadZoneValueLabel.TabIndex = 4;
+            this.deadZoneValueLabel.Text = "Value%";
+            this.deadZoneValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.deadZoneValueLabel.Visible = false;
+            // 
+            // modeComboBox
+            // 
+            this.modeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.modeComboBox.FormattingEnabled = true;
+            this.modeComboBox.Location = new System.Drawing.Point(6, 154);
+            this.modeComboBox.Name = "modeComboBox";
+            this.modeComboBox.Size = new System.Drawing.Size(209, 21);
+            this.modeComboBox.TabIndex = 3;
+            this.modeComboBox.Visible = false;
+            this.modeComboBox.SelectedIndexChanged += new System.EventHandler(this.OnStickModeChanged);
+            // 
+            // actionZoneLabel
+            // 
+            this.actionZoneLabel.Location = new System.Drawing.Point(6, 72);
+            this.actionZoneLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.actionZoneLabel.Name = "actionZoneLabel";
+            this.actionZoneLabel.Size = new System.Drawing.Size(209, 13);
+            this.actionZoneLabel.TabIndex = 1;
+            this.actionZoneLabel.Text = "Action Dead Zone";
+            this.actionZoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.actionZoneLabel.Visible = false;
+            // 
+            // actionZoneTrackBar
+            // 
+            this.actionZoneTrackBar.AutoSize = false;
+            this.actionZoneTrackBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.actionZoneTrackBar.Location = new System.Drawing.Point(6, 110);
+            this.actionZoneTrackBar.Maximum = 100;
+            this.actionZoneTrackBar.Name = "actionZoneTrackBar";
+            this.actionZoneTrackBar.Size = new System.Drawing.Size(209, 25);
+            this.actionZoneTrackBar.TabIndex = 2;
+            this.actionZoneTrackBar.TickFrequency = 10;
+            this.actionZoneTrackBar.Visible = false;
+            this.actionZoneTrackBar.ValueChanged += new System.EventHandler(this.OnActionZoneValueChanged);
             // 
             // deadZoneLabel
             // 
-            this.deadZoneLabel.Location = new System.Drawing.Point(6, 3);
+            this.deadZoneLabel.Location = new System.Drawing.Point(6, 0);
             this.deadZoneLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.deadZoneLabel.Name = "deadZoneLabel";
             this.deadZoneLabel.Size = new System.Drawing.Size(209, 13);
             this.deadZoneLabel.TabIndex = 0;
             this.deadZoneLabel.Text = "Dead Zone";
             this.deadZoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.deadZoneLabel.Visible = false;
             // 
-            // defaultComboBox
+            // deadZoneTrackBar
             // 
-            this.defaultPanel.SetColumnSpan(this.defaultComboBox, 2);
-            this.defaultComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.defaultComboBox.FormattingEnabled = true;
-            this.defaultComboBox.Location = new System.Drawing.Point(3, 24);
-            this.defaultComboBox.Name = "defaultComboBox";
-            this.defaultComboBox.Size = new System.Drawing.Size(203, 21);
-            this.defaultComboBox.TabIndex = 34;
+            this.deadZoneTrackBar.AutoSize = false;
+            this.deadZoneTrackBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.deadZoneTrackBar.Location = new System.Drawing.Point(6, 38);
+            this.deadZoneTrackBar.Margin = new System.Windows.Forms.Padding(3, 3, 3, 6);
+            this.deadZoneTrackBar.Maximum = 100;
+            this.deadZoneTrackBar.Name = "deadZoneTrackBar";
+            this.deadZoneTrackBar.Size = new System.Drawing.Size(209, 25);
+            this.deadZoneTrackBar.TabIndex = 0;
+            this.deadZoneTrackBar.TickFrequency = 10;
+            this.deadZoneTrackBar.Visible = false;
+            this.deadZoneTrackBar.ValueChanged += new System.EventHandler(this.OnDeadZoneValueChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.saveButton);
+            this.panel1.Controls.Add(this.cancelButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 204);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(229, 29);
+            this.panel1.TabIndex = 41;
             // 
             // defaultTextBox
             // 
@@ -263,71 +344,12 @@
             this.defaultTextBox.TabIndex = 29;
             this.defaultTextBox.Text = "Default Binding";
             // 
-            // actionZoneLabel
-            // 
-            this.actionZoneLabel.Location = new System.Drawing.Point(6, 79);
-            this.actionZoneLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.actionZoneLabel.Name = "actionZoneLabel";
-            this.actionZoneLabel.Size = new System.Drawing.Size(209, 13);
-            this.actionZoneLabel.TabIndex = 1;
-            this.actionZoneLabel.Text = "Action Dead Zone";
-            this.actionZoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // actionZoneTrackBar
-            // 
-            this.actionZoneTrackBar.AutoSize = false;
-            this.actionZoneTrackBar.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.actionZoneTrackBar.Location = new System.Drawing.Point(6, 121);
-            this.actionZoneTrackBar.Maximum = 100;
-            this.actionZoneTrackBar.Name = "actionZoneTrackBar";
-            this.actionZoneTrackBar.Size = new System.Drawing.Size(209, 25);
-            this.actionZoneTrackBar.TabIndex = 2;
-            this.actionZoneTrackBar.TickFrequency = 10;
-            // 
-            // modeComboBox
-            // 
-            this.modeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.modeComboBox.FormattingEnabled = true;
-            this.modeComboBox.Location = new System.Drawing.Point(6, 185);
-            this.modeComboBox.Name = "modeComboBox";
-            this.modeComboBox.Size = new System.Drawing.Size(209, 21);
-            this.modeComboBox.TabIndex = 3;
-            // 
-            // deadZoneValueLabel
-            // 
-            this.deadZoneValueLabel.Location = new System.Drawing.Point(6, 22);
-            this.deadZoneValueLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.deadZoneValueLabel.Name = "deadZoneValueLabel";
-            this.deadZoneValueLabel.Size = new System.Drawing.Size(209, 17);
-            this.deadZoneValueLabel.TabIndex = 4;
-            this.deadZoneValueLabel.Text = "Value%";
-            this.deadZoneValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // actionZoneValueLabel
-            // 
-            this.actionZoneValueLabel.Location = new System.Drawing.Point(6, 98);
-            this.actionZoneValueLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.actionZoneValueLabel.Name = "actionZoneValueLabel";
-            this.actionZoneValueLabel.Size = new System.Drawing.Size(209, 17);
-            this.actionZoneValueLabel.TabIndex = 5;
-            this.actionZoneValueLabel.Text = "Value%";
-            this.actionZoneValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // modeLabel
-            // 
-            this.modeLabel.Location = new System.Drawing.Point(6, 166);
-            this.modeLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.modeLabel.Name = "modeLabel";
-            this.modeLabel.Size = new System.Drawing.Size(209, 13);
-            this.modeLabel.TabIndex = 6;
-            this.modeLabel.Text = "Mode";
-            this.modeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // BindingConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(229, 238);
+            this.ClientSize = new System.Drawing.Size(229, 233);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -342,8 +364,9 @@
             this.tabControl1.ResumeLayout(false);
             this.bindingsTabPage.ResumeLayout(false);
             this.otherTabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.deadZoneTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.actionZoneTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.deadZoneTrackBar)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -372,5 +395,6 @@
         private System.Windows.Forms.Label modeLabel;
         private System.Windows.Forms.Label actionZoneValueLabel;
         private System.Windows.Forms.Label deadZoneValueLabel;
+        private System.Windows.Forms.Panel panel1;
     }
 }
