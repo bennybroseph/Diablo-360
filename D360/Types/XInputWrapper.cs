@@ -3,16 +3,27 @@ using D360.Utility;
 
 namespace D360.Types
 {
-    public enum GamePadButtonStates
+    public enum ControlState
     {
-        /// Button is not pressed
+        /// <summary> Button is not pressed </summary>
         Released,
-        /// Button was released this frame
+        /// <summary> Button was released this frame </summary>
         OnRelease,
-        /// Button was pressed this frame
+
+        /// <summary> Button was pressed this frame </summary>
         OnPress,
-        /// Button is being held down
+        /// <summary> Button is being held down </summary>
         Pressed
+    }
+
+    public enum ControlType
+    {
+        None = 0,
+
+        Buttons,
+        DPad,
+        Triggers,
+        ThumbSticks
     }
 
     public enum GamePadControl
@@ -47,37 +58,6 @@ namespace D360.Types
         Guide = 1 << 18
     }
 
-    public enum GamePadButton
-    {
-        None = 0,
-
-        A = 1 << 0,
-        B = 1 << 1,
-        X = 1 << 2,
-        Y = 1 << 3,
-
-        Start = 1 << 4,
-        Back = 1 << 5,
-
-        LeftShoulder = 1 << 6,
-        RightShoulder = 1 << 7,
-
-        LeftStick = 1 << 8,
-        RightStick = 1 << 9,
-
-        Guide = 1 << 10
-    }
-
-    public enum GamePadDPadButton
-    {
-        None = 0,
-
-        Down = 1 << 0,
-        Left = 1 << 1,
-        Right = 1 << 2,
-        Up = 1 << 3,
-    }
-
     public static class GamePadUtility
     {
         private static string ParseControlName(string str)
@@ -92,23 +72,74 @@ namespace D360.Types
                     Replace("EditButton", "");
         }
 
-        public static TControl ParseControl<TControl>(string str)
+        public static GamePadControl ParseControl(string str)
         {
-            object returnValue = 0;
-
             if (string.IsNullOrEmpty(str))
-                return (TControl)returnValue;
+                return GamePadControl.None;
 
             try
             {
-                return (TControl)Enum.Parse(typeof(TControl), ParseControlName(str), true);
+                return (GamePadControl)Enum.Parse(typeof(GamePadControl), ParseControlName(str), true);
             }
             catch (Exception e)
             {
                 HUDForm.WriteToLog(e);
             }
 
-            return (TControl)returnValue;
+            return GamePadControl.None;
+        }
+
+        public static string ParseOrientation(this GamePadControl control)
+        {
+            if (control.ToString().Contains("Left"))
+                return "Left";
+            if (control.ToString().Contains("Right"))
+                return "Right";
+
+            return null;
+        }
+
+        public static ControlType ParseControlType(this GamePadControl control)
+        {
+            switch (control)
+            {
+            case GamePadControl.None:
+                return ControlType.None;
+
+            case GamePadControl.A:
+            case GamePadControl.B:
+            case GamePadControl.X:
+            case GamePadControl.Y:
+
+            case GamePadControl.Start:
+            case GamePadControl.Back:
+
+            case GamePadControl.LeftShoulder:
+            case GamePadControl.RightShoulder:
+
+            case GamePadControl.LeftStickButton:
+            case GamePadControl.RightStickButton:
+
+            case GamePadControl.Guide:
+                return ControlType.Buttons;
+
+            case GamePadControl.Down:
+            case GamePadControl.Left:
+            case GamePadControl.Right:
+            case GamePadControl.Up:
+                return ControlType.DPad;
+
+            case GamePadControl.LeftTrigger:
+            case GamePadControl.RightTrigger:
+                return ControlType.Triggers;
+
+            case GamePadControl.LeftStick:
+            case GamePadControl.RightStick:
+                return ControlType.ThumbSticks;
+
+            default:
+                return ControlType.None;
+            }
         }
     }
 }

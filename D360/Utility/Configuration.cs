@@ -11,8 +11,10 @@ namespace D360.Utility
     {
         None,
 
-        Pointer,
-        Move
+        Pointer = 1 << 0,
+        Move = 1 << 1,
+        Inventory = 1 << 2,
+        Config = 1 << 3
     }
 
     [Serializable]
@@ -27,14 +29,23 @@ namespace D360.Utility
     [Serializable]
     public class BindingConfig
     {
-        public List<ControlBinding> controlBindings;
+        public List<ControlBinding> controlBindings = new List<ControlBinding>();
+    }
+
+    public enum StickMode
+    {
+        Cursor,
+        Target
     }
     [Serializable]
     public class StickConfig : BindingConfig
     {
         public float moveDeadzone;
         public float actionDeadzone;
+
+        public StickMode mode;
     }
+
     [Serializable]
     public class TriggerConfig : BindingConfig
     {
@@ -47,24 +58,43 @@ namespace D360.Utility
         public Action leftTriggerBinding;
         public Action rightTriggerBinding;
 
-        public Dictionary<GamePadButton, List<ControlBinding>> buttonBindings =
-            new Dictionary<GamePadButton, List<ControlBinding>>();
-        public Dictionary<GamePadDPadButton, List<ControlBinding>> dPadBindings =
-            new Dictionary<GamePadDPadButton, List<ControlBinding>>();
+        public Dictionary<GamePadControl, BindingConfig> bindingConfigs =
+            new Dictionary<GamePadControl, BindingConfig>();
 
         public Configuration()
         {
             leftTriggerBinding = Action.ActionbarSkill1;
             rightTriggerBinding = Action.ActionbarSkill2;
 
-            foreach (GamePadButton button in Enum.GetValues(typeof(GamePadButton)))
+            foreach (GamePadControl button in Enum.GetValues(typeof(GamePadControl)))
             {
-                var newBindings = new List<ControlBinding>();
+                BindingConfig newBindingConfig;
+
+                switch (button.ParseControlType())
+                {
+                case ControlType.Buttons:
+                case ControlType.DPad:
+                    newBindingConfig = new BindingConfig();
+                    break;
+
+                case ControlType.Triggers:
+                    newBindingConfig = new TriggerConfig();
+                    break;
+
+                case ControlType.ThumbSticks:
+                    newBindingConfig = new StickConfig();
+                    break;
+
+                default:
+                    newBindingConfig = new BindingConfig();
+                    break;
+                }
+
                 ControlBinding newControlBinding;
                 switch (button)
                 {
 
-                case GamePadButton.Start:
+                case GamePadControl.Start:
                     {
                         newControlBinding = new ControlBinding
                         {
@@ -72,10 +102,10 @@ namespace D360.Utility
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                     }
                     break;
-                case GamePadButton.Back:
+                case GamePadControl.Back:
                     {
                         newControlBinding = new ControlBinding
                         {
@@ -83,11 +113,11 @@ namespace D360.Utility
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                     }
                     break;
 
-                case GamePadButton.LeftShoulder:
+                case GamePadControl.LeftShoulder:
                     {
                         newControlBinding = new ControlBinding
                         {
@@ -95,17 +125,17 @@ namespace D360.Utility
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                         newControlBinding = new ControlBinding
                         {
                             keys = Keys.D2,
                             onHold = true,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                     }
                     break;
-                case GamePadButton.RightShoulder:
+                case GamePadControl.RightShoulder:
                     {
                         newControlBinding = new ControlBinding
                         {
@@ -113,23 +143,27 @@ namespace D360.Utility
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                         newControlBinding = new ControlBinding
                         {
                             keys = Keys.D4,
                             onHold = true,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                     }
                     break;
 
-                case GamePadButton.LeftStick:
-                    break;
-                case GamePadButton.RightStick:
-                    break;
-
-                case GamePadButton.Guide:
+                case GamePadControl.LeftStick:
+                    {
+                        newControlBinding = new ControlBinding
+                        {
+                            keys = Keys.Space,
+                            onHold = false,
+                            bindingMode = BindingMode.Move
+                        };
+                        newBindingConfig.controlBindings.Add(newControlBinding);
+                    }
                     break;
 
                 default:
@@ -140,30 +174,11 @@ namespace D360.Utility
                             onHold = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBindings.Add(newControlBinding);
+                        newBindingConfig.controlBindings.Add(newControlBinding);
                     }
                     break;
                 }
-                buttonBindings.Add(button, newBindings);
-            }
-
-            foreach (GamePadDPadButton button in Enum.GetValues(typeof(GamePadDPadButton)))
-            {
-                var newBindings = new List<ControlBinding>();
-                ControlBinding newControlBinding;
-                switch (button)
-                {
-                default:
-                    newControlBinding = new ControlBinding
-                    {
-                        keys = Keys.None,
-                        onHold = false,
-                        bindingMode = BindingMode.Move
-                    };
-                    newBindings.Add(newControlBinding);
-                    break;
-                }
-                dPadBindings.Add(button, newBindings);
+                bindingConfigs.Add(button, newBindingConfig);
             }
         }
     }

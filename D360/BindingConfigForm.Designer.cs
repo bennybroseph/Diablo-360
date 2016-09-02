@@ -1,6 +1,6 @@
 ﻿namespace D360
 {
-    partial class BindingConfig
+    partial class BindingConfigForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BindingConfig));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BindingConfigForm));
             this.defaultLabel = new System.Windows.Forms.Label();
             this.defaultHeldCheck = new System.Windows.Forms.CheckBox();
             this.defaultPointerRadio = new System.Windows.Forms.RadioButton();
@@ -167,7 +167,7 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.OnCancelClick);
             // 
-            // BindingConfig
+            // BindingConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -180,7 +180,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "BindingConfig";
+            this.Name = "BindingConfigForm";
             this.Text = "Binding Config";
             this.Load += new System.EventHandler(this.OnLoad);
             this.Shown += new System.EventHandler(this.OnShow);

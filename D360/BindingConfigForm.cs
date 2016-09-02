@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,15 +6,15 @@ using D360.Utility;
 
 namespace D360
 {
-    public partial class BindingConfig : Form
+    public partial class BindingConfigForm : Form
     {
         public Form parentForm;
         private int m_TableCount;
 
         private bool m_EditingConfig;
 
-        public List<ControlBinding> bindings;
-        private List<ControlBinding> m_TempBinding = new List<ControlBinding>();
+        public BindingConfig bindings;
+        private BindingConfig m_TempBinding = new BindingConfig();
 
         private Size m_DefaultSize;
 
@@ -30,7 +29,7 @@ namespace D360
             }
         }
 
-        public BindingConfig()
+        public BindingConfigForm()
         {
             InitializeComponent();
             defaultPanel.Hide();
@@ -45,10 +44,10 @@ namespace D360
 
         private void OnShow(object sender, EventArgs e)
         {
-            m_TempBinding.Clear();
-            foreach (var binding in bindings)
+            m_TempBinding.controlBindings.Clear();
+            foreach (var binding in bindings.controlBindings)
             {
-                m_TempBinding.Add(
+                m_TempBinding.controlBindings.Add(
                     new ControlBinding
                     {
                         keys = binding.keys,
@@ -63,10 +62,10 @@ namespace D360
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            bindings.Clear();
-            foreach (var gamePadBinding in m_TempBinding)
+            bindings.controlBindings.Clear();
+            foreach (var gamePadBinding in m_TempBinding.controlBindings)
             {
-                bindings.Add(
+                bindings.controlBindings.Add(
                     new ControlBinding
                     {
                         keys = gamePadBinding.keys,
@@ -97,7 +96,7 @@ namespace D360
         private void OnAddClick(object sender, EventArgs e)
         {
             var newBinding = new ControlBinding();
-            m_TempBinding.Add(newBinding);
+            m_TempBinding.controlBindings.Add(newBinding);
             Controls.Add(CreateNewBinding(newBinding));
 
             ProperResize();
@@ -115,7 +114,7 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<Button>().All(button => button != senderButton)).
                         Count() - 1;
 
-            m_TempBinding.RemoveAt(index);
+            m_TempBinding.controlBindings.RemoveAt(index);
 
             Controls.Remove(senderButton.Parent);
             --m_TableCount;
@@ -153,10 +152,11 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<TextBox>().All(textBox => textBox != senderTextBox)).
                         Count() - 1;
 
-            m_TempBinding[index].keys = e.KeyData;
+            m_TempBinding.controlBindings[index].keys = e.KeyData;
 
             var isDifferent =
-                bindings.Count <= index || m_TempBinding[index].keys != bindings[index].keys;
+                bindings.controlBindings.Count <= index || 
+                m_TempBinding.controlBindings[index].keys != bindings.controlBindings[index].keys;
 
             senderTextBox.Text = e.KeyData.ToString();
             senderTextBox.BackColor = defaultTextBox.BackColor;
@@ -184,10 +184,11 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<CheckBox>().All(checkBox => checkBox != senderCheck)).
                         Count() - 1;
 
-            m_TempBinding[index].onHold = senderCheck.Checked;
+            m_TempBinding.controlBindings[index].onHold = senderCheck.Checked;
 
             var isDifferent =
-                bindings.Count <= index || m_TempBinding[index].onHold != bindings[index].onHold;
+                bindings.controlBindings.Count <= index || 
+                m_TempBinding.controlBindings[index].onHold != bindings.controlBindings[index].onHold;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -219,11 +220,11 @@ namespace D360
                         All(radioButton => radioButton != senderRadio)).
                     Count() - 1;
 
-            m_TempBinding[index].bindingMode = (BindingMode)parentTable.GetColumn(senderRadio) + 1;
+            m_TempBinding.controlBindings[index].bindingMode = (BindingMode)parentTable.GetColumn(senderRadio) + 1;
 
             var isDifferent =
-                bindings.Count <= index ||
-                m_TempBinding[index].bindingMode != bindings[index].bindingMode;
+                bindings.controlBindings.Count <= index ||
+                m_TempBinding.controlBindings[index].bindingMode != bindings.controlBindings[index].bindingMode;
 
             var panel =
                 Controls.OfType<TableLayoutPanel>().ElementAt(index);

@@ -71,11 +71,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindingConfig.cs">
+    <Compile Include="BindingConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BindingConfig.Designer.cs">
-      <DependentUpon>BindingConfig.cs</DependentUpon>
+    <Compile Include="BindingConfigForm.Designer.cs">
+      <DependentUpon>BindingConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\InputManager.cs" />
     <Compile Include="Utility\BinarySerializer.cs" />
@@ -123,8 +123,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InputEmulation\VirtualKeyboard.cs" />
     <Compile Include="Types\UIntVector.cs" />
-    <EmbeddedResource Include="BindingConfig.resx">
-      <DependentUpon>BindingConfig.cs</DependentUpon>
+    <EmbeddedResource Include="BindingConfigForm.resx">
+      <DependentUpon>BindingConfigForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>

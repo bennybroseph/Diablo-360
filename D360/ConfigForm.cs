@@ -9,7 +9,7 @@ namespace D360
     public partial class ConfigForm : Form
     {
 
-        private BindingConfig m_BindingConfig;
+        private BindingConfigForm m_BindingConfigForm;
         public InputManager inputManager;
 
 
@@ -44,53 +44,49 @@ namespace D360
             if (senderButton == null)
                 return;
 
-            m_BindingConfig?.Close();
+            m_BindingConfigForm?.Close();
 
-            var button = GamePadUtility.ParseControl<GamePadButton>(senderButton.Name);
-            var dPadButton = GamePadUtility.ParseControl<GamePadDPadButton>(senderButton.Name);
+            var control = GamePadUtility.ParseControl(senderButton.Name);
 
-            m_BindingConfig = new BindingConfig
+            m_BindingConfigForm = new BindingConfigForm
             {
                 parentForm = this,
-                bindings =
-                    button != GamePadButton.None ?
-                        m_TempConfig.buttonBindings[button] :
-                        m_TempConfig.dPadBindings[dPadButton]
+                bindings = m_TempConfig.bindingConfigs[control]
             };
-            m_BindingConfig.Show();
+            m_BindingConfigForm.Show();
         }
 
         private void OnVisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
-                m_BindingConfig?.Close();
+                m_BindingConfigForm?.Close();
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
 
-            m_BindingConfig.Close();
+            m_BindingConfigForm.Close();
             Hide();
         }
 
         private void OnShown(object sender, EventArgs e)
         {
-            m_TempConfig.buttonBindings =
-                new Dictionary<GamePadButton, List<ControlBinding>>(inputManager.configuration.buttonBindings);
+            m_TempConfig.bindingConfigs =
+                new Dictionary<GamePadControl, Utility.BindingConfig>(inputManager.configuration.bindingConfigs);
 
             Refresh();
         }
 
         private void OnMove(object sender, EventArgs e)
         {
-            m_BindingConfig?.OnParentMove();
+            m_BindingConfigForm?.OnParentMove();
         }
 
         private void OnResize(object sender, EventArgs e)
         {
-            if (m_BindingConfig != null)
-                m_BindingConfig.WindowState = WindowState;
+            if (m_BindingConfigForm != null)
+                m_BindingConfigForm.WindowState = WindowState;
         }
     }
 }
