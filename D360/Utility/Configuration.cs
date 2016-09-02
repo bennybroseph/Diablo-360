@@ -7,23 +7,33 @@ using Action = D360.Types.Action;
 
 namespace D360.Utility
 {
+    [Flags]
     public enum BindingMode
     {
         None,
 
-        Pointer = 1 << 0,
-        Move = 1 << 1,
+        Move = 1 << 0,
+        Pointer = 1 << 1,
         Inventory = 1 << 2,
         Config = 1 << 3
+    }
+
+    public enum BindingType
+    {
+        Key,
+        SpecialAction,
+        Script,
     }
 
     [Serializable]
     public class ControlBinding
     {
-        public Keys keys;
+        public Keys keys = Keys.None;
+        public string script = string.Empty;
 
         public bool onHold;
-        public BindingMode bindingMode;
+        public BindingMode bindingMode = BindingMode.Move;
+        public BindingType bindingType = BindingType.Key;
     }
 
     [Serializable]

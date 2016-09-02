@@ -25,7 +25,7 @@ namespace D360.Types
         Triggers,
         ThumbSticks
     }
-
+    [Flags]
     public enum GamePadControl
     {
         None = 0,
