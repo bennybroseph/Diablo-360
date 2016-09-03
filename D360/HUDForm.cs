@@ -60,8 +60,8 @@ namespace D360
 
             StartPosition = FormStartPosition.Manual;
 
-            var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            var screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            var screenHeight = Screen.PrimaryScreen.Bounds.Height;
             ClientSize = new Size(screenWidth, screenHeight);
 
             FormBorderStyle = FormBorderStyle.None;  // no borders
@@ -122,6 +122,7 @@ namespace D360
                 Visible = false;
                 ClientSize = new Size(0, 0);
             }
+            TaskbarUtility.Hide();
 
             RegisterHotKey(Handle, ACTIONS_HOTKEY, 2, (int)Keys.F10);
             RegisterHotKey(Handle, CONFIG_HOTKEY, 2, (int)Keys.F11);
@@ -193,7 +194,7 @@ namespace D360
                 Close();
             }
         }
-        
+
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == 0x0312)

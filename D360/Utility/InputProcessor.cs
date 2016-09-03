@@ -397,7 +397,7 @@ namespace D360.Utility
                 //VirtualKeyboard.ReleaseAll();
 
                 currentControllerState.targetingReticulePosition = currentControllerState.centerPosition;
-                //currentControllerState.cursorPosition = currentControllerState.centerPosition;
+                //currentControllerState.cursorPosition = currentControllerState.centerOffset;
 
                 m_StateChangeCommands.Dequeue().Execute(ref currentControllerState);
             }
@@ -423,7 +423,7 @@ namespace D360.Utility
 
             if (m_ReticuleTargetedCommands.Count > 0)
             {
-                //if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerPosition.X) && (currentControllerState.targetingReticulePosition.Y == currentControllerState.centerPosition.Y))
+                //if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerOffset.X) && (currentControllerState.targetingReticulePosition.Y == currentControllerState.centerOffset.Y))
                 //    VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
                 //else
                 //    VirtualMouse.MoveAbsolute(currentControllerState.targetingReticulePosition.X, currentControllerState.targetingReticulePosition.Y);

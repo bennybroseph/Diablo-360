@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
+using Microsoft.Xna.Framework;
 using Action = D360.Types.Action;
 
 namespace D360.Utility
@@ -33,6 +33,7 @@ namespace D360.Utility
         public string script = string.Empty;
 
         public bool onHold;
+        public bool targeted;
         public BindingMode bindingMode = BindingMode.Move;
         public BindingType bindingType = BindingType.Key;
     }
@@ -73,7 +74,15 @@ namespace D360.Utility
             new Dictionary<GamePadControl, BindingConfig>();
 
         public float holdTime = 0.2f;
-        public float vibrationTime = 0.15f * 1000f;
+        public float vibrationTime = 0.25f * 1000f;
+
+        public bool cursorAlwaysMax = true;
+        public float cursorRadius = 1f;
+
+        public bool targetAlwaysMax = false;
+        public float targetRadius = 1f;
+
+        public Vector2 centerOffset = new Vector2();
 
         public Configuration()
         {
@@ -114,6 +123,7 @@ namespace D360.Utility
                         {
                             keys = Keys.Escape,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -125,6 +135,7 @@ namespace D360.Utility
                         {
                             keys = Keys.I,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -137,6 +148,7 @@ namespace D360.Utility
                         {
                             keys = Keys.RButton,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move | BindingMode.Pointer
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -148,6 +160,7 @@ namespace D360.Utility
                         {
                             keys = Keys.LButton,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move | BindingMode.Pointer
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -160,6 +173,7 @@ namespace D360.Utility
                         {
                             keys = Keys.D1,
                             onHold = false,
+                            targeted = true,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -167,6 +181,7 @@ namespace D360.Utility
                         {
                             keys = Keys.D2,
                             onHold = true,
+                            targeted = true,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -178,6 +193,7 @@ namespace D360.Utility
                         {
                             keys = Keys.D3,
                             onHold = false,
+                            targeted = true,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -185,6 +201,7 @@ namespace D360.Utility
                         {
                             keys = Keys.D4,
                             onHold = true,
+                            targeted = true,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -197,6 +214,7 @@ namespace D360.Utility
                         {
                             keys = Keys.Space,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);
@@ -209,6 +227,7 @@ namespace D360.Utility
                         {
                             specialAction = SpecialAction.SwitchStickMode,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move | BindingMode.Pointer,
                             bindingType = BindingType.SpecialAction
                         };
@@ -221,6 +240,7 @@ namespace D360.Utility
                         {
                             specialAction = SpecialAction.Loot,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move,
                             bindingType = BindingType.SpecialAction
                         };
@@ -234,6 +254,7 @@ namespace D360.Utility
                         {
                             keys = Keys.None,
                             onHold = false,
+                            targeted = false,
                             bindingMode = BindingMode.Move
                         };
                         newBindingConfig.controlBindings.Add(newControlBinding);

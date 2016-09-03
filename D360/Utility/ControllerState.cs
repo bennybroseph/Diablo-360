@@ -11,7 +11,7 @@ namespace D360.Utility
         public Vector2 cursorPosition;
 
         public BindingMode currentMode;
-        public Vector2 centerPosition;
+        public Vector2 centerOffset;
     }
 
     public class OldControllerState

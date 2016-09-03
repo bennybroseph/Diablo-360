@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using D360.Bindings;
@@ -59,11 +58,12 @@ namespace D360.Utility
 
         private Rectangle m_Screen;
 
-        public ControllerState controllerState;
+        public readonly ControllerState controllerState;
+        public ControllerState prevControllerState = new ControllerState();
 
         public InputManager()
         {
-            m_Screen = Screen.PrimaryScreen.WorkingArea;
+            m_Screen = Screen.PrimaryScreen.Bounds;
 
             controllerState = new ControllerState
             {
@@ -71,7 +71,7 @@ namespace D360.Utility
                 cursorPosition = new Vector2(0, 0),
 
                 currentMode = BindingMode.Move,
-                centerPosition = new Vector2()
+                centerOffset = configuration.centerOffset
             };
 
             foreach (PlayerIndex playerIndex in Enum.GetValues(typeof(PlayerIndex)))
@@ -166,8 +166,9 @@ namespace D360.Utility
             ParseStickInput(playerGamePad, GamePadControl.LeftStick);
             ParseStickInput(playerGamePad, GamePadControl.RightStick);
 
-            if (controllerState.currentMode != BindingMode.Config)
-                VirtualMouse.MoveAbsolute((int)controllerState.cursorPosition.X, (int)controllerState.cursorPosition.Y);
+            if (controllerState.cursorPosition != prevControllerState.cursorPosition &&
+                controllerState.currentMode != BindingMode.Config)
+                MoveMouseToOffset(controllerState.cursorPosition);
 
             ParseAction(
                 playerGamePad.controlStates,
@@ -175,21 +176,24 @@ namespace D360.Utility
                 configuration.bindingConfigs,
                 playerGamePad.playerIndex);
 
-            if (playerGamePad.state.Triggers.Right >= 0.8f)
-                VirtualMouse.LeftDown();
-            else
-                VirtualMouse.LeftUp();
-
-            if (playerGamePad.state.Triggers.Left >= 0.8f)
-                VirtualMouse.RightDown();
-            else
-                VirtualMouse.RightUp();
+            prevControllerState = new ControllerState
+            {
+                centerOffset = new Vector2(controllerState.centerOffset.X, controllerState.centerOffset.Y),
+                connected = controllerState.connected,
+                currentMode = controllerState.currentMode,
+                cursorPosition = new Vector2(controllerState.cursorPosition.X, controllerState.cursorPosition.Y),
+                targetingReticulePosition =
+                    new Vector2(
+                        controllerState.targetingReticulePosition.X,
+                        controllerState.targetingReticulePosition.Y)
+            };
         }
 
         ///TODO: This is literally the worst code I have ever written
         private void ParseControlStates<TControlState>(
             PlayerGamePad playerGamePad,
-            IReadOnlyDictionary<GamePadControl, TControlState> controlStates) where TControlState : GamePadControlState
+            IReadOnlyDictionary<GamePadControl,
+            TControlState> controlStates) where TControlState : GamePadControlState
         {
             foreach (var pair in controlStates)
             {
@@ -232,7 +236,8 @@ namespace D360.Utility
                         var parsedControlState = controlProperty.GetMethod.Invoke(state, null);
                         var parsedPrevControlState = controlProperty.GetMethod.Invoke(prevState, null);
 
-                        SetControlState(pair.Value, pair.Key, controlType, parsedControlState, parsedPrevControlState);
+                        SetControlState(
+                            pair.Value, pair.Key, controlType, parsedControlState, parsedPrevControlState);
                     }
                     break;
                 }
@@ -335,10 +340,10 @@ namespace D360.Utility
                     var prevX = stickPropertyX.GetMethod.Invoke(parsedPrevControlState, null);
 
                     var parsedStickStateX =
-                        (float)x > stickConfig.actionDeadzone ?
+                        Math.Abs((float)x) > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
                     var parsedPrevStickStateX =
-                        (float)prevX > stickConfig.actionDeadzone ?
+                        Math.Abs((float)prevX) > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
 
                     stickState.x = (float)x;
@@ -351,10 +356,10 @@ namespace D360.Utility
                     var prevY = stickPropertyY.GetMethod.Invoke(parsedPrevControlState, null);
 
                     var parsedStickStateY =
-                        (float)y > stickConfig.actionDeadzone ?
+                        Math.Abs((float)y) > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
                     var parsedPrevStickStateY =
-                        (float)prevY > stickConfig.actionDeadzone ?
+                        Math.Abs((float)prevY) > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
 
                     stickState.y = (float)y;
@@ -363,7 +368,8 @@ namespace D360.Utility
                         parsedStickStateX != ButtonState.Released || parsedStickStateY != ButtonState.Released ?
                         ButtonState.Pressed : ButtonState.Released;
                     var prevPressedState =
-                        parsedPrevStickStateX != ButtonState.Released || parsedPrevStickStateY != ButtonState.Released ?
+                        parsedPrevStickStateX != ButtonState.Released ||
+                        parsedPrevStickStateY != ButtonState.Released ?
                         ButtonState.Pressed : ButtonState.Released;
 
                     SetControlState(stickState, pressedState, prevPressedState);
@@ -454,6 +460,14 @@ namespace D360.Utility
             switch (controlBinding.bindingType)
             {
             case BindingType.Key:
+                var swap =
+                    controlBinding.targeted &&
+                    (Math.Abs(controllerState.targetingReticulePosition.X) > float.Epsilon ||
+                    Math.Abs(controllerState.targetingReticulePosition.Y) > float.Epsilon);
+
+                if (swap)
+                    MoveMouseToOffset(controllerState.targetingReticulePosition);
+
                 switch (actionType)
                 {
                 case ActionType.Press:
@@ -468,6 +482,9 @@ namespace D360.Utility
                     VirtualKeyboard.KeyUp(controlBinding.keys);
                     break;
                 }
+
+                if (swap)
+                    MoveMouseToOffset(controllerState.cursorPosition);
                 break;
             case BindingType.SpecialAction:
                 switch (actionType)
@@ -509,24 +526,44 @@ namespace D360.Utility
 
             var tempStickValue = new Vector2(stickState.x, stickState.y);
 
-            if (Math.Abs(stickState.x) <= stickConfig.moveDeadzone)
-                tempStickValue.X = 0;
+            if (Math.Abs(stickState.x) <= stickConfig.moveDeadzone &&
+                Math.Abs(stickState.y) <= stickConfig.moveDeadzone)
+                tempStickValue = new Vector2(0, 0);
             else
             {
-                var signCoefficient = tempStickValue.X < 0f ? -1f : 1f;
-                var inverseDeadZone = 1f - stickConfig.moveDeadzone;
-                tempStickValue.X =
-                    (Math.Abs(tempStickValue.X * inverseDeadZone) + stickConfig.moveDeadzone) * signCoefficient;
-            }
+                var signCoefficient =
+                    new Vector2(
+                        stickState.x < 0f ? -1f : 1f,
+                        stickState.y < 0f ? -1f : 1f);
 
-            if (Math.Abs(stickState.y) <= stickConfig.moveDeadzone)
-                tempStickValue.Y = 0;
-            else
-            {
-                var signCoefficient = tempStickValue.Y < 0f ? -1f : 1f;
-                var inverseDeadZone = 1f - stickConfig.moveDeadzone;
-                tempStickValue.Y =
-                    (Math.Abs(tempStickValue.Y * inverseDeadZone) + stickConfig.moveDeadzone) * signCoefficient;
+                var theta = Math.Abs(Math.Atan(stickState.y / stickState.x));
+                var radius = Math.Sqrt(Math.Pow(stickState.x, 2f) + Math.Pow(stickState.y, 2f));
+                radius = (radius - stickConfig.moveDeadzone) / (1f - stickConfig.moveDeadzone);
+
+                switch (stickConfig.mode)
+                {
+                case StickMode.Cursor:
+                    {
+                        if (configuration.cursorAlwaysMax &&
+                            !controllerState.currentMode.HasFlag(BindingMode.Pointer))
+                            radius = 1f;
+
+                        radius *= configuration.cursorRadius;
+                    }
+                    break;
+                case StickMode.Target:
+                    {
+                        if (configuration.targetAlwaysMax &&
+                            !controllerState.currentMode.HasFlag(BindingMode.Pointer))
+                            radius = 1f;
+
+                        radius *= configuration.targetRadius;
+                    }
+                    break;
+                }
+
+                tempStickValue.X = (float)(Math.Cos(theta) * radius) * signCoefficient.X;
+                tempStickValue.Y = (float)(Math.Sin(theta) * radius) * signCoefficient.Y;
             }
 
             switch (stickConfig.mode)
@@ -535,26 +572,35 @@ namespace D360.Utility
                 {
                     if (controllerState.currentMode.HasFlag(BindingMode.Move))
                         controllerState.cursorPosition =
-                            new Vector2(
-                                tempStickValue.X * (m_Screen.Width / 2f) + m_Screen.Width / 2f,
-                                -tempStickValue.Y * (m_Screen.Height / 2f) + m_Screen.Height / 2f);
+                            new Vector2(tempStickValue.X, -tempStickValue.Y);
                     if (controllerState.currentMode.HasFlag(BindingMode.Pointer))
                     {
-                        controllerState.cursorPosition.X += tempStickValue.X * 10;
-                        controllerState.cursorPosition.Y -= tempStickValue.Y * 10;
+                        controllerState.cursorPosition.X += tempStickValue.X * 10f * Time.deltaTime;
+                        controllerState.cursorPosition.Y -= tempStickValue.Y * 10f * Time.deltaTime;
                     }
                 }
                 break;
 
             case StickMode.Target:
                 {
-                    // TODO: coefficient values for this
                     if (controllerState.currentMode.HasFlag(BindingMode.Move))
                         controllerState.targetingReticulePosition =
                             new Vector2(tempStickValue.X, -tempStickValue.Y);
                 }
                 break;
             }
+        }
+
+        private void MoveMouseToOffset(Vector2 newPosition)
+        {
+            newPosition =
+                new Vector2(
+                    newPosition.X * (m_Screen.Width / 2f)
+                    + m_Screen.Width / 2f + controllerState.centerOffset.X,
+                    newPosition.Y * (m_Screen.Height / 2f)
+                    + m_Screen.Height / 2f + controllerState.centerOffset.Y);
+
+            VirtualMouse.MoveAbsolute((int)newPosition.X, (int)newPosition.Y);
         }
     }
 }

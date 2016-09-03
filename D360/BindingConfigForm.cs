@@ -303,7 +303,7 @@ namespace D360
             Refresh();
         }
 
-        private void OnHoldCheckChanges(object sender, EventArgs e)
+        private void OnHoldCheckChanged(object sender, EventArgs e)
         {
             var senderCheck = sender as CheckBox;
             if (senderCheck == null || !m_Initialized)
@@ -319,6 +319,35 @@ namespace D360
             var isDifferent =
                 bindings.controlBindings.Count <= index ||
                 m_TempBinding.controlBindings[index].onHold != bindings.controlBindings[index].onHold;
+
+            senderCheck.Text = senderCheck.Text.TrimEnd('*');
+            if (isDifferent)
+            {
+                senderCheck.Text += '*';
+                changedControls++;
+            }
+            else
+                changedControls--;
+
+            Refresh();
+        }
+
+        private void OnTargetedCheckChanged(object sender, EventArgs e)
+        {
+            var senderCheck = sender as CheckBox;
+            if (senderCheck == null || !m_Initialized)
+                return;
+
+            var index =
+                bindingsTabPage.Controls.OfType<TableLayoutPanel>().
+                    TakeWhile(table => table.Controls.OfType<CheckBox>().All(checkBox => checkBox != senderCheck)).
+                        Count() - 1;
+
+            m_TempBinding.controlBindings[index].targeted = senderCheck.Checked;
+
+            var isDifferent =
+                bindings.controlBindings.Count <= index ||
+                m_TempBinding.controlBindings[index].targeted != bindings.controlBindings[index].targeted;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -581,13 +610,21 @@ namespace D360
             newTextBox.MouseDown += OnKeysTextBoxMouseDown;
             newTextBox.KeyUp += OnKeysTextBoxKeyUp;
 
-            var newCheck = new CheckBox
+            var newHoldCheck = new CheckBox
             {
                 Name = "newCheck" + m_TableCount,
                 Text = defaultHeldCheck.Text,
                 Checked = controlBinding.onHold
             };
-            newCheck.CheckStateChanged += OnHoldCheckChanges;
+            newHoldCheck.CheckStateChanged += OnHoldCheckChanged;
+
+            var newTargetedCheck = new CheckBox
+            {
+                Name = "newCheck" + m_TableCount,
+                Text = defaultTargetCheck.Text,
+                Checked = controlBinding.targeted
+            };
+            newTargetedCheck.CheckStateChanged += OnTargetedCheckChanged;
 
             var newMoveCheck = new CheckBox
             {
@@ -595,14 +632,14 @@ namespace D360
                 Text = defaultMoveRadio.Text,
                 Checked = controlBinding.bindingMode == BindingMode.Move
             };
-            newMoveCheck.CheckedChanged += OnCheckModeChanged;
+            newMoveCheck.CheckStateChanged += OnCheckModeChanged;
             var newPointerCheck = new CheckBox
             {
                 Name = "newPointerCheck" + m_TableCount,
                 Text = defaultPointerRadio.Text,
                 Checked = controlBinding.bindingMode == BindingMode.Pointer
             };
-            newPointerCheck.CheckedChanged += OnCheckModeChanged;
+            newPointerCheck.CheckStateChanged += OnCheckModeChanged;
 
             var newDelete = new Button
             {
@@ -617,7 +654,8 @@ namespace D360
             newPanel.Controls.Add(newSpecialComboBox, 0, 2);
             newPanel.Controls.Add(newMultilineBox, 0, 2);
             newPanel.Controls.Add(newTextBox, 0, 2);
-            newPanel.Controls.Add(newCheck, 0, 3);
+            newPanel.Controls.Add(newHoldCheck, 0, 3);
+            newPanel.Controls.Add(newTargetedCheck, 1, 3);
             newPanel.Controls.Add(newMoveCheck, 0, 4);
             newPanel.Controls.Add(newPointerCheck, 1, 4);
             newPanel.Controls.Add(newDelete, 0, 5);
@@ -662,6 +700,7 @@ namespace D360
                         script = sourceBinding.script,
 
                         onHold = sourceBinding.onHold,
+                        targeted = sourceBinding.targeted,
                         bindingMode = sourceBinding.bindingMode,
                         bindingType = sourceBinding.bindingType
                     });

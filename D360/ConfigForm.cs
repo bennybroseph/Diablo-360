@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using D360.Types;
 using D360.Utility;
@@ -25,11 +26,11 @@ namespace D360
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            if (m_TempConfig != null)
-                inputManager.configuration = m_TempConfig;
+            CopyConfig(m_TempConfig, out inputManager.configuration);
+            inputManager.controllerState.centerOffset = inputManager.configuration.centerOffset;
 
             BinarySerializer.SaveObject(inputManager.configuration, "Config.dat");
-            
+
             Hide();
         }
 
@@ -57,6 +58,36 @@ namespace D360
             m_BindingConfigForm.Show();
         }
 
+        private void OnRadiusTrackBarChanged(object sender, EventArgs e)
+        {
+            if (sender == cursorTrackBar)
+            {
+                m_TempConfig.cursorRadius = cursorTrackBar.Value / 100f;
+                cursorValueLabel.Text = cursorTrackBar.Value + @"%";
+            }
+            else if (sender == targetTrackBar)
+            {
+                m_TempConfig.targetRadius = targetTrackBar.Value / 100f;
+                targetValueLabel.Text = targetTrackBar.Value + @"%";
+            }
+        }
+
+        private void OnOffsetValueChanged(object sender, EventArgs e)
+        {
+            if (sender == offsetXValue)
+                m_TempConfig.centerOffset.X = (float)offsetXValue.Value;
+            if (sender == offsetYValue)
+                m_TempConfig.centerOffset.Y = (float)offsetYValue.Value;
+        }
+
+        private void OnMaxCheckChanged(object sender, EventArgs e)
+        {
+            if (sender == cursorMaxCheck)
+                m_TempConfig.cursorAlwaysMax = cursorMaxCheck.Checked;
+            else if (sender == targetMaxCheck)
+                m_TempConfig.targetAlwaysMax = targetMaxCheck.Checked;
+        }
+
         private void OnVisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
@@ -77,14 +108,24 @@ namespace D360
         {
             e.Cancel = true;
 
-            m_BindingConfigForm.Close();
+            m_BindingConfigForm?.Close();
             Hide();
         }
 
         private void OnShown(object sender, EventArgs e)
         {
-            m_TempConfig.bindingConfigs =
-                new Dictionary<GamePadControl, BindingConfig>(inputManager.configuration.bindingConfigs);
+            CopyConfig(inputManager.configuration, out m_TempConfig);
+
+            cursorTrackBar.Value = (int)Math.Round(m_TempConfig.cursorRadius * 100);
+            cursorValueLabel.Text = cursorTrackBar.Value + @"%";
+            cursorMaxCheck.Checked = m_TempConfig.cursorAlwaysMax;
+
+            targetTrackBar.Value = (int)Math.Round(m_TempConfig.targetRadius * 100);
+            targetValueLabel.Text = targetTrackBar.Value + @"%";
+            targetMaxCheck.Checked = m_TempConfig.targetAlwaysMax;
+
+            offsetXValue.Value = (decimal)m_TempConfig.centerOffset.X;
+            offsetYValue.Value = (decimal)m_TempConfig.centerOffset.Y;
 
             Refresh();
         }
@@ -98,6 +139,25 @@ namespace D360
         {
             if (m_BindingConfigForm != null)
                 m_BindingConfigForm.WindowState = WindowState;
+        }
+
+        private void CopyConfig(Configuration source, out Configuration destination)
+        {
+            destination = new Configuration
+            {
+                bindingConfigs = new Dictionary<GamePadControl, BindingConfig>(source.bindingConfigs),
+
+                holdTime = source.holdTime,
+                vibrationTime = source.vibrationTime,
+
+                centerOffset = source.centerOffset,
+
+                cursorAlwaysMax = source.cursorAlwaysMax,
+                cursorRadius = source.cursorRadius,
+
+                targetAlwaysMax = source.targetAlwaysMax,
+                targetRadius = source.targetRadius,
+            };
         }
     }
 }

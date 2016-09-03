@@ -8,6 +8,7 @@ using System.IO;
 #endif
 using System.Windows.Forms;
 using D360.InputEmulation;
+using D360.Utility;
 
 namespace D360
 {
@@ -51,6 +52,8 @@ namespace D360
                 }
             }
 #endif
+            // Cleanup just in case
+            TaskbarUtility.Show();
             VirtualKeyboard.ReleaseAll();
         }
     }

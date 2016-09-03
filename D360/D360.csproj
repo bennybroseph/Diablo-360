@@ -77,6 +77,7 @@
     <Compile Include="BindingConfigForm.Designer.cs">
       <DependentUpon>BindingConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\TaskbarUtility.cs" />
     <Compile Include="Utility\InputManager.cs" />
     <Compile Include="Utility\BinarySerializer.cs" />
     <Compile Include="Utility\StringExtensions.cs" />

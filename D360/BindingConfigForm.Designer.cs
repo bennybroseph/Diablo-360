@@ -34,6 +34,7 @@
             this.defaultPointerRadio = new System.Windows.Forms.RadioButton();
             this.defaultMoveRadio = new System.Windows.Forms.RadioButton();
             this.defaultPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.defaultTargetCheck = new System.Windows.Forms.CheckBox();
             this.defaultDelete = new System.Windows.Forms.Button();
             this.defaultComboBox = new System.Windows.Forms.ComboBox();
             this.addButton = new System.Windows.Forms.Button();
@@ -42,11 +43,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.bindingsTabPage = new System.Windows.Forms.TabPage();
             this.otherTabPage = new System.Windows.Forms.TabPage();
+            this.actionZoneLabel = new System.Windows.Forms.Label();
             this.modeLabel = new System.Windows.Forms.Label();
             this.actionZoneValueLabel = new System.Windows.Forms.Label();
             this.deadZoneValueLabel = new System.Windows.Forms.Label();
             this.modeComboBox = new System.Windows.Forms.ComboBox();
-            this.actionZoneLabel = new System.Windows.Forms.Label();
             this.actionZoneTrackBar = new System.Windows.Forms.TrackBar();
             this.deadZoneLabel = new System.Windows.Forms.Label();
             this.deadZoneTrackBar = new System.Windows.Forms.TrackBar();
@@ -68,7 +69,7 @@
             this.defaultLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.defaultLabel.Location = new System.Drawing.Point(3, 0);
             this.defaultLabel.Name = "defaultLabel";
-            this.defaultLabel.Size = new System.Drawing.Size(203, 21);
+            this.defaultLabel.Size = new System.Drawing.Size(203, 24);
             this.defaultLabel.TabIndex = 27;
             this.defaultLabel.Text = "Default Label";
             this.defaultLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -77,9 +78,9 @@
             // 
             this.defaultHeldCheck.AutoSize = true;
             this.defaultHeldCheck.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultHeldCheck.Location = new System.Drawing.Point(3, 78);
+            this.defaultHeldCheck.Location = new System.Drawing.Point(3, 87);
             this.defaultHeldCheck.Name = "defaultHeldCheck";
-            this.defaultHeldCheck.Size = new System.Drawing.Size(98, 15);
+            this.defaultHeldCheck.Size = new System.Drawing.Size(98, 18);
             this.defaultHeldCheck.TabIndex = 30;
             this.defaultHeldCheck.Text = "On Hold";
             this.defaultHeldCheck.UseVisualStyleBackColor = true;
@@ -88,9 +89,9 @@
             // 
             this.defaultPointerRadio.AutoSize = true;
             this.defaultPointerRadio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultPointerRadio.Location = new System.Drawing.Point(3, 99);
+            this.defaultPointerRadio.Location = new System.Drawing.Point(3, 111);
             this.defaultPointerRadio.Name = "defaultPointerRadio";
-            this.defaultPointerRadio.Size = new System.Drawing.Size(98, 15);
+            this.defaultPointerRadio.Size = new System.Drawing.Size(98, 18);
             this.defaultPointerRadio.TabIndex = 31;
             this.defaultPointerRadio.TabStop = true;
             this.defaultPointerRadio.Text = "Pointer";
@@ -100,9 +101,9 @@
             // 
             this.defaultMoveRadio.AutoSize = true;
             this.defaultMoveRadio.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultMoveRadio.Location = new System.Drawing.Point(107, 99);
+            this.defaultMoveRadio.Location = new System.Drawing.Point(107, 111);
             this.defaultMoveRadio.Name = "defaultMoveRadio";
-            this.defaultMoveRadio.Size = new System.Drawing.Size(99, 15);
+            this.defaultMoveRadio.Size = new System.Drawing.Size(99, 18);
             this.defaultMoveRadio.TabIndex = 32;
             this.defaultMoveRadio.TabStop = true;
             this.defaultMoveRadio.Text = "Move";
@@ -113,6 +114,7 @@
             this.defaultPanel.ColumnCount = 2;
             this.defaultPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.defaultPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.defaultPanel.Controls.Add(this.defaultTargetCheck, 1, 3);
             this.defaultPanel.Controls.Add(this.defaultTextBox, 0, 2);
             this.defaultPanel.Controls.Add(this.defaultLabel, 0, 0);
             this.defaultPanel.Controls.Add(this.defaultHeldCheck, 0, 3);
@@ -129,15 +131,27 @@
             this.defaultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.defaultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.defaultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.5F));
-            this.defaultPanel.Size = new System.Drawing.Size(209, 145);
+            this.defaultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.defaultPanel.Size = new System.Drawing.Size(209, 160);
             this.defaultPanel.TabIndex = 36;
             this.defaultPanel.Visible = false;
+            // 
+            // defaultTargetCheck
+            // 
+            this.defaultTargetCheck.AutoSize = true;
+            this.defaultTargetCheck.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.defaultTargetCheck.Location = new System.Drawing.Point(107, 87);
+            this.defaultTargetCheck.Name = "defaultTargetCheck";
+            this.defaultTargetCheck.Size = new System.Drawing.Size(99, 18);
+            this.defaultTargetCheck.TabIndex = 35;
+            this.defaultTargetCheck.Text = "Targeted";
+            this.defaultTargetCheck.UseVisualStyleBackColor = true;
             // 
             // defaultDelete
             // 
             this.defaultPanel.SetColumnSpan(this.defaultDelete, 2);
             this.defaultDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultDelete.Location = new System.Drawing.Point(3, 120);
+            this.defaultDelete.Location = new System.Drawing.Point(3, 135);
             this.defaultDelete.Name = "defaultDelete";
             this.defaultDelete.Size = new System.Drawing.Size(203, 22);
             this.defaultDelete.TabIndex = 33;
@@ -150,7 +164,7 @@
             this.defaultComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.defaultComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.defaultComboBox.FormattingEnabled = true;
-            this.defaultComboBox.Location = new System.Drawing.Point(3, 24);
+            this.defaultComboBox.Location = new System.Drawing.Point(3, 27);
             this.defaultComboBox.Name = "defaultComboBox";
             this.defaultComboBox.Size = new System.Drawing.Size(203, 21);
             this.defaultComboBox.TabIndex = 34;
@@ -196,7 +210,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(229, 233);
+            this.tabControl1.Size = new System.Drawing.Size(229, 249);
             this.tabControl1.TabIndex = 40;
             // 
             // bindingsTabPage
@@ -206,7 +220,7 @@
             this.bindingsTabPage.Location = new System.Drawing.Point(4, 22);
             this.bindingsTabPage.Name = "bindingsTabPage";
             this.bindingsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.bindingsTabPage.Size = new System.Drawing.Size(221, 207);
+            this.bindingsTabPage.Size = new System.Drawing.Size(221, 223);
             this.bindingsTabPage.TabIndex = 0;
             this.bindingsTabPage.Text = "Bindings";
             this.bindingsTabPage.UseVisualStyleBackColor = true;
@@ -224,10 +238,21 @@
             this.otherTabPage.Location = new System.Drawing.Point(4, 22);
             this.otherTabPage.Name = "otherTabPage";
             this.otherTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.otherTabPage.Size = new System.Drawing.Size(221, 207);
+            this.otherTabPage.Size = new System.Drawing.Size(221, 218);
             this.otherTabPage.TabIndex = 1;
             this.otherTabPage.Text = "Other";
             this.otherTabPage.UseVisualStyleBackColor = true;
+            // 
+            // actionZoneLabel
+            // 
+            this.actionZoneLabel.Location = new System.Drawing.Point(6, 72);
+            this.actionZoneLabel.Margin = new System.Windows.Forms.Padding(3);
+            this.actionZoneLabel.Name = "actionZoneLabel";
+            this.actionZoneLabel.Size = new System.Drawing.Size(209, 13);
+            this.actionZoneLabel.TabIndex = 1;
+            this.actionZoneLabel.Text = "Action Dead Zone";
+            this.actionZoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.actionZoneLabel.Visible = false;
             // 
             // modeLabel
             // 
@@ -272,17 +297,6 @@
             this.modeComboBox.Visible = false;
             this.modeComboBox.SelectedIndexChanged += new System.EventHandler(this.OnStickModeChanged);
             // 
-            // actionZoneLabel
-            // 
-            this.actionZoneLabel.Location = new System.Drawing.Point(6, 72);
-            this.actionZoneLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.actionZoneLabel.Name = "actionZoneLabel";
-            this.actionZoneLabel.Size = new System.Drawing.Size(209, 13);
-            this.actionZoneLabel.TabIndex = 1;
-            this.actionZoneLabel.Text = "Action Dead Zone";
-            this.actionZoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.actionZoneLabel.Visible = false;
-            // 
             // actionZoneTrackBar
             // 
             this.actionZoneTrackBar.AutoSize = false;
@@ -326,7 +340,7 @@
             this.panel1.Controls.Add(this.saveButton);
             this.panel1.Controls.Add(this.cancelButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 204);
+            this.panel1.Location = new System.Drawing.Point(0, 220);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(229, 29);
             this.panel1.TabIndex = 41;
@@ -337,7 +351,7 @@
             this.defaultPanel.SetColumnSpan(this.defaultTextBox, 2);
             this.defaultTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.defaultTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultTextBox.Location = new System.Drawing.Point(3, 53);
+            this.defaultTextBox.Location = new System.Drawing.Point(3, 59);
             this.defaultTextBox.Name = "defaultTextBox";
             this.defaultTextBox.ReadOnly = true;
             this.defaultTextBox.Size = new System.Drawing.Size(203, 20);
@@ -348,7 +362,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(229, 233);
+            this.ClientSize = new System.Drawing.Size(229, 249);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -396,5 +410,6 @@
         private System.Windows.Forms.Label actionZoneValueLabel;
         private System.Windows.Forms.Label deadZoneValueLabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox defaultTargetCheck;
     }
 }

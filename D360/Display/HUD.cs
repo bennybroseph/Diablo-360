@@ -60,8 +60,6 @@ namespace D360.Display
             new BasicEffect(m_GraphicsDevice);
 
             m_SpriteBatch = new SpriteBatch(m_GraphicsDevice);
-
-
         }
 
         public void Draw(ControllerState state, bool diabloActive)
@@ -90,8 +88,8 @@ namespace D360.Display
 
                     else
                     {
-                        if ((Math.Abs(state.targetingReticulePosition.X - state.centerPosition.X) > float.Epsilon) ||
-                            (Math.Abs(state.targetingReticulePosition.Y - state.centerPosition.Y) > float.Epsilon))
+                        if ((Math.Abs(state.targetingReticulePosition.X - state.centerOffset.X) > float.Epsilon) ||
+                            (Math.Abs(state.targetingReticulePosition.Y - state.centerOffset.Y) > float.Epsilon))
                         {
                             var x = (int)(state.targetingReticulePosition.X * (screenWidth / 2f) + screenWidth / 2f) - 16;
                             var y = (int)(state.targetingReticulePosition.Y * (screenHeight / 2f) + screenHeight / 2f) - 16;

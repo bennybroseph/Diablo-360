@@ -67,6 +67,10 @@ namespace D360
             System.Windows.Forms.Button rightEditButton;
             System.Windows.Forms.Label rightStickLabel;
             System.Windows.Forms.Button rightStickEditButton;
+            System.Windows.Forms.Label leftStickButtonLabel;
+            System.Windows.Forms.Button leftStickButtonEditButton;
+            System.Windows.Forms.Label rightStickButtonLabel;
+            System.Windows.Forms.Button rightStickButtonEditButton;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveAndCloseButton = new System.Windows.Forms.Button();
@@ -90,6 +94,21 @@ namespace D360
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.cursorLabel = new System.Windows.Forms.Label();
+            this.cursorTrackBar = new System.Windows.Forms.TrackBar();
+            this.cursorValueLabel = new System.Windows.Forms.Label();
+            this.cursorMaxCheck = new System.Windows.Forms.CheckBox();
+            this.targetMaxCheck = new System.Windows.Forms.CheckBox();
+            this.targetValueLabel = new System.Windows.Forms.Label();
+            this.targetTrackBar = new System.Windows.Forms.TrackBar();
+            this.targetLabel = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.offsetLabel = new System.Windows.Forms.Label();
+            this.offsetXLabel = new System.Windows.Forms.Label();
+            this.offsetYLabel = new System.Windows.Forms.Label();
+            this.offsetXValue = new System.Windows.Forms.NumericUpDown();
+            this.offsetYValue = new System.Windows.Forms.NumericUpDown();
             defaultEditButton = new System.Windows.Forms.Button();
             defaultLabel = new System.Windows.Forms.Label();
             backLabel = new System.Windows.Forms.Label();
@@ -126,6 +145,10 @@ namespace D360
             rightEditButton = new System.Windows.Forms.Button();
             rightStickLabel = new System.Windows.Forms.Label();
             rightStickEditButton = new System.Windows.Forms.Button();
+            leftStickButtonLabel = new System.Windows.Forms.Label();
+            leftStickButtonEditButton = new System.Windows.Forms.Button();
+            rightStickButtonLabel = new System.Windows.Forms.Label();
+            rightStickButtonEditButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.defaultPanel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -145,6 +168,12 @@ namespace D360
             this.tableLayoutPanel16.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
             this.tableLayoutPanel18.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cursorTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.targetTrackBar)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.offsetXValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.offsetYValue)).BeginInit();
             this.SuspendLayout();
             // 
             // defaultEditButton
@@ -602,7 +631,7 @@ namespace D360
             this.defaultPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.defaultPanel.Controls.Add(defaultLabel, 0, 0);
             this.defaultPanel.Controls.Add(defaultEditButton, 0, 1);
-            this.defaultPanel.Location = new System.Drawing.Point(12, 12);
+            this.defaultPanel.Location = new System.Drawing.Point(419, 18);
             this.defaultPanel.Name = "defaultPanel";
             this.defaultPanel.RowCount = 2;
             this.defaultPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
@@ -672,7 +701,7 @@ namespace D360
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Controls.Add(guideLabel, 0, 0);
             this.tableLayoutPanel6.Controls.Add(guideEditButton, 0, 1);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(532, 99);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(535, 99);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
@@ -770,11 +799,12 @@ namespace D360
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.Controls.Add(leftStickLabel, 0, 0);
             this.tableLayoutPanel13.Controls.Add(leftStickEditButton, 0, 1);
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(88, 327);
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(89, 303);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 2;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel13.Size = new System.Drawing.Size(175, 45);
             this.tableLayoutPanel13.TabIndex = 41;
             // 
@@ -840,7 +870,7 @@ namespace D360
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel18.Controls.Add(rightStickLabel, 0, 0);
             this.tableLayoutPanel18.Controls.Add(rightStickEditButton, 0, 1);
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(822, 685);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(923, 687);
             this.tableLayoutPanel18.Name = "tableLayoutPanel18";
             this.tableLayoutPanel18.RowCount = 2;
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
@@ -848,12 +878,246 @@ namespace D360
             this.tableLayoutPanel18.Size = new System.Drawing.Size(175, 45);
             this.tableLayoutPanel18.TabIndex = 46;
             // 
+            // cursorLabel
+            // 
+            this.cursorLabel.Location = new System.Drawing.Point(13, 13);
+            this.cursorLabel.Name = "cursorLabel";
+            this.cursorLabel.Size = new System.Drawing.Size(156, 14);
+            this.cursorLabel.TabIndex = 47;
+            this.cursorLabel.Text = "Cursor Radius";
+            this.cursorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cursorTrackBar
+            // 
+            this.cursorTrackBar.AutoSize = false;
+            this.cursorTrackBar.Location = new System.Drawing.Point(13, 30);
+            this.cursorTrackBar.Maximum = 100;
+            this.cursorTrackBar.Name = "cursorTrackBar";
+            this.cursorTrackBar.Size = new System.Drawing.Size(156, 25);
+            this.cursorTrackBar.TabIndex = 48;
+            this.cursorTrackBar.TickFrequency = 10;
+            this.cursorTrackBar.ValueChanged += new System.EventHandler(this.OnRadiusTrackBarChanged);
+            // 
+            // cursorValueLabel
+            // 
+            this.cursorValueLabel.Location = new System.Drawing.Point(175, 30);
+            this.cursorValueLabel.Name = "cursorValueLabel";
+            this.cursorValueLabel.Size = new System.Drawing.Size(60, 25);
+            this.cursorValueLabel.TabIndex = 49;
+            this.cursorValueLabel.Text = "Value%";
+            this.cursorValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cursorMaxCheck
+            // 
+            this.cursorMaxCheck.AutoSize = true;
+            this.cursorMaxCheck.Location = new System.Drawing.Point(13, 62);
+            this.cursorMaxCheck.Name = "cursorMaxCheck";
+            this.cursorMaxCheck.Size = new System.Drawing.Size(82, 17);
+            this.cursorMaxCheck.TabIndex = 50;
+            this.cursorMaxCheck.Text = "Always Max";
+            this.cursorMaxCheck.UseVisualStyleBackColor = true;
+            this.cursorMaxCheck.CheckStateChanged += new System.EventHandler(this.OnMaxCheckChanged);
+            // 
+            // targetMaxCheck
+            // 
+            this.targetMaxCheck.AutoSize = true;
+            this.targetMaxCheck.Location = new System.Drawing.Point(12, 131);
+            this.targetMaxCheck.Name = "targetMaxCheck";
+            this.targetMaxCheck.Size = new System.Drawing.Size(82, 17);
+            this.targetMaxCheck.TabIndex = 54;
+            this.targetMaxCheck.Text = "Always Max";
+            this.targetMaxCheck.UseVisualStyleBackColor = true;
+            this.targetMaxCheck.CheckStateChanged += new System.EventHandler(this.OnMaxCheckChanged);
+            // 
+            // targetValueLabel
+            // 
+            this.targetValueLabel.Location = new System.Drawing.Point(174, 99);
+            this.targetValueLabel.Name = "targetValueLabel";
+            this.targetValueLabel.Size = new System.Drawing.Size(60, 25);
+            this.targetValueLabel.TabIndex = 53;
+            this.targetValueLabel.Text = "Value%";
+            this.targetValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // targetTrackBar
+            // 
+            this.targetTrackBar.AutoSize = false;
+            this.targetTrackBar.Location = new System.Drawing.Point(12, 99);
+            this.targetTrackBar.Maximum = 100;
+            this.targetTrackBar.Name = "targetTrackBar";
+            this.targetTrackBar.Size = new System.Drawing.Size(156, 25);
+            this.targetTrackBar.TabIndex = 52;
+            this.targetTrackBar.TickFrequency = 10;
+            this.targetTrackBar.ValueChanged += new System.EventHandler(this.OnRadiusTrackBarChanged);
+            // 
+            // targetLabel
+            // 
+            this.targetLabel.Location = new System.Drawing.Point(12, 82);
+            this.targetLabel.Name = "targetLabel";
+            this.targetLabel.Size = new System.Drawing.Size(156, 14);
+            this.targetLabel.TabIndex = 51;
+            this.targetLabel.Text = "Target Radius";
+            this.targetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(leftStickButtonLabel, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(leftStickButtonEditButton, 0, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(98, 354);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(175, 45);
+            this.tableLayoutPanel1.TabIndex = 55;
+            // 
+            // leftStickButtonLabel
+            // 
+            leftStickButtonLabel.AutoSize = true;
+            leftStickButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftStickButtonLabel.Location = new System.Drawing.Point(3, 0);
+            leftStickButtonLabel.Name = "leftStickButtonLabel";
+            leftStickButtonLabel.Size = new System.Drawing.Size(169, 15);
+            leftStickButtonLabel.TabIndex = 28;
+            leftStickButtonLabel.Text = "Left Stick Button";
+            leftStickButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // leftStickButtonEditButton
+            // 
+            leftStickButtonEditButton.AutoSize = true;
+            leftStickButtonEditButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftStickButtonEditButton.Location = new System.Drawing.Point(3, 18);
+            leftStickButtonEditButton.Name = "leftStickButtonEditButton";
+            leftStickButtonEditButton.Size = new System.Drawing.Size(169, 24);
+            leftStickButtonEditButton.TabIndex = 27;
+            leftStickButtonEditButton.Text = "Edit";
+            leftStickButtonEditButton.UseVisualStyleBackColor = true;
+            leftStickButtonEditButton.Click += new System.EventHandler(this.OnEditClick);
+            // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 1;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Controls.Add(rightStickButtonLabel, 0, 0);
+            this.tableLayoutPanel19.Controls.Add(rightStickButtonEditButton, 0, 1);
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(742, 717);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 2;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(175, 45);
+            this.tableLayoutPanel19.TabIndex = 56;
+            // 
+            // rightStickButtonLabel
+            // 
+            rightStickButtonLabel.AutoSize = true;
+            rightStickButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightStickButtonLabel.Location = new System.Drawing.Point(3, 0);
+            rightStickButtonLabel.Name = "rightStickButtonLabel";
+            rightStickButtonLabel.Size = new System.Drawing.Size(169, 15);
+            rightStickButtonLabel.TabIndex = 28;
+            rightStickButtonLabel.Text = "Right Stick Button";
+            rightStickButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rightStickButtonEditButton
+            // 
+            rightStickButtonEditButton.AutoSize = true;
+            rightStickButtonEditButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightStickButtonEditButton.Location = new System.Drawing.Point(3, 18);
+            rightStickButtonEditButton.Name = "rightStickButtonEditButton";
+            rightStickButtonEditButton.Size = new System.Drawing.Size(169, 24);
+            rightStickButtonEditButton.TabIndex = 27;
+            rightStickButtonEditButton.Text = "Edit";
+            rightStickButtonEditButton.UseVisualStyleBackColor = true;
+            rightStickButtonEditButton.Click += new System.EventHandler(this.OnEditClick);
+            // 
+            // offsetLabel
+            // 
+            this.offsetLabel.Location = new System.Drawing.Point(1131, 13);
+            this.offsetLabel.Name = "offsetLabel";
+            this.offsetLabel.Size = new System.Drawing.Size(121, 17);
+            this.offsetLabel.TabIndex = 59;
+            this.offsetLabel.Text = "Center of Screen Offset";
+            this.offsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // offsetXLabel
+            // 
+            this.offsetXLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.offsetXLabel.Location = new System.Drawing.Point(1127, 39);
+            this.offsetXLabel.Name = "offsetXLabel";
+            this.offsetXLabel.Size = new System.Drawing.Size(15, 20);
+            this.offsetXLabel.TabIndex = 60;
+            this.offsetXLabel.Text = "X";
+            this.offsetXLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // offsetYLabel
+            // 
+            this.offsetYLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.offsetYLabel.Location = new System.Drawing.Point(1128, 65);
+            this.offsetYLabel.Name = "offsetYLabel";
+            this.offsetYLabel.Size = new System.Drawing.Size(14, 20);
+            this.offsetYLabel.TabIndex = 61;
+            this.offsetYLabel.Text = "Y";
+            this.offsetYLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // offsetXValue
+            // 
+            this.offsetXValue.Location = new System.Drawing.Point(1148, 39);
+            this.offsetXValue.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.offsetXValue.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.offsetXValue.Name = "offsetXValue";
+            this.offsetXValue.Size = new System.Drawing.Size(104, 20);
+            this.offsetXValue.TabIndex = 63;
+            this.offsetXValue.ValueChanged += new System.EventHandler(this.OnOffsetValueChanged);
+            // 
+            // offsetYValue
+            // 
+            this.offsetYValue.Location = new System.Drawing.Point(1148, 65);
+            this.offsetYValue.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.offsetYValue.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.offsetYValue.Name = "offsetYValue";
+            this.offsetYValue.Size = new System.Drawing.Size(104, 20);
+            this.offsetYValue.TabIndex = 64;
+            this.offsetYValue.ValueChanged += new System.EventHandler(this.OnOffsetValueChanged);
+            // 
             // ConfigForm
             // 
             this.AcceptButton = this.saveAndCloseButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 766);
+            this.Controls.Add(this.offsetYValue);
+            this.Controls.Add(this.offsetXValue);
+            this.Controls.Add(this.offsetYLabel);
+            this.Controls.Add(this.offsetXLabel);
+            this.Controls.Add(this.offsetLabel);
+            this.Controls.Add(this.tableLayoutPanel19);
+            this.Controls.Add(this.targetMaxCheck);
+            this.Controls.Add(this.targetValueLabel);
+            this.Controls.Add(this.targetTrackBar);
+            this.Controls.Add(this.targetLabel);
+            this.Controls.Add(this.cursorMaxCheck);
+            this.Controls.Add(this.cursorValueLabel);
+            this.Controls.Add(this.cursorTrackBar);
+            this.Controls.Add(this.cursorLabel);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.tableLayoutPanel18);
             this.Controls.Add(this.tableLayoutPanel17);
             this.Controls.Add(this.tableLayoutPanel16);
@@ -924,7 +1188,16 @@ namespace D360
             this.tableLayoutPanel17.PerformLayout();
             this.tableLayoutPanel18.ResumeLayout(false);
             this.tableLayoutPanel18.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cursorTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.targetTrackBar)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.tableLayoutPanel19.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.offsetXValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.offsetYValue)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -951,5 +1224,20 @@ namespace D360
         private TableLayoutPanel tableLayoutPanel16;
         private TableLayoutPanel tableLayoutPanel17;
         private TableLayoutPanel tableLayoutPanel18;
+        private Label cursorLabel;
+        private TrackBar cursorTrackBar;
+        private Label cursorValueLabel;
+        private CheckBox cursorMaxCheck;
+        private CheckBox targetMaxCheck;
+        private Label targetValueLabel;
+        private TrackBar targetTrackBar;
+        private Label targetLabel;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tableLayoutPanel19;
+        private Label offsetLabel;
+        private Label offsetXLabel;
+        private Label offsetYLabel;
+        private NumericUpDown offsetXValue;
+        private NumericUpDown offsetYValue;
     }
 }
