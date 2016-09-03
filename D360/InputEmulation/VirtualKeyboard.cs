@@ -11,7 +11,7 @@ namespace D360.InputEmulation
     public static class VirtualKeyboard
     {
         /// A container for all the currently pressed keys
-        private static List<Keys> s_DownKeys = new List<Keys>();
+        private static readonly List<Keys> s_DownKeys = new List<Keys>();
 
         /// An instance of the AutoHotkey Engine
         private static readonly AutoHotkeyEngine s_AutoHotkey = new AutoHotkeyEngine();
@@ -64,6 +64,15 @@ namespace D360.InputEmulation
 
             // Removes all keys as currently pressed so they are all allowed to be pressed again
             s_DownKeys.Clear();
+        }
+
+        /// <summary>
+        /// Executes a given AutoHotkey script
+        /// </summary>
+        /// <param name="script">AutoHotkey script to be executed</param>
+        public static void ExecuteScript(string script)
+        {
+            s_AutoHotkey.ExecRaw(script);
         }
     }
 

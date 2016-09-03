@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace D360.InputEmulation
@@ -19,12 +20,7 @@ namespace D360.InputEmulation
 
         public static void MoveAbsolute(int xValue, int yValue)
         {
-            MoveAbsolute((uint)xValue, (uint)yValue);
-        }
-
-        public static void MoveAbsolute(uint xValue, uint yValue)
-        {
-            mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, xValue, yValue, 0, 0);
+            Cursor.Position = new Point(xValue, yValue);
         }
 
         public static void MoveRelative(int xValue, int yValue)

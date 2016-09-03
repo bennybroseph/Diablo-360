@@ -22,7 +22,7 @@ namespace D360.Bindings
 
         public readonly List<Command> commands = new List<Command>();
         
-        internal void ExecuteCommands(ref ControllerState state)
+        internal void ExecuteCommands(ref OldControllerState state)
         {
             foreach (var command in commands)
                 command.Execute(ref state);

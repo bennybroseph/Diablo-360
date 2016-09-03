@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using D360.Utility;
 using D360.Types;
 using Microsoft.Xna.Framework;
@@ -59,6 +60,8 @@ namespace D360.Display
             new BasicEffect(m_GraphicsDevice);
 
             m_SpriteBatch = new SpriteBatch(m_GraphicsDevice);
+
+
         }
 
         public void Draw(ControllerState state, bool diabloActive)
@@ -67,6 +70,9 @@ namespace D360.Display
 
             if (diabloActive)
             {
+                if (state.currentMode != BindingMode.Config)
+                    SetWindowPos(m_GraphicsDevice.PresentationParameters.DeviceWindowHandle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
+
                 m_SpriteBatch.Begin();
                 {
                     Rectangle targetRect;
@@ -84,18 +90,18 @@ namespace D360.Display
 
                     else
                     {
-                        if ((state.targetingReticulePosition.X != state.centerPosition.X) &&
-                            (state.targetingReticulePosition.Y != state.centerPosition.Y))
+                        if ((Math.Abs(state.targetingReticulePosition.X - state.centerPosition.X) > float.Epsilon) ||
+                            (Math.Abs(state.targetingReticulePosition.Y - state.centerPosition.Y) > float.Epsilon))
                         {
-                            var x = (int)(state.targetingReticulePosition.X / 65535.0f * screenWidth) - 16;
-                            var y = (int)(state.targetingReticulePosition.Y / 65535.0f * screenHeight) - 16;
+                            var x = (int)(state.targetingReticulePosition.X * (screenWidth / 2f) + screenWidth / 2f) - 16;
+                            var y = (int)(state.targetingReticulePosition.Y * (screenHeight / 2f) + screenHeight / 2f) - 16;
                             targetRect = new Rectangle(x, y, 32, 32);
 
                             m_SpriteBatch.Draw(m_TargetTexture, targetRect, new Color(1.0f, 1.0f, 1.0f, 0.5f));
                         }
 
                         m_SpriteBatch.Draw(
-                            state.inputMode == InputMode.Pointer ? m_PointerModeTexture : m_MoveModeTexture,
+                            state.currentMode == BindingMode.Pointer ? m_PointerModeTexture : m_MoveModeTexture,
                             new Rectangle(screenWidth - 128, screenHeight - 64, 128, 64),
                             Color.White);
                     }
@@ -104,5 +110,17 @@ namespace D360.Display
             }
             m_GraphicsDevice.Present();
         }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(
+            IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const uint SWP_NOSIZE = 0x0001;
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+
+
     }
 }

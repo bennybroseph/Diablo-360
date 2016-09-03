@@ -8,7 +8,7 @@ namespace D360.Commands
         public InputMode applicableMode = InputMode.None;
         public CommandTarget target = CommandTarget.Cursor;
         
-        public virtual bool Execute(ref ControllerState state)
+        public virtual bool Execute(ref OldControllerState state)
         {
             if (applicableMode == InputMode.None)
                 return false;

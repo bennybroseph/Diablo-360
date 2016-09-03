@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using D360.Bindings;
 using D360.InputEmulation;
 using D360.Types;
+using Microsoft.Xna.Framework;
 using XInputDotNetPure;
 
 using ButtonState = XInputDotNetPure.ButtonState;
+using PlayerIndex = XInputDotNetPure.PlayerIndex;
+using Rectangle = System.Drawing.Rectangle;
 using Timer = System.Timers.Timer;
 
 namespace D360.Utility
 {
     public class InputManager
     {
-        private const float HOLD_TIME = 0.2f;
-        private const float VIBRATION_TIME = 0.15f * 1000f;
-
         private class GamePadControlState
         {
             public float timeHeld;
@@ -55,8 +57,23 @@ namespace D360.Utility
         public Configuration configuration = new Configuration();
         public ActionBindings actionBindings = new ActionBindings();
 
+        private Rectangle m_Screen;
+
+        public ControllerState controllerState;
+
         public InputManager()
         {
+            m_Screen = Screen.PrimaryScreen.WorkingArea;
+
+            controllerState = new ControllerState
+            {
+                targetingReticulePosition = new Vector2(0, 0),
+                cursorPosition = new Vector2(0, 0),
+
+                currentMode = BindingMode.Move,
+                centerPosition = new Vector2()
+            };
+
             foreach (PlayerIndex playerIndex in Enum.GetValues(typeof(PlayerIndex)))
             {
                 m_PlayerStates.Add(playerIndex, new PlayerGamePad());
@@ -85,6 +102,7 @@ namespace D360.Utility
         // Update is called once per frame
         public void Update()
         {
+            controllerState.connected = false;
             // Find a PlayerIndex, for a single player game
             // Will find the first controller that is connected and use it
             foreach (var pair in m_PlayerStates)
@@ -106,17 +124,52 @@ namespace D360.Utility
                 }
 
                 playerGamePad.prevState = playerGamePad.state;
-                playerGamePad.state = GamePad.GetState(playerIndex);
+                playerGamePad.state = GamePad.GetState(playerIndex, GamePadDeadZone.Circular);
 
+                controllerState.connected = true;
                 ParseInput(playerGamePad);
             }
         }
 
         private void ParseInput(PlayerGamePad playerGamePad)
         {
+            playerGamePad.prevControlStates.Clear();
+            foreach (var pair in playerGamePad.controlStates)
+            {
+                var newControlState = new GamePadControlState
+                {
+                    timeHeld = pair.Value.timeHeld,
+                    timerRan = pair.Value.timerRan,
+                    state = pair.Value.state
+                };
+
+                var triggerState = pair.Value as GamePadTriggerState;
+                var stickState = pair.Value as GamePadStickState;
+
+                if (triggerState != null)
+                {
+                    newControlState = new GamePadTriggerState();
+                    ((GamePadTriggerState)newControlState).amount = triggerState.amount;
+                }
+                if (stickState != null)
+                {
+                    newControlState = new GamePadStickState();
+                    ((GamePadStickState)newControlState).x = stickState.x;
+                    ((GamePadStickState)newControlState).y = stickState.y;
+                }
+
+                playerGamePad.prevControlStates.Add(pair.Key, newControlState);
+            }
+
             ParseControlStates(playerGamePad, playerGamePad.controlStates);
 
-            DoActions(
+            ParseStickInput(playerGamePad, GamePadControl.LeftStick);
+            ParseStickInput(playerGamePad, GamePadControl.RightStick);
+
+            if (controllerState.currentMode != BindingMode.Config)
+                VirtualMouse.MoveAbsolute((int)controllerState.cursorPosition.X, (int)controllerState.cursorPosition.Y);
+
+            ParseAction(
                 playerGamePad.controlStates,
                 playerGamePad.prevControlStates,
                 configuration.bindingConfigs,
@@ -131,23 +184,6 @@ namespace D360.Utility
                 VirtualMouse.RightDown();
             else
                 VirtualMouse.RightUp();
-
-            VirtualMouse.MoveRelative(
-                (int)(playerGamePad.state.ThumbSticks.Left.X * 1000f * Time.deltaTime),
-                (int)(-playerGamePad.state.ThumbSticks.Left.Y * 1000f * Time.deltaTime));
-
-            playerGamePad.prevControlStates.Clear();
-            foreach (var pair in playerGamePad.controlStates)
-            {
-                playerGamePad.prevControlStates.Add(
-                    pair.Key,
-                    new GamePadControlState
-                    {
-                        timeHeld = pair.Value.timeHeld,
-                        timerRan = pair.Value.timerRan,
-                        state = pair.Value.state
-                    });
-            }
         }
 
         ///TODO: This is literally the worst code I have ever written
@@ -175,7 +211,7 @@ namespace D360.Utility
                 case ControlType.Buttons:
                 case ControlType.DPad:
                     {
-                        var controlProperty = state.GetType().GetProperty(pair.Key.ToString());
+                        var controlProperty = state.GetType().GetProperty(pair.Key.ToString().Replace("Button", ""));
                         if (controlProperty == null)
                             continue;
 
@@ -196,7 +232,7 @@ namespace D360.Utility
                         var parsedControlState = controlProperty.GetMethod.Invoke(state, null);
                         var parsedPrevControlState = controlProperty.GetMethod.Invoke(prevState, null);
 
-                        SetControlState(pair.Value, controlType, parsedControlState, parsedPrevControlState);
+                        SetControlState(pair.Value, pair.Key, controlType, parsedControlState, parsedPrevControlState);
                     }
                     break;
                 }
@@ -217,7 +253,7 @@ namespace D360.Utility
                     case ButtonState.Pressed:
                         {
                             controlState.timeHeld += Time.deltaTime;
-                            if (controlState.timeHeld >= HOLD_TIME)
+                            if (controlState.timeHeld >= configuration.holdTime)
                                 controlState.state = ControlState.Pressed;
                         }
                         break;
@@ -257,6 +293,7 @@ namespace D360.Utility
         ///TODO: This is literally the worst code I have ever written
         private void SetControlState<TControlState>(
             TControlState controlState,
+            GamePadControl control,
             ControlType controlType,
             object parsedControlState,
             object parsedPrevControlState) where TControlState : GamePadControlState
@@ -266,14 +303,15 @@ namespace D360.Utility
             case ControlType.Triggers:
                 {
                     var triggerState = controlState as GamePadTriggerState;
-                    if (triggerState == null)
+                    var triggerConfig = configuration.bindingConfigs[control] as TriggerConfig;
+                    if (triggerState == null || triggerConfig == null)
                         return;
 
                     var parsedTriggerState =
-                        (float)parsedControlState > 0f ?
+                        (float)parsedControlState > triggerConfig.deadzone ?
                         ButtonState.Pressed : ButtonState.Released;
                     var parsedPrevTriggerState =
-                        (float)parsedPrevControlState > 0f ?
+                        (float)parsedPrevControlState > triggerConfig.deadzone ?
                         ButtonState.Pressed : ButtonState.Released;
 
                     triggerState.amount = (float)parsedControlState;
@@ -285,7 +323,8 @@ namespace D360.Utility
             case ControlType.ThumbSticks:
                 {
                     var stickState = controlState as GamePadStickState;
-                    if (stickState == null)
+                    var stickConfig = configuration.bindingConfigs[control] as StickConfig;
+                    if (stickState == null || stickConfig == null)
                         return;
 
                     var stickPropertyX = parsedControlState.GetType().GetProperty("X");
@@ -296,10 +335,10 @@ namespace D360.Utility
                     var prevX = stickPropertyX.GetMethod.Invoke(parsedPrevControlState, null);
 
                     var parsedStickStateX =
-                        (float)x > 0f ?
+                        (float)x > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
                     var parsedPrevStickStateX =
-                        (float)prevX > 0f ?
+                        (float)prevX > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
 
                     stickState.x = (float)x;
@@ -312,10 +351,10 @@ namespace D360.Utility
                     var prevY = stickPropertyY.GetMethod.Invoke(parsedPrevControlState, null);
 
                     var parsedStickStateY =
-                        (float)y > 0f ?
+                        (float)y > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
                     var parsedPrevStickStateY =
-                        (float)prevY > 0f ?
+                        (float)prevY > stickConfig.actionDeadzone ?
                         ButtonState.Pressed : ButtonState.Released;
 
                     stickState.y = (float)y;
@@ -333,7 +372,7 @@ namespace D360.Utility
             }
         }
 
-        private void DoActions(
+        private void ParseAction(
             IReadOnlyDictionary<GamePadControl, GamePadControlState> buttonStates,
             IReadOnlyDictionary<GamePadControl, GamePadControlState> prevButtonStates,
             IReadOnlyDictionary<GamePadControl, BindingConfig> bindingConfigs,
@@ -348,40 +387,37 @@ namespace D360.Utility
                 var buttonState = buttonStates[pair.Key];
                 var prevButtonState = prevButtonStates[pair.Key];
 
-                foreach (var gamePadBinding in pair.Value.controlBindings)
+                foreach (var controlBinding in pair.Value.controlBindings)
                 {
                     var hasHoldBinding = pair.Value.controlBindings.Any(x => x.onHold);
                     switch (buttonState.state)
                     {
                     case ControlState.OnPress:
                         if (!hasHoldBinding && prevButtonState.state == ControlState.Released)
-                            VirtualKeyboard.KeyDown(gamePadBinding.keys);
+                            DoAction(controlBinding, ActionType.Press);
                         break;
 
                     case ControlState.OnRelease:
                         if (!hasHoldBinding)
-                            VirtualKeyboard.KeyUp(gamePadBinding.keys);
-                        else if (!gamePadBinding.onHold &&
+                            DoAction(controlBinding, ActionType.Release);
+                        else if (!controlBinding.onHold &&
                                  prevButtonState.state == ControlState.OnPress)
-                        {
-                            VirtualKeyboard.KeyDown(gamePadBinding.keys);
-                            VirtualKeyboard.KeyUp(gamePadBinding.keys);
-                        }
+                            DoAction(controlBinding, ActionType.Press | ActionType.Release);
                         else if (prevButtonState.state == ControlState.Pressed)
-                            VirtualKeyboard.KeyUp(gamePadBinding.keys);
+                            DoAction(controlBinding, ActionType.Release);
                         break;
 
                     case ControlState.Pressed:
                         {
-                            if (gamePadBinding.onHold)
+                            if (controlBinding.onHold)
                             {
-                                VirtualKeyboard.KeyDown(gamePadBinding.keys);
+                                DoAction(controlBinding, ActionType.Press);
                                 if (!buttonState.timerRan)
                                 {
                                     GamePad.SetVibration(playerIndex, 1f, 1f);
                                     var newTimer = new Timer
                                     {
-                                        Interval = VIBRATION_TIME
+                                        Interval = configuration.vibrationTime
                                     };
 
                                     newTimer.Elapsed +=
@@ -402,6 +438,122 @@ namespace D360.Utility
                         break;
                     }
                 }
+            }
+        }
+
+        [Flags]
+        private enum ActionType
+        {
+            None,
+
+            Press = 1 << 0,
+            Release = 1 << 1
+        }
+        private void DoAction(ControlBinding controlBinding, ActionType actionType)
+        {
+            switch (controlBinding.bindingType)
+            {
+            case BindingType.Key:
+                switch (actionType)
+                {
+                case ActionType.Press:
+                    VirtualKeyboard.KeyDown(controlBinding.keys);
+                    break;
+                case ActionType.Release:
+                    VirtualKeyboard.KeyUp(controlBinding.keys);
+                    break;
+
+                case ActionType.Press | ActionType.Release:
+                    VirtualKeyboard.KeyDown(controlBinding.keys);
+                    VirtualKeyboard.KeyUp(controlBinding.keys);
+                    break;
+                }
+                break;
+            case BindingType.SpecialAction:
+                switch (actionType)
+                {
+                case ActionType.Press:
+                case ActionType.Press | ActionType.Release:
+                    switch (controlBinding.specialAction)
+                    {
+                    case SpecialAction.SwitchStickMode:
+                        controllerState.currentMode ^= BindingMode.Pointer;
+                        controllerState.currentMode ^= BindingMode.Move;
+                        break;
+                    }
+                    break;
+                }
+                break;
+            case BindingType.Script:
+                switch (actionType)
+                {
+                case ActionType.Press:
+                case ActionType.Press | ActionType.Release:
+                    VirtualKeyboard.ExecuteScript(controlBinding.script);
+                    break;
+                }
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+        private void ParseStickInput(PlayerGamePad playerGamePad, GamePadControl stick)
+        {
+            var stickConfig = configuration.bindingConfigs[stick] as StickConfig;
+            var stickState = playerGamePad.controlStates[stick] as GamePadStickState;
+            var prevStickState = playerGamePad.prevControlStates[stick] as GamePadStickState;
+
+            if (stickConfig == null || stickState == null || prevStickState == null)
+                return;
+
+            var tempStickValue = new Vector2(stickState.x, stickState.y);
+
+            if (Math.Abs(stickState.x) <= stickConfig.moveDeadzone)
+                tempStickValue.X = 0;
+            else
+            {
+                var signCoefficient = tempStickValue.X < 0f ? -1f : 1f;
+                var inverseDeadZone = 1f - stickConfig.moveDeadzone;
+                tempStickValue.X =
+                    (Math.Abs(tempStickValue.X * inverseDeadZone) + stickConfig.moveDeadzone) * signCoefficient;
+            }
+
+            if (Math.Abs(stickState.y) <= stickConfig.moveDeadzone)
+                tempStickValue.Y = 0;
+            else
+            {
+                var signCoefficient = tempStickValue.Y < 0f ? -1f : 1f;
+                var inverseDeadZone = 1f - stickConfig.moveDeadzone;
+                tempStickValue.Y =
+                    (Math.Abs(tempStickValue.Y * inverseDeadZone) + stickConfig.moveDeadzone) * signCoefficient;
+            }
+
+            switch (stickConfig.mode)
+            {
+            case StickMode.Cursor:
+                {
+                    if (controllerState.currentMode.HasFlag(BindingMode.Move))
+                        controllerState.cursorPosition =
+                            new Vector2(
+                                tempStickValue.X * (m_Screen.Width / 2f) + m_Screen.Width / 2f,
+                                -tempStickValue.Y * (m_Screen.Height / 2f) + m_Screen.Height / 2f);
+                    if (controllerState.currentMode.HasFlag(BindingMode.Pointer))
+                    {
+                        controllerState.cursorPosition.X += tempStickValue.X * 10;
+                        controllerState.cursorPosition.Y -= tempStickValue.Y * 10;
+                    }
+                }
+                break;
+
+            case StickMode.Target:
+                {
+                    // TODO: coefficient values for this
+                    if (controllerState.currentMode.HasFlag(BindingMode.Move))
+                        controllerState.targetingReticulePosition =
+                            new Vector2(tempStickValue.X, -tempStickValue.Y);
+                }
+                break;
             }
         }
     }

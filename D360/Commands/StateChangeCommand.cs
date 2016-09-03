@@ -8,7 +8,7 @@ namespace D360.Commands
     {
         public StateChange stateChange { get; set; }
 
-        public override bool Execute(ref ControllerState state)
+        public override bool Execute(ref OldControllerState state)
         {
             if (!base.Execute(ref state))
                 return false;

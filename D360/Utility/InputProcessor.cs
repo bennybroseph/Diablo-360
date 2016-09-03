@@ -15,7 +15,7 @@ namespace D360.Utility
     {
         private GamePadState m_LastState;
 
-        public ControllerState currentControllerState;
+        public OldControllerState currentControllerState;
 
         private UIntVector m_Center;
 
@@ -38,7 +38,7 @@ namespace D360.Utility
             m_Bindings = new List<ControllerInputBinding>();
             m_LastState = initialState;
 
-            currentControllerState = new ControllerState
+            currentControllerState = new OldControllerState
             {
                 inputMode = InputMode.Pointer,
                 targetingReticulePosition = m_Center,
@@ -416,7 +416,7 @@ namespace D360.Utility
                 deltaVector *= 1000.0f;
 
                 var centerOffset = new UIntVector((uint)(m_Center.X + deltaVector.X), (uint)(m_Center.Y + deltaVector.Y));
-                VirtualMouse.MoveAbsolute(centerOffset.X, centerOffset.Y);
+                //VirtualMouse.MoveAbsolute(centerOffset.X, centerOffset.Y);
             }
             while (m_CenterRandomTargetedCommands.Count > 0)
                 m_CenterRandomTargetedCommands.Dequeue().Execute(ref currentControllerState);
@@ -448,7 +448,7 @@ namespace D360.Utility
             m_LastState = newState;
         }
 
-        private void enqueueCommands(ControllerInputBinding binding, ControllerState currentControllerState)
+        private void enqueueCommands(ControllerInputBinding binding, OldControllerState currentControllerState)
         {
             foreach (var command in binding.commands)
             {
@@ -481,7 +481,7 @@ namespace D360.Utility
             }
         }
 
-        private void enqueueCommands(ControllerInputBinding binding, ControllerState currentControllerState, Vector2 inputValue)
+        private void enqueueCommands(ControllerInputBinding binding, OldControllerState currentControllerState, Vector2 inputValue)
         {
             foreach (var command in binding.commands)
             {

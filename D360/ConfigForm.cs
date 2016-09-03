@@ -11,8 +11,10 @@ namespace D360
 
         private BindingConfigForm m_BindingConfigForm;
         public InputManager inputManager;
-        
+
         private Configuration m_TempConfig = new Configuration();
+
+        private BindingMode m_OldMode;
 
         public ConfigForm()
         {
@@ -27,7 +29,7 @@ namespace D360
                 inputManager.configuration = m_TempConfig;
 
             BinarySerializer.SaveObject(inputManager.configuration, "Config.dat");
-
+            
             Hide();
         }
 
@@ -58,7 +60,17 @@ namespace D360
         private void OnVisibleChanged(object sender, EventArgs e)
         {
             if (!Visible)
+            {
+                inputManager.controllerState.currentMode = m_OldMode;
                 m_BindingConfigForm?.Close();
+            }
+            else
+            {
+                m_OldMode = inputManager.controllerState.currentMode;
+                inputManager.controllerState.currentMode = BindingMode.Config;
+                BringToFront();
+            }
+
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)

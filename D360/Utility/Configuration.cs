@@ -29,6 +29,7 @@ namespace D360.Utility
     public class ControlBinding
     {
         public Keys keys = Keys.None;
+        public SpecialAction specialAction;
         public string script = string.Empty;
 
         public bool onHold;
@@ -70,6 +71,9 @@ namespace D360.Utility
 
         public Dictionary<GamePadControl, BindingConfig> bindingConfigs =
             new Dictionary<GamePadControl, BindingConfig>();
+
+        public float holdTime = 0.2f;
+        public float vibrationTime = 0.15f * 1000f;
 
         public Configuration()
         {
@@ -127,6 +131,29 @@ namespace D360.Utility
                     }
                     break;
 
+                case GamePadControl.LeftTrigger:
+                    {
+                        newControlBinding = new ControlBinding
+                        {
+                            keys = Keys.RButton,
+                            onHold = false,
+                            bindingMode = BindingMode.Move | BindingMode.Pointer
+                        };
+                        newBindingConfig.controlBindings.Add(newControlBinding);
+                    }
+                    break;
+                case GamePadControl.RightTrigger:
+                    {
+                        newControlBinding = new ControlBinding
+                        {
+                            keys = Keys.LButton,
+                            onHold = false,
+                            bindingMode = BindingMode.Move | BindingMode.Pointer
+                        };
+                        newBindingConfig.controlBindings.Add(newControlBinding);
+                    }
+                    break;
+
                 case GamePadControl.LeftShoulder:
                     {
                         newControlBinding = new ControlBinding
@@ -176,6 +203,31 @@ namespace D360.Utility
                     }
                     break;
 
+                case GamePadControl.LeftStickButton:
+                    {
+                        newControlBinding = new ControlBinding
+                        {
+                            specialAction = SpecialAction.SwitchStickMode,
+                            onHold = false,
+                            bindingMode = BindingMode.Move | BindingMode.Pointer,
+                            bindingType = BindingType.SpecialAction
+                        };
+                        newBindingConfig.controlBindings.Add(newControlBinding);
+                    }
+                    break;
+                case GamePadControl.RightStickButton:
+                    {
+                        newControlBinding = new ControlBinding
+                        {
+                            specialAction = SpecialAction.Loot,
+                            onHold = false,
+                            bindingMode = BindingMode.Move,
+                            bindingType = BindingType.SpecialAction
+                        };
+                        newBindingConfig.controlBindings.Add(newControlBinding);
+                    }
+                    break;
+
                 default:
                     {
                         newControlBinding = new ControlBinding
@@ -190,19 +242,6 @@ namespace D360.Utility
                 }
                 bindingConfigs.Add(button, newBindingConfig);
             }
-        }
-    }
-
-    public static class StringExtensions
-    {
-        public static string ToPascal(this string str)
-        {
-            if (string.IsNullOrEmpty(str))
-                return str;
-
-            str = str.Substring(0, 1).ToUpper() + str.Substring(1);
-
-            return str;
         }
     }
 }

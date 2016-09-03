@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using D360.Types;
 using D360.Utility;
 
 namespace D360
@@ -29,7 +30,7 @@ namespace D360
             }
         }
 
-        private bool initialized;
+        private bool m_Initialized;
 
         public BindingConfigForm()
         {
@@ -52,34 +53,35 @@ namespace D360
 
             var triggerBinding = m_TempBinding as TriggerConfig;
             var stickConfig = m_TempBinding as StickConfig;
-            if (triggerBinding == null && stickConfig == null)
-                return;
+            if (triggerBinding != null || stickConfig != null)
+            {
+                deadZoneLabel.Visible = true;
+                deadZoneValueLabel.Visible = true;
+                deadZoneTrackBar.Visible = true;
 
-            deadZoneLabel.Visible = true;
-            deadZoneValueLabel.Visible = true;
-            deadZoneTrackBar.Visible = true;
+                deadZoneTrackBar.Value =
+                    (triggerBinding != null)
+                        ? (int)(triggerBinding.deadzone * 100f)
+                        : (int)Math.Round(stickConfig.moveDeadzone * 100f);
+                deadZoneValueLabel.Text = deadZoneTrackBar.Value + @"%";
 
-            deadZoneTrackBar.Value =
-                (triggerBinding != null) ?
-                (int)(triggerBinding.deadzone * 100f) : (int)Math.Round(stickConfig.moveDeadzone * 100f);
-            deadZoneValueLabel.Text = deadZoneTrackBar.Value + @"%";
+                if (triggerBinding == null)
+                {
+                    actionZoneLabel.Visible = true;
+                    actionZoneValueLabel.Visible = true;
+                    actionZoneTrackBar.Visible = true;
+                    actionZoneTrackBar.Value = (int)(stickConfig.actionDeadzone * 100f);
+                    actionZoneValueLabel.Text = actionZoneTrackBar.Value + @"%";
 
-            if (triggerBinding != null)
-                return;
+                    modeLabel.Visible = true;
+                    modeComboBox.Visible = true;
+                    foreach (StickMode stickMode in Enum.GetValues(typeof(StickMode)))
+                        modeComboBox.Items.Add(stickMode);
+                    modeComboBox.SelectedItem = stickConfig.mode;
+                }
+            }
 
-            actionZoneLabel.Visible = true;
-            actionZoneValueLabel.Visible = true;
-            actionZoneTrackBar.Visible = true;
-            actionZoneTrackBar.Value = (int)(stickConfig.actionDeadzone * 100f);
-            actionZoneValueLabel.Text = actionZoneTrackBar.Value + @"%";
-
-            modeLabel.Visible = true;
-            modeComboBox.Visible = true;
-            foreach (StickMode stickMode in Enum.GetValues(typeof(StickMode)))
-                modeComboBox.Items.Add(stickMode);
-            modeComboBox.SelectedItem = stickConfig.mode;
-
-            initialized = true;
+            m_Initialized = true;
         }
 
         private void OnSaveClick(object sender, EventArgs e)
@@ -118,7 +120,6 @@ namespace D360
         private void OnDeleteClick(object sender, EventArgs e)
         {
             var senderButton = sender as Button;
-
             if (senderButton == null)
                 return;
 
@@ -138,8 +139,7 @@ namespace D360
         private void OnBindingTypeChanged(object sender, EventArgs e)
         {
             var senderComboBox = sender as ComboBox;
-
-            if (senderComboBox == null || !initialized)
+            if (senderComboBox == null || !m_Initialized)
                 return;
 
             var index =
@@ -180,8 +180,7 @@ namespace D360
         private void OnScriptChanged(object sender, EventArgs e)
         {
             var senderTextBox = sender as TextBox;
-
-            if (senderTextBox == null || senderTextBox.Multiline == false || !initialized)
+            if (senderTextBox == null || senderTextBox.Multiline == false || !m_Initialized)
                 return;
 
             var index =
@@ -203,10 +202,34 @@ namespace D360
             Refresh();
         }
 
+        private void OnSpecialActionChanged(object sender, EventArgs e)
+        {
+            var senderComboBox = sender as ComboBox;
+            if (senderComboBox == null || !m_Initialized)
+                return;
+
+            var index =
+                bindingsTabPage.Controls.OfType<TableLayoutPanel>().
+                    TakeWhile(table => table.Controls.OfType<ComboBox>().
+                    All(comboBox => comboBox != senderComboBox)).
+                        Count() - 1;
+
+            m_TempBinding.controlBindings[index].specialAction = (SpecialAction)senderComboBox.SelectedItem;
+
+            var isDifferent = bindings.controlBindings.Count <= index ||
+                m_TempBinding.controlBindings[index].specialAction != bindings.controlBindings[index].specialAction;
+
+            if (isDifferent)
+                changedControls++;
+            else
+                changedControls--;
+
+            Refresh();
+        }
+
         private void OnKeysTextBoxDoubleClick(object sender, EventArgs e)
         {
             var senderTextBox = sender as TextBox;
-
             if (m_EditingConfig || senderTextBox == null)
                 return;
 
@@ -221,11 +244,38 @@ namespace D360
             Refresh();
         }
 
+        private void OnKeysTextBoxMouseDown(object sender, EventArgs e)
+        {
+            var mouseEvent = e as MouseEventArgs;
+            var senderTextBox = sender as TextBox;
+            if (!m_EditingConfig || mouseEvent == null || senderTextBox == null)
+                return;
+
+            switch (mouseEvent.Button)
+            {
+            case MouseButtons.Left:
+                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.LButton));
+                break;
+            case MouseButtons.Right:
+                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.RButton));
+                break;
+            case MouseButtons.Middle:
+                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.MButton));
+                break;
+
+            case MouseButtons.XButton1:
+                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.XButton1));
+                break;
+            case MouseButtons.XButton2:
+                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.XButton2));
+                break;
+            }
+        }
+
         private void OnKeysTextBoxKeyUp(object sender, KeyEventArgs e)
         {
             var senderTextBox = sender as TextBox;
-
-            if (!m_EditingConfig || senderTextBox == null || !initialized)
+            if (!m_EditingConfig || senderTextBox == null || !m_Initialized)
                 return;
 
             var index =
@@ -256,8 +306,7 @@ namespace D360
         private void OnHoldCheckChanges(object sender, EventArgs e)
         {
             var senderCheck = sender as CheckBox;
-
-            if (senderCheck == null || !initialized)
+            if (senderCheck == null || !m_Initialized)
                 return;
 
             var index =
@@ -286,8 +335,7 @@ namespace D360
         private void OnCheckModeChanged(object sender, EventArgs e)
         {
             var senderCheckBox = sender as CheckBox;
-
-            if (senderCheckBox == null || !initialized)
+            if (senderCheckBox == null || !m_Initialized)
                 return;
 
             var parentTable = senderCheckBox.Parent as TableLayoutPanel;
@@ -325,8 +373,7 @@ namespace D360
         {
             var tempTriggerConfig = m_TempBinding as TriggerConfig;
             var tempStickConfig = m_TempBinding as StickConfig;
-
-            if (tempTriggerConfig == null && tempStickConfig == null || !initialized)
+            if (tempTriggerConfig == null && tempStickConfig == null || !m_Initialized)
                 return;
 
             deadZoneValueLabel.Text = deadZoneTrackBar.Value + @"%";
@@ -367,8 +414,7 @@ namespace D360
         {
             var tempStickConfig = m_TempBinding as StickConfig;
             var stickConfig = bindings as StickConfig;
-
-            if (tempStickConfig == null || stickConfig == null || !initialized)
+            if (tempStickConfig == null || stickConfig == null || !m_Initialized)
                 return;
 
             actionZoneValueLabel.Text = actionZoneTrackBar.Value + @"%";
@@ -394,8 +440,7 @@ namespace D360
         {
             var tempStickConfig = m_TempBinding as StickConfig;
             var stickConfig = bindings as StickConfig;
-
-            if (tempStickConfig == null || stickConfig == null || !initialized)
+            if (tempStickConfig == null || stickConfig == null || !m_Initialized)
                 return;
 
             tempStickConfig.mode = (StickMode)modeComboBox.SelectedItem;
@@ -505,6 +550,10 @@ namespace D360
                 Dock = defaultComboBox.Dock,
                 Visible = controlBinding.bindingType == BindingType.SpecialAction
             };
+            foreach (SpecialAction value in Enum.GetValues(typeof(SpecialAction)))
+                newSpecialComboBox.Items.Add(value);
+            newSpecialComboBox.SelectedItem = controlBinding.specialAction;
+            newSpecialComboBox.SelectedIndexChanged += OnSpecialActionChanged;
 
             var newMultilineBox = new TextBox
             {
@@ -525,9 +574,11 @@ namespace D360
                 Dock = defaultTextBox.Dock,
                 ReadOnly = defaultTextBox.ReadOnly,
                 Cursor = defaultTextBox.Cursor,
-                Visible = controlBinding.bindingType == BindingType.Key
+                Visible = controlBinding.bindingType == BindingType.Key,
+                ContextMenu = new ContextMenu()
             };
             newTextBox.MouseDoubleClick += OnKeysTextBoxDoubleClick;
+            newTextBox.MouseDown += OnKeysTextBoxMouseDown;
             newTextBox.KeyUp += OnKeysTextBoxKeyUp;
 
             var newCheck = new CheckBox
@@ -601,19 +652,20 @@ namespace D360
             }
 
             destination.controlBindings.Clear();
-            foreach (var binding in source.controlBindings)
+            foreach (var sourceBinding in source.controlBindings)
             {
                 destination.controlBindings.Add(
                     new ControlBinding
                     {
-                        keys = binding.keys,
-                        script = binding.script,
+                        keys = sourceBinding.keys,
+                        specialAction = sourceBinding.specialAction,
+                        script = sourceBinding.script,
 
-                        onHold = binding.onHold,
-                        bindingMode = binding.bindingMode,
-                        bindingType = binding.bindingType
+                        onHold = sourceBinding.onHold,
+                        bindingMode = sourceBinding.bindingMode,
+                        bindingType = sourceBinding.bindingType
                     });
-                bindingsTabPage.Controls.Add(CreateNewBinding(binding));
+                bindingsTabPage.Controls.Add(CreateNewBinding(sourceBinding));
             }
         }
         private void InitializeTempConfig()

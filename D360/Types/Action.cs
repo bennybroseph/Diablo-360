@@ -25,6 +25,14 @@ namespace D360.Types
         WorldMap
     }
 
+    public enum SpecialAction
+    {
+        SwitchStickMode,
+        InventoryMode,
+        Loot,
+        PauseApplication
+    }
+
     public static class ActionEnumExtensions
     {
         [Pure]

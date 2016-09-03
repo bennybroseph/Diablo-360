@@ -10,7 +10,7 @@ namespace D360.Commands
         public MouseMove mouseMove { get; set; }
         public Vector2 inputCommandValue;
 
-        public override bool Execute(ref ControllerState state)
+        public override bool Execute(ref OldControllerState state)
         {
             if (!base.Execute(ref state) || mouseMove == null)
                 return false;

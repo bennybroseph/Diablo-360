@@ -20,6 +20,17 @@ namespace D360
         //[DllImport("user32.dll")]
         //public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+        [DllImport("User32.dll")]
+        private static extern int SetForegroundWindow(int hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("dwmapi.dll")]
+        private static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, ref int[] pMargins);
+
         private const int CONFIG_HOTKEY = 0;
         private const int ACTIONS_HOTKEY = 1;
         private const int EXIT_HOTKEY = 2;
@@ -27,8 +38,6 @@ namespace D360
         private bool m_DiabloActive;
 
         private readonly bool m_HUDDisabled;
-
-        private bool m_SetNonTopmost;
 
         private readonly HUD m_HUD;
         private readonly InputProcessor m_InputProcessor;
@@ -51,8 +60,8 @@ namespace D360
 
             StartPosition = FormStartPosition.Manual;
 
-            var screenWidth = Screen.GetBounds(this).Width;
-            var screenHeight = Screen.GetBounds(this).Height;
+            var screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            var screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
             ClientSize = new Size(screenWidth, screenHeight);
 
             FormBorderStyle = FormBorderStyle.None;  // no borders
@@ -112,12 +121,6 @@ namespace D360
             {
                 Visible = false;
                 ClientSize = new Size(0, 0);
-
-                //hudlessUpdateThread = new Thread(new ThreadStart(DoUpdate));
-                //hudlessUpdateThread.Start();
-                //while (!hudlessUpdateThread.IsAlive) ;
-
-                backgroundWorker1.RunWorkerAsync();
             }
 
             RegisterHotKey(Handle, ACTIONS_HOTKEY, 2, (int)Keys.F10);
@@ -164,32 +167,14 @@ namespace D360
 #else
             m_DiabloActive = true;
 #endif
-
             try
             {
-                if (m_DiabloActive && !m_SetNonTopmost)
-                {
-                    WindowFunctions.DisableTopMost(WindowFunctions.GetForegroundWindowHandle());
-
-                    m_SetNonTopmost = true;
-                }
-
+                m_HUD.Draw(m_InputManager.controllerState, m_DiabloActive);
             }
             catch (Exception exception)
             {
                 WriteToLog(exception);
-                MessageBox.Show(@"Exception in windowing functions. Written to crash.txt.");
-                Close();
-            }
-
-            try
-            {
-                m_HUD.Draw(m_InputProcessor.currentControllerState, m_DiabloActive);
-            }
-            catch (Exception exception)
-            {
-                WriteToLog(exception);
-                MessageBox.Show(@"Exception in HUD draw. Written to crash.txt.");
+                MessageBox.Show(new Form(), @"Exception in HUD draw. Written to crash.txt.");
                 Close();
             }
 
@@ -199,76 +184,16 @@ namespace D360
             try
             {
                 if (m_DiabloActive)
-                {
-                    LogicUpdate();
-                }
+                    m_InputManager.Update();
             }
             catch (Exception exception)
             {
                 WriteToLog(exception);
-                MessageBox.Show(@"Exception in Logic update. Written to crash.txt.");
+                MessageBox.Show(new Form(), @"Exception in Logic update. Written to crash.txt.");
                 Close();
             }
         }
-
-
-        //public void BindingsUpdate()
-        //{
-        //    var newState = GamePad.GetState(0, GamePadDeadZone.Circular);
-
-        //    if ((newState.IsButtonDown(Buttons.Back)) && (newState.IsButtonDown(Buttons.Start)))
-        //    {
-        //        if ((oldGamePadState.IsButtonUp(Buttons.Back)) || (oldGamePadState.IsButtonUp(Buttons.Start)))
-        //        {
-        //            if (ActionBindingsForm.Visible)
-        //            {
-        //                ActionBindingsForm.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                ActionBindingsForm.Visible = true;
-        //            }
-        //        }
-        //    }
-
-        //    oldGamePadState = newState;
-        //}
-
-        public void LogicUpdate()
-        {
-            //m_InputProcessor.Update(GamePad.GetState(0, GamePadDeadZone.Circular));
-            m_InputManager.Update();
-        }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        [DllImport("dwmapi.dll")]
-        private static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, ref int[] pMargins);
-
-        //[DllImport("user32.dll")]
-        //[return: MarshalAs(UnmanagedType.Bool)]
-        //public static extern bool SetWindowPos(
-        //    IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-        private void HUDForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HUDForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            //terminateThread = true;
-        }
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //DoUpdate();
-        }
-
+        
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == 0x0312)
@@ -277,9 +202,11 @@ namespace D360
                 {
                 case CONFIG_HOTKEY:
                     m_ConfigForm.Visible = !m_ConfigForm.Visible;
+                    SetForegroundWindow(m_ConfigForm.Handle.ToInt32());
                     break;
                 case ACTIONS_HOTKEY:
                     m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
+                    SetForegroundWindow(m_ActionBindingsForm.Handle.ToInt32());
                     break;
                 case EXIT_HOTKEY:
                     Close();

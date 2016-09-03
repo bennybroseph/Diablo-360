@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="Utility\InputManager.cs" />
     <Compile Include="Utility\BinarySerializer.cs" />
+    <Compile Include="Utility\StringExtensions.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Types\Action.cs" />
     <Compile Include="Bindings\ControllerStickBinding.cs" />
