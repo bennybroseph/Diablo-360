@@ -17,61 +17,85 @@ namespace D360.Utility
 {
     public class InputManager
     {
+        /// <summary> Base class for determining the state of a gamepad's control </summary>
         private class GamePadControlState
         {
+            /// <summary> Amount of time the control has been held down </summary>
             public float timeHeld;
+            /// <summary> Whether or not the vibration timer has been run since the button was pressed </summary>
             public bool timerRan;
+            /// <summary> The current state of the control </summary>
             public ControlState state = ControlState.Released;
         }
-
+        /// <summary> A trigger's state which inherits all values from 'GamePadControlState' </summary>
         private class GamePadTriggerState : GamePadControlState
         {
             public float amount;
         }
-
+        /// <summary> A stick's state which inherits all values from 'GamePadControlState' </summary>
         private class GamePadStickState : GamePadControlState
         {
+            /// <summary> The stick's position on the x axis </summary>
             public float x;
+            /// <summary> The stick's position on the y axis </summary>
             public float y;
         }
 
+        /// <summary> Represents a single gamepad's current values </summary>
         private class PlayerGamePad
         {
+            /// <summary> Which index this controller resides on </summary>
             public PlayerIndex playerIndex;
 
+            /// <summary> Whether or not the controller's index has been set </summary>
             public bool indexSet;
 
+            /// <summary> The current state of the controller </summary>
             public GamePadState state;
+            /// <summary> The previous state of the controller </summary>
             public GamePadState prevState;
 
-            public Dictionary<GamePadControl, GamePadControlState> controlStates =
+            /// <summary> A dictionary of each individual control's current state </summary>
+            public readonly Dictionary<GamePadControl, GamePadControlState> controlStates =
                 new Dictionary<GamePadControl, GamePadControlState>();
-            public Dictionary<GamePadControl, GamePadControlState> prevControlStates =
+            /// <summary> A dictionary of each individual control's previous state </summary>
+            public readonly Dictionary<GamePadControl, GamePadControlState> prevControlStates =
                 new Dictionary<GamePadControl, GamePadControlState>();
         }
-
+        /// <summary> A dictionary containing all controllers organized by 'PlayerIndex' </summary>
         private readonly Dictionary<PlayerIndex, PlayerGamePad> m_PlayerStates =
             new Dictionary<PlayerIndex, PlayerGamePad>();
 
+        /// <summary> A list of all the current press actions that have yet to be processed this frame </summary>
         private readonly List<ControlBinding> m_PressActions = new List<ControlBinding>();
+        /// <summary> A list of all the current release actions that have yet to be processed this frame </summary>
         private readonly List<ControlBinding> m_ReleaseActions = new List<ControlBinding>();
 
+        /// <summary> The main configuration used for the application </summary>
         public Configuration configuration = new Configuration();
-        public ActionBindings actionBindings = new ActionBindings();
 
+        /// <summary> A reference to the screen's dimensions </summary>
         private Rectangle m_Screen;
 
+        /// <summary> All controllers' collective state </summary>
         public readonly ControllerState controllerState;
+        /// <summary> All controllers' collective previous state </summary>
         public ControllerState prevControllerState = new ControllerState();
 
+        /// <summary> Creates a 'default' instance of 'InputManager' </summary>
         public InputManager()
         {
+            // Grabs a reference to the primary screens dimensions
             m_Screen = Screen.PrimaryScreen.Bounds;
 
+            // Creates a 'default' instance of 'ControllerState'
             controllerState = new ControllerState
             {
+                connected = false,
+
                 targetPosition = new Vector2(0, 0),
                 cursorPosition = new Vector2(0, 0),
+                pressedTargetKeys = 0,
 
                 currentMode = BindingMode.Move,
                 centerOffset = configuration.centerOffset
@@ -83,6 +107,7 @@ namespace D360.Utility
 
                 foreach (GamePadControl control in Enum.GetValues(typeof(GamePadControl)))
                 {
+                    // Creates a new State class of the appropriate type based on the control type
                     switch (control.ParseControlType())
                     {
                     case ControlType.Buttons:
