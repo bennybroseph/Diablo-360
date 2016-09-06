@@ -3,7 +3,6 @@ using System.Threading;
 using System.Windows.Forms;
 using D360.Bindings;
 using D360.Commands;
-using D360.InputEmulation;
 using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -423,10 +422,10 @@ namespace D360.Utility
 
             if (m_ReticuleTargetedCommands.Count > 0)
             {
-                //if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerOffset.X) && (currentControllerState.targetingReticulePosition.Y == currentControllerState.centerOffset.Y))
+                //if ((currentControllerState.targetingReticulePosition.X == currentControllerState.centerOffset.X) && (currentControllerState.targetPosition.Y == currentControllerState.centerOffset.Y))
                 //    VirtualMouse.MoveAbsolute(currentControllerState.cursorPosition.X, currentControllerState.cursorPosition.Y);
                 //else
-                //    VirtualMouse.MoveAbsolute(currentControllerState.targetingReticulePosition.X, currentControllerState.targetingReticulePosition.Y);
+                //    VirtualMouse.MoveAbsolute(currentControllerState.targetingReticulePosition.X, currentControllerState.targetPosition.Y);
             }
 
             Thread.Sleep(10);

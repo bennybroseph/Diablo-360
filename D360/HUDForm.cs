@@ -2,7 +2,6 @@ using D360.Display;
 using D360.Utility;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;

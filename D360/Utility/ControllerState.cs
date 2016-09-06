@@ -7,8 +7,9 @@ namespace D360.Utility
     {
         public bool connected;
 
-        public Vector2 targetingReticulePosition;
+        public Vector2 targetPosition;
         public Vector2 cursorPosition;
+        public int pressedTargetKeys;
 
         public BindingMode currentMode;
         public Vector2 centerOffset;

@@ -34,6 +34,7 @@ namespace D360.Utility
 
         public bool onHold;
         public bool targeted;
+        public bool swap;
         public BindingMode bindingMode = BindingMode.Move;
         public BindingType bindingType = BindingType.Key;
     }

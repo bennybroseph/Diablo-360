@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using D360.Utility;
-using D360.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -69,7 +68,9 @@ namespace D360.Display
             if (diabloActive)
             {
                 if (state.currentMode != BindingMode.Config)
-                    SetWindowPos(m_GraphicsDevice.PresentationParameters.DeviceWindowHandle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
+                    SetWindowPos(
+                        m_GraphicsDevice.PresentationParameters.DeviceWindowHandle,
+                        HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
 
                 m_SpriteBatch.Begin();
                 {
@@ -88,11 +89,15 @@ namespace D360.Display
 
                     else
                     {
-                        if ((Math.Abs(state.targetingReticulePosition.X - state.centerOffset.X) > float.Epsilon) ||
-                            (Math.Abs(state.targetingReticulePosition.Y - state.centerOffset.Y) > float.Epsilon))
+                        if ((Math.Abs(state.targetPosition.X - state.centerOffset.X) > float.Epsilon) ||
+                            (Math.Abs(state.targetPosition.Y - state.centerOffset.Y) > float.Epsilon))
                         {
-                            var x = (int)(state.targetingReticulePosition.X * (screenWidth / 2f) + screenWidth / 2f) - 16;
-                            var y = (int)(state.targetingReticulePosition.Y * (screenHeight / 2f) + screenHeight / 2f) - 16;
+                            var anchor =
+                                state.pressedTargetKeys > 0 && state.targetPosition != Vector2.Zero ?
+                                state.cursorPosition : state.targetPosition;
+
+                            var x = (int)(anchor.X * (screenWidth / 2f) + screenWidth / 2f) - 16;
+                            var y = (int)(anchor.Y * (screenHeight / 2f) + screenHeight / 2f) - 16;
                             targetRect = new Rectangle(x, y, 32, 32);
 
                             m_SpriteBatch.Draw(m_TargetTexture, targetRect, new Color(1.0f, 1.0f, 1.0f, 0.5f));

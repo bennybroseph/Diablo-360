@@ -53,6 +53,9 @@ namespace D360.Utility
         private readonly Dictionary<PlayerIndex, PlayerGamePad> m_PlayerStates =
             new Dictionary<PlayerIndex, PlayerGamePad>();
 
+        private readonly List<ControlBinding> m_PressActions = new List<ControlBinding>();
+        private readonly List<ControlBinding> m_ReleaseActions = new List<ControlBinding>();
+
         public Configuration configuration = new Configuration();
         public ActionBindings actionBindings = new ActionBindings();
 
@@ -67,7 +70,7 @@ namespace D360.Utility
 
             controllerState = new ControllerState
             {
-                targetingReticulePosition = new Vector2(0, 0),
+                targetPosition = new Vector2(0, 0),
                 cursorPosition = new Vector2(0, 0),
 
                 currentMode = BindingMode.Move,
@@ -129,6 +132,22 @@ namespace D360.Utility
                 controllerState.connected = true;
                 ParseInput(playerGamePad);
             }
+            if ((controllerState.cursorPosition != prevControllerState.cursorPosition ||
+                controllerState.targetPosition != prevControllerState.targetPosition) &&
+                controllerState.currentMode != BindingMode.Config)
+                MoveMouseToOffset();
+
+            ProcessActions();
+
+            prevControllerState = new ControllerState
+            {
+                centerOffset = new Vector2(controllerState.centerOffset.X, controllerState.centerOffset.Y),
+                connected = controllerState.connected,
+                pressedTargetKeys = controllerState.pressedTargetKeys,
+                currentMode = controllerState.currentMode,
+                cursorPosition = new Vector2(controllerState.cursorPosition.X, controllerState.cursorPosition.Y),
+                targetPosition = new Vector2(controllerState.targetPosition.X, controllerState.targetPosition.Y)
+            };
         }
 
         private void ParseInput(PlayerGamePad playerGamePad)
@@ -166,27 +185,11 @@ namespace D360.Utility
             ParseStickInput(playerGamePad, GamePadControl.LeftStick);
             ParseStickInput(playerGamePad, GamePadControl.RightStick);
 
-            if (controllerState.cursorPosition != prevControllerState.cursorPosition &&
-                controllerState.currentMode != BindingMode.Config)
-                MoveMouseToOffset(controllerState.cursorPosition);
-
             ParseAction(
                 playerGamePad.controlStates,
                 playerGamePad.prevControlStates,
                 configuration.bindingConfigs,
                 playerGamePad.playerIndex);
-
-            prevControllerState = new ControllerState
-            {
-                centerOffset = new Vector2(controllerState.centerOffset.X, controllerState.centerOffset.Y),
-                connected = controllerState.connected,
-                currentMode = controllerState.currentMode,
-                cursorPosition = new Vector2(controllerState.cursorPosition.X, controllerState.cursorPosition.Y),
-                targetingReticulePosition =
-                    new Vector2(
-                        controllerState.targetingReticulePosition.X,
-                        controllerState.targetingReticulePosition.Y)
-            };
         }
 
         ///TODO: This is literally the worst code I have ever written
@@ -393,31 +396,45 @@ namespace D360.Utility
                 var buttonState = buttonStates[pair.Key];
                 var prevButtonState = prevButtonStates[pair.Key];
 
-                foreach (var controlBinding in pair.Value.controlBindings)
+                var parsedControlBindings =
+                    pair.Value.controlBindings.Where(x => controllerState.currentMode.HasFlag(x.bindingMode));
+                foreach (var controlBinding in parsedControlBindings)
                 {
                     var hasHoldBinding = pair.Value.controlBindings.Any(x => x.onHold);
                     switch (buttonState.state)
                     {
                     case ControlState.OnPress:
                         if (!hasHoldBinding && prevButtonState.state == ControlState.Released)
-                            DoAction(controlBinding, ActionType.Press);
+                        {
+                            m_PressActions.Add(controlBinding);
+
+                            if (controlBinding.targeted)
+                                controllerState.pressedTargetKeys++;
+                        }
                         break;
 
                     case ControlState.OnRelease:
                         if (!hasHoldBinding)
-                            DoAction(controlBinding, ActionType.Release);
+                            m_ReleaseActions.Add(controlBinding);
                         else if (!controlBinding.onHold &&
                                  prevButtonState.state == ControlState.OnPress)
-                            DoAction(controlBinding, ActionType.Press | ActionType.Release);
-                        else if (prevButtonState.state == ControlState.Pressed)
-                            DoAction(controlBinding, ActionType.Release);
+                        {
+                            m_PressActions.Add(controlBinding);
+                            m_ReleaseActions.Add(controlBinding);
+
+                            if (controlBinding.targeted)
+                                controllerState.pressedTargetKeys++;
+                        }
+                        else if (controlBinding.onHold && prevButtonState.state == ControlState.Pressed)
+                            m_ReleaseActions.Add(controlBinding);
                         break;
 
                     case ControlState.Pressed:
                         {
                             if (controlBinding.onHold)
                             {
-                                DoAction(controlBinding, ActionType.Press);
+                                m_PressActions.Add(controlBinding);
+
                                 if (!buttonState.timerRan)
                                 {
                                     GamePad.SetVibration(playerIndex, 1f, 1f);
@@ -434,6 +451,10 @@ namespace D360.Utility
                                         };
 
                                     newTimer.Start();
+
+                                    if (controlBinding.targeted)
+                                        controllerState.pressedTargetKeys++;
+
                                     buttonState.timerRan = true;
                                 }
                             }
@@ -447,51 +468,18 @@ namespace D360.Utility
             }
         }
 
-        [Flags]
-        private enum ActionType
+        private void ProcessActions()
         {
-            None,
-
-            Press = 1 << 0,
-            Release = 1 << 1
-        }
-        private void DoAction(ControlBinding controlBinding, ActionType actionType)
-        {
-            switch (controlBinding.bindingType)
+            foreach (var binding in m_PressActions)
             {
-            case BindingType.Key:
-                var swap =
-                    controlBinding.targeted &&
-                    (Math.Abs(controllerState.targetingReticulePosition.X) > float.Epsilon ||
-                    Math.Abs(controllerState.targetingReticulePosition.Y) > float.Epsilon);
-
-                if (swap)
-                    MoveMouseToOffset(controllerState.targetingReticulePosition);
-
-                switch (actionType)
+                switch (binding.bindingType)
                 {
-                case ActionType.Press:
-                    VirtualKeyboard.KeyDown(controlBinding.keys);
-                    break;
-                case ActionType.Release:
-                    VirtualKeyboard.KeyUp(controlBinding.keys);
+                case BindingType.Key:
+                    VirtualKeyboard.KeyDown(binding.keys);
                     break;
 
-                case ActionType.Press | ActionType.Release:
-                    VirtualKeyboard.KeyDown(controlBinding.keys);
-                    VirtualKeyboard.KeyUp(controlBinding.keys);
-                    break;
-                }
-
-                if (swap)
-                    MoveMouseToOffset(controllerState.cursorPosition);
-                break;
-            case BindingType.SpecialAction:
-                switch (actionType)
-                {
-                case ActionType.Press:
-                case ActionType.Press | ActionType.Release:
-                    switch (controlBinding.specialAction)
+                case BindingType.SpecialAction:
+                    switch (binding.specialAction)
                     {
                     case SpecialAction.SwitchStickMode:
                         controllerState.currentMode ^= BindingMode.Pointer;
@@ -499,21 +487,39 @@ namespace D360.Utility
                         break;
                     }
                     break;
-                }
-                break;
-            case BindingType.Script:
-                switch (actionType)
-                {
-                case ActionType.Press:
-                case ActionType.Press | ActionType.Release:
-                    VirtualKeyboard.ExecuteScript(controlBinding.script);
-                    break;
-                }
-                break;
 
-            default:
-                throw new ArgumentOutOfRangeException();
+                case BindingType.Script:
+                    VirtualKeyboard.ExecuteScript(binding.script);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+                }
             }
+            m_PressActions.Clear();
+
+            foreach (var binding in m_ReleaseActions)
+            {
+                if (binding.targeted)
+                    controllerState.pressedTargetKeys--;
+
+                switch (binding.bindingType)
+                {
+                case BindingType.Key:
+                    VirtualKeyboard.KeyUp(binding.keys);
+                    break;
+
+                case BindingType.SpecialAction:
+                    break;
+
+                case BindingType.Script:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+                }
+            }
+            m_ReleaseActions.Clear();
         }
         private void ParseStickInput(PlayerGamePad playerGamePad, GamePadControl stick)
         {
@@ -531,10 +537,7 @@ namespace D360.Utility
                 tempStickValue = new Vector2(0, 0);
             else
             {
-                var signCoefficient =
-                    new Vector2(
-                        stickState.x < 0f ? -1f : 1f,
-                        stickState.y < 0f ? -1f : 1f);
+                var signCoefficient = new Vector2(stickState.x < 0f ? -1f : 1f, stickState.y < 0f ? -1f : 1f);
 
                 var theta = Math.Abs(Math.Atan(stickState.y / stickState.x));
                 var radius = Math.Sqrt(Math.Pow(stickState.x, 2f) + Math.Pow(stickState.y, 2f));
@@ -571,8 +574,7 @@ namespace D360.Utility
             case StickMode.Cursor:
                 {
                     if (controllerState.currentMode.HasFlag(BindingMode.Move))
-                        controllerState.cursorPosition =
-                            new Vector2(tempStickValue.X, -tempStickValue.Y);
+                        controllerState.cursorPosition = new Vector2(tempStickValue.X, -tempStickValue.Y);
                     if (controllerState.currentMode.HasFlag(BindingMode.Pointer))
                     {
                         controllerState.cursorPosition.X += tempStickValue.X * 10f * Time.deltaTime;
@@ -584,21 +586,22 @@ namespace D360.Utility
             case StickMode.Target:
                 {
                     if (controllerState.currentMode.HasFlag(BindingMode.Move))
-                        controllerState.targetingReticulePosition =
-                            new Vector2(tempStickValue.X, -tempStickValue.Y);
+                        controllerState.targetPosition = new Vector2(tempStickValue.X, -tempStickValue.Y);
                 }
                 break;
             }
         }
 
-        private void MoveMouseToOffset(Vector2 newPosition)
+        private void MoveMouseToOffset()
         {
-            newPosition =
+            var anchor =
+                controllerState.pressedTargetKeys > 0 && controllerState.targetPosition != Vector2.Zero ?
+                controllerState.targetPosition : controllerState.cursorPosition;
+
+            var newPosition =
                 new Vector2(
-                    newPosition.X * (m_Screen.Width / 2f)
-                    + m_Screen.Width / 2f + controllerState.centerOffset.X,
-                    newPosition.Y * (m_Screen.Height / 2f)
-                    + m_Screen.Height / 2f + controllerState.centerOffset.Y);
+                    anchor.X * (m_Screen.Width / 2f) + m_Screen.Width / 2f + controllerState.centerOffset.X,
+                    anchor.Y * (m_Screen.Height / 2f) + m_Screen.Height / 2f + controllerState.centerOffset.Y);
 
             VirtualMouse.MoveAbsolute((int)newPosition.X, (int)newPosition.Y);
         }

@@ -13,6 +13,7 @@ namespace D360
         private int m_TableCount;
 
         private bool m_EditingConfig;
+        private Keys m_PressedKeys;
 
         public BindingConfig bindings;
         private BindingConfig m_TempBinding;
@@ -234,6 +235,7 @@ namespace D360
                 return;
 
             m_EditingConfig = true;
+            m_PressedKeys = Keys.None;
 
             // Set the color and text to signify it's being edited to the user
             senderTextBox.BackColor = Color.White;
@@ -242,6 +244,12 @@ namespace D360
 
             // Force Redraw
             Refresh();
+        }
+
+        private void OnKeysTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (m_EditingConfig)
+                m_PressedKeys = e.Modifiers;
         }
 
         private void OnKeysTextBoxMouseDown(object sender, EventArgs e)
@@ -283,13 +291,17 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<TextBox>().All(textBox => textBox != senderTextBox)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings[index].keys = e.KeyData;
+            var parsedKeys = e.KeyData;
+            if (m_PressedKeys != Keys.None)
+                parsedKeys |= m_PressedKeys;
+
+            m_TempBinding.controlBindings[index].keys = parsedKeys;
 
             var isDifferent =
                 bindings.controlBindings.Count <= index ||
                 m_TempBinding.controlBindings[index].keys != bindings.controlBindings[index].keys;
 
-            senderTextBox.Text = e.KeyData.ToString();
+            senderTextBox.Text = m_TempBinding.controlBindings[index].keys.ToString();
             senderTextBox.BackColor = defaultTextBox.BackColor;
             senderTextBox.ForeColor = isDifferent ? Color.DodgerBlue : SystemColors.ControlText;
 
@@ -607,6 +619,7 @@ namespace D360
                 ContextMenu = new ContextMenu()
             };
             newTextBox.MouseDoubleClick += OnKeysTextBoxDoubleClick;
+            newTextBox.KeyDown += OnKeysTextBoxKeyDown;
             newTextBox.MouseDown += OnKeysTextBoxMouseDown;
             newTextBox.KeyUp += OnKeysTextBoxKeyUp;
 
