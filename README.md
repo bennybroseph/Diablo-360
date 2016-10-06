@@ -21,6 +21,14 @@ The software will only work with Diablo 3 running in Windowed (Fullscreen) mode,
 
 Quit the software by ALT+Tab'ing to D360, then hitting ALT+F4.
 
+***10/06/2016 NEW IN VERSION 0.8***
+Keep in mind this is potentially a very unstable build, but provides proof of concept. It's still usable, but not as much as I'd like.
+
+CTRL + F11 will open the configuration form. It is closed by default on start up, so this is how you edit keys otherwise
+CTRL + F12 will exit the program. Do not exit any other way or the task bar will not reappear. 
+
+Most controls should be self explanatory albeit a little overwhelming to look at to start. Set all the hot keys in the configuration form and you're good to go. 
+
 ***09/15/2014 NEW IN VERSION 0.2.2***
 Updated D3 key bindings and trigger bindings are actually applied when you hit 'Save and Close'. My bad.
 
