@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
-using Action = D360.Types.Action;
 
 namespace D360.Utility
 {
@@ -68,9 +67,6 @@ namespace D360.Utility
     [Serializable]
     public class Configuration
     {
-        public Action leftTriggerBinding;
-        public Action rightTriggerBinding;
-
         public Dictionary<GamePadControl, BindingConfig> bindingConfigs =
             new Dictionary<GamePadControl, BindingConfig>();
 
@@ -87,9 +83,6 @@ namespace D360.Utility
 
         public Configuration()
         {
-            leftTriggerBinding = Action.ActionbarSkill1;
-            rightTriggerBinding = Action.ActionbarSkill2;
-
             foreach (GamePadControl button in Enum.GetValues(typeof(GamePadControl)))
             {
                 BindingConfig newBindingConfig;

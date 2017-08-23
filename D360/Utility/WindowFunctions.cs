@@ -144,11 +144,6 @@ namespace D360.Utility
             return null;
         }
 
-        public static IntPtr GetForegroundWindowHandle()
-        {
-            return GetForegroundWindow();
-        }
-
         [DllImport("dwmapi.dll")]
         private static extern int DwmIsCompositionEnabled(out bool enabled);
 

@@ -81,7 +81,12 @@ namespace D360.InputEmulation
         /// An Instance of a key converter for 'System.Windows.Forms.Keys'
         private static readonly KeysConverter s_KeysConverter = new KeysConverter();
 
-        public static IEnumerable<Keys> ParseFlags(this Keys keys)
+        /// <summary>
+        /// Parses out each modifier key if there is one as a separate flag instead of bit-masked together
+        /// </summary>
+        /// <param name="keys">The key which may or may not contain modifiers</param>
+        /// <returns></returns>
+        public static IEnumerable<Keys> ParseAsSeparateFlags(this Keys keys)
         {
             if ((keys & Keys.Control) == Keys.Control)
                 yield return Keys.Control;
@@ -99,7 +104,7 @@ namespace D360.InputEmulation
 
         public static IEnumerable<string> ParseToStrings(this Keys keys)
         {
-            foreach (var key in keys.ParseFlags())
+            foreach (var key in keys.ParseAsSeparateFlags())
             {
                 switch (key)
                 {

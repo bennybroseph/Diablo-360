@@ -1,6 +1,5 @@
 using D360.Display;
 using D360.Utility;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Drawing;
 using System.Globalization;
@@ -39,15 +38,10 @@ namespace D360
         private readonly bool m_HUDDisabled;
 
         private readonly HUD m_HUD;
-        private readonly InputProcessor m_InputProcessor;
         private InputManager m_InputManager;
-
-        private readonly ActionBindingsForm m_ActionBindingsForm;
+        
         private readonly ConfigForm m_ConfigForm;
-
-        //private GamePadState m_OldGamePadState;
-        //private KeyboardState m_OldKeyboardState;
-
+        
         /// <summary>
         /// Gets an IServiceProvider containing our IGraphicsDeviceService.
         /// This can be used with components such as the ContentManager,
@@ -78,8 +72,7 @@ namespace D360
                 SetWindowLong(Handle, -20, initialStyle | 0x80000 | 0x20);
             else
                 m_HUDDisabled = true;
-
-            m_InputProcessor = new InputProcessor(GamePad.GetState(0));
+            
             m_InputManager = new InputManager();
 
             m_HUD = new HUD(Handle)
@@ -90,17 +83,7 @@ namespace D360
 
             // Extend aero glass style on form initialization
             OnResize(null);
-
-            m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = m_InputProcessor };
-
-            if (File.Exists(@"ActionBindings.dat"))
-                BinarySerializer.LoadObject(ref m_InputProcessor.actionBindings, @"ActionBindings.dat");
-            else
-            {
-                BinarySerializer.SaveObject(m_InputProcessor.actionBindings, @"ActionBindings.dat");
-                m_ActionBindingsForm.Show();
-            }
-
+            
             m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
 
             if (File.Exists(@"Config.dat"))
@@ -110,8 +93,6 @@ namespace D360
                 BinarySerializer.SaveObject(m_InputManager.configuration, @"Config.dat");
                 m_ConfigForm.Show();
             }
-
-            m_InputProcessor.AddConfiguredBindings();
 
             //m_OldGamePadState = GamePad.GetState(0, GamePadDeadZone.Circular);
             //m_OldKeyboardState = Keyboard.GetState();
@@ -205,8 +186,6 @@ namespace D360
                     SetForegroundWindow(m_ConfigForm.Handle.ToInt32());
                     break;
                 case ACTIONS_HOTKEY:
-                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
-                    SetForegroundWindow(m_ActionBindingsForm.Handle.ToInt32());
                     break;
                 case EXIT_HOTKEY:
                     Close();
