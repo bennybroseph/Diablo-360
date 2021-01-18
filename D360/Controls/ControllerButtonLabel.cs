@@ -12,7 +12,7 @@ namespace D360.Controls
             set
             {
                 label1.Text = value;
-                editButton.Name = value + "EditButton";
+                editButton.Name = value.Replace(" ", "") + "EditButton";
             }
         }
 
