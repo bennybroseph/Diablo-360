@@ -7,6 +7,8 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using D360.Bindings;
+using Newtonsoft.Json;
 using Keys = System.Windows.Forms.Keys;
 
 namespace D360
@@ -68,7 +70,7 @@ namespace D360
             Left = 0;
             Top = 0;
 
-            TopMost = true;        // make the form always on top 
+            TopMost = true;        // make the form always on top
             Visible = true;        // Important! if this isn't set, then the form is not shown at all
 
             // Set the form click-through
@@ -93,21 +95,31 @@ namespace D360
 
             m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = m_InputProcessor };
 
-            if (File.Exists(@"ActionBindings.dat"))
-                BinarySerializer.LoadObject(ref m_InputProcessor.actionBindings, @"ActionBindings.dat");
+            if (File.Exists(@"ActionBindings.json"))
+            {
+                m_InputProcessor.actionBindings =
+                    JsonConvert.DeserializeObject<ActionBindings>(File.ReadAllText(@"ActionBindings.json"));
+            }
             else
             {
-                BinarySerializer.SaveObject(m_InputProcessor.actionBindings, @"ActionBindings.dat");
+                File.AppendAllText(
+                    @"ActionBindings.json",
+                    JsonConvert.SerializeObject(m_InputProcessor.actionBindings));
+
                 m_ActionBindingsForm.Show();
             }
 
             m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
 
-            if (File.Exists(@"Config.dat"))
-                BinarySerializer.LoadObject(ref m_InputManager.configuration, @"Config.dat");
+            if (File.Exists(@"Config.json"))
+            {
+                m_InputManager.configuration =
+                    JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(@"Config.json"));
+            }
             else
             {
-                BinarySerializer.SaveObject(m_InputManager.configuration, @"Config.dat");
+                File.AppendAllText(@"Config.json", JsonConvert.SerializeObject(m_InputManager.configuration));
+
                 m_ConfigForm.Show();
             }
 

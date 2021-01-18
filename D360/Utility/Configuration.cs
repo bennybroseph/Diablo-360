@@ -1,12 +1,13 @@
-﻿using D360.Types;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-using Action = D360.Types.Action;
-
+﻿
 namespace D360.Utility
 {
+    using Microsoft.Xna.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Forms;
+    using Types;
+    using Action = Types.Action;
+
     [Flags]
     public enum BindingMode
     {
@@ -68,6 +69,8 @@ namespace D360.Utility
     [Serializable]
     public class Configuration
     {
+        public Screen screen = Screen.PrimaryScreen;
+
         public Action leftTriggerBinding;
         public Action rightTriggerBinding;
 

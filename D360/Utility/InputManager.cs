@@ -144,7 +144,7 @@ namespace D360.Utility
                     if (!testState.IsConnected)
                         continue;
 
-                    Console.WriteLine($"GamePad found {playerIndex}");
+                    System.Diagnostics.Debug.WriteLine($"GamePad found {playerIndex}");
                     playerGamePad.playerIndex = playerIndex;
                     playerGamePad.state = testState;
 

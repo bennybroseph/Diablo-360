@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using D360.Types;
 using D360.Utility;
+using Newtonsoft.Json;
 
 namespace D360
 {
@@ -28,7 +30,7 @@ namespace D360
             CopyConfig(m_TempConfig, out inputManager.configuration);
             inputManager.controllerState.centerOffset = inputManager.configuration.centerOffset;
 
-            BinarySerializer.SaveObject(inputManager.configuration, "Config.dat");
+            File.WriteAllText("Config.json", JsonConvert.SerializeObject(inputManager.configuration));
 
             Hide();
         }

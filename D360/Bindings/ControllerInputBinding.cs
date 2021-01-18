@@ -21,7 +21,7 @@ namespace D360.Bindings
         public ControllerTriggerState triggerState { get; set; }
 
         public readonly List<Command> commands = new List<Command>();
-        
+
         internal void ExecuteCommands(ref OldControllerState state)
         {
             foreach (var command in commands)
@@ -29,15 +29,15 @@ namespace D360.Bindings
         }
 
         /// <summary>
-        /// createButtonKeyBindings creates two new binding and command sets, which directly maps a 
-        /// controller button to a keyboard key. Given keyboard key is signaled as down when the button is 
+        /// createButtonKeyBindings creates two new binding and command sets, which directly maps a
+        /// controller button to a keyboard key. Given keyboard key is signaled as down when the button is
         /// down, and up when the button is up.
         /// </summary>
         /// <param name="button">Controller button to bind</param>
         /// <param name="key">Keyboard Key to bind </param>
-        /// <param name="applicableMode">Which input mode in which this binding is active - 
+        /// <param name="applicableMode">Which input mode in which this binding is active -
         /// all modes by default.</param>
-        /// <param name="target">Indicates if the key should be pressed with the mouse cursor at 
+        /// <param name="target">Indicates if the key should be pressed with the mouse cursor at
         /// a particular location (cursorPosition, reticulePosition, or none)</param>
         /// <returns>A two-element array of ControllerInputBinding, to be passed to bindings.AddRange()</returns>
         public static IEnumerable<ControllerInputBinding> createButtonKeyBindings(
@@ -82,11 +82,11 @@ namespace D360.Bindings
         /// </summary>
         /// <param name="button">Controller button to bind</param>
         /// <param name="newMode">Which input mode to change to. Disregarded if toggle == true</param>
-        /// <param name="toggle">If toggle, newMode is ignored, and the bound key will 
+        /// <param name="toggle">If toggle, newMode is ignored, and the bound key will
         /// instead cycle through all available modes</param>
-        /// <param name="applicableMode">Which input mode in which this binding is active - 
+        /// <param name="applicableMode">Which input mode in which this binding is active -
         /// all modes by default.</param>
-        /// <param name="target">Indicates if the key should be pressed with the mouse cursor at 
+        /// <param name="target">Indicates if the key should be pressed with the mouse cursor at
         /// a particular location (cursorPosition, reticulePosition, or none)</param>
         /// <returns></returns>
         public static ControllerInputBinding createButtonModeChangeBinding(
@@ -114,15 +114,15 @@ namespace D360.Bindings
         }
 
         /// <summary>
-        /// createButtonKeyBindings creates two new binding and command sets, which directly maps a 
-        /// controller button to a mouse button. Given mouse button is signaled as down when the button is 
+        /// createButtonKeyBindings creates two new binding and command sets, which directly maps a
+        /// controller button to a mouse button. Given mouse button is signaled as down when the button is
         /// down, and up when the button is up.
         /// </summary>
         /// <param name="buttons">Controller button to bind</param>
         /// <param name="mouseButtons">Mouse button to bind</param>
-        /// <param name="applicableMode">Which input mode in which this binding is active - 
+        /// <param name="applicableMode">Which input mode in which this binding is active -
         /// all modes by default.</param>
-        /// <param name="target">Indicates if the mouse button should be pressed with the mouse cursor at 
+        /// <param name="target">Indicates if the mouse button should be pressed with the mouse cursor at
         /// a particular location (cursorPosition, reticulePosition, or none)</param>
         /// <returns></returns>
         internal static IEnumerable<ControllerInputBinding> createMouseButtonBindings(
