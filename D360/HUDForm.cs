@@ -37,11 +37,11 @@ namespace D360
 
         private readonly bool m_HUDDisabled;
 
-        private readonly HUD m_HUD;
+        //private readonly HUD m_HUD;
         private InputManager m_InputManager;
-        
+
         private readonly ConfigForm m_ConfigForm;
-        
+
         /// <summary>
         /// Gets an IServiceProvider containing our IGraphicsDeviceService.
         /// This can be used with components such as the ContentManager,
@@ -62,7 +62,7 @@ namespace D360
             Left = 0;
             Top = 0;
 
-            TopMost = true;        // make the form always on top 
+            TopMost = true;        // make the form always on top
             Visible = true;        // Important! if this isn't set, then the form is not shown at all
 
             // Set the form click-through
@@ -72,18 +72,18 @@ namespace D360
                 SetWindowLong(Handle, -20, initialStyle | 0x80000 | 0x20);
             else
                 m_HUDDisabled = true;
-            
+
             m_InputManager = new InputManager();
 
-            m_HUD = new HUD(Handle)
-            {
-                screenWidth = screenWidth,
-                screenHeight = screenHeight
-            };
+            //m_HUD = new HUD(Handle)
+            //{
+            //    screenWidth = screenWidth,
+            //    screenHeight = screenHeight
+            //};
 
             // Extend aero glass style on form initialization
             OnResize(null);
-            
+
             m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
 
             if (File.Exists(@"Config.dat"))
@@ -150,7 +150,7 @@ namespace D360
 #endif
             try
             {
-                m_HUD.Draw(m_InputManager.controllerState, m_DiabloActive);
+                //m_HUD.Draw(m_InputManager.controllerState, m_DiabloActive);
             }
             catch (Exception exception)
             {

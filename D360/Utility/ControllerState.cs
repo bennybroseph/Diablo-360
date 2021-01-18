@@ -1,8 +1,8 @@
-﻿using D360.Types;
-using Microsoft.Xna.Framework;
-
-namespace D360.Utility
+﻿namespace D360.Utility
 {
+    using SharpDX;
+    using Types;
+
     public class ControllerState
     {
         public bool connected;

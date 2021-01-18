@@ -106,7 +106,9 @@ namespace D360.Display
                 m_DefaultFont,
                 m_Brushes.Green,
                 0, 10,
-                m_ControllerState.cursorPosition + "\n" + m_ControllerState.targetPosition);
+                m_ControllerState.cursorPosition + "\n" +
+                m_ControllerState.targetPosition + "\n" +
+                m_ControllerState.pressedTargetKeys);
         }
 
         public void Close()
