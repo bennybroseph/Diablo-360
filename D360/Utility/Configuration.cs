@@ -2,10 +2,10 @@
 namespace D360.Utility
 {
     using Types;
-    using Microsoft.Xna.Framework;
     using System;
     using System.Collections.Generic;
     using System.Windows.Forms;
+    using SharpDX;
 
     [Flags]
     public enum BindingMode

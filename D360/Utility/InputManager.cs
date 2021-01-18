@@ -4,16 +4,16 @@ using System.Linq;
 using System.Windows.Forms;
 using D360.InputEmulation;
 using D360.Types;
-using Microsoft.Xna.Framework;
 using XInputDotNetPure;
 
 using ButtonState = XInputDotNetPure.ButtonState;
 using PlayerIndex = XInputDotNetPure.PlayerIndex;
-using Rectangle = System.Drawing.Rectangle;
 using Timer = System.Timers.Timer;
 
 namespace D360.Utility
 {
+    using SharpDX;
+
     public class InputManager
     {
         /// <summary> Base class for determining the state of a gamepad's control </summary>
@@ -74,7 +74,7 @@ namespace D360.Utility
         public Configuration configuration = new Configuration();
 
         /// <summary> A reference to the screen's dimensions </summary>
-        private Rectangle m_Screen;
+        private System.Drawing.Rectangle m_Screen;
 
         /// <summary> All controllers' collective state </summary>
         public readonly ControllerState controllerState;

@@ -56,14 +56,19 @@ namespace D360
             config.Start();
             config.Join();
 
+            var serializerSettings = new JsonSerializerSettings{TypeNameHandling = TypeNameHandling.All};
             if (File.Exists(@"Config.json"))
             {
                 m_InputManager.configuration =
-                    JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(@"Config.json"));
+                    JsonConvert.DeserializeObject<Configuration>(
+                        File.ReadAllText(@"Config.json"),
+                        serializerSettings);
             }
             else
             {
-                File.AppendAllText(@"Config.json", JsonConvert.SerializeObject(m_InputManager.configuration));
+                File.AppendAllText(
+                    @"Config.json",
+                    JsonConvert.SerializeObject(m_InputManager.configuration, serializerSettings));
 
                 m_ConfigForm.Show();
             }
@@ -82,16 +87,21 @@ namespace D360
         {
             Time.Update();
 
+#if !DEBUG
             try
             {
+#endif
                 m_InputManager.Update();
+#if !DEBUG
             }
+
             catch (Exception exception)
             {
                 Program.WriteToLog(exception);
                 MessageBox.Show(new Form(), @"Exception in Logic update. Written to crash.txt.");
                 m_Overlay.Close();
             }
+#endif
         }
 
 

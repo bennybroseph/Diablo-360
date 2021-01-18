@@ -25,12 +25,30 @@ namespace D360
             defaultPanel.Hide();
         }
 
+        public void CreateBindingConfigForm(Button button)
+        {
+            m_BindingConfigForm?.Close();
+
+            var control = GamePadUtility.ParseControl(button.Name);
+
+            m_BindingConfigForm = new BindingConfigForm
+            {
+                parentForm = this,
+                bindings = m_TempConfig.bindingConfigs[control]
+            };
+            m_BindingConfigForm.Show();
+        }
+
         private void OnSaveClick(object sender, EventArgs e)
         {
             CopyConfig(m_TempConfig, out inputManager.configuration);
             inputManager.controllerState.centerOffset = inputManager.configuration.centerOffset;
 
-            File.WriteAllText("Config.json", JsonConvert.SerializeObject(inputManager.configuration));
+            File.WriteAllText(
+                "Config.json",
+                JsonConvert.SerializeObject(
+                    inputManager.configuration,
+                    new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All}));
 
             Hide();
         }
@@ -42,21 +60,10 @@ namespace D360
 
         private void OnEditClick(object sender, EventArgs e)
         {
-            var senderButton = sender as Button;
-
-            if (senderButton == null)
+            if (!(sender is Button senderButton))
                 return;
 
-            m_BindingConfigForm?.Close();
-
-            var control = GamePadUtility.ParseControl(senderButton.Name);
-
-            m_BindingConfigForm = new BindingConfigForm
-            {
-                parentForm = this,
-                bindings = m_TempConfig.bindingConfigs[control]
-            };
-            m_BindingConfigForm.Show();
+            CreateBindingConfigForm(senderButton);
         }
 
         private void OnRadiusTrackBarChanged(object sender, EventArgs e)
@@ -76,9 +83,9 @@ namespace D360
         private void OnOffsetValueChanged(object sender, EventArgs e)
         {
             if (sender == offsetXValue)
-                m_TempConfig.centerOffset.X = (float)offsetXValue.Value;
+                m_TempConfig.centerOffset.X = (float) offsetXValue.Value;
             if (sender == offsetYValue)
-                m_TempConfig.centerOffset.Y = (float)offsetYValue.Value;
+                m_TempConfig.centerOffset.Y = (float) offsetYValue.Value;
         }
 
         private void OnMaxCheckChanged(object sender, EventArgs e)
@@ -117,16 +124,16 @@ namespace D360
         {
             CopyConfig(inputManager.configuration, out m_TempConfig);
 
-            cursorTrackBar.Value = (int)Math.Round(m_TempConfig.cursorRadius * 100);
+            cursorTrackBar.Value = (int) Math.Round(m_TempConfig.cursorRadius * 100);
             cursorValueLabel.Text = cursorTrackBar.Value + @"%";
             cursorMaxCheck.Checked = m_TempConfig.cursorAlwaysMax;
 
-            targetTrackBar.Value = (int)Math.Round(m_TempConfig.targetRadius * 100);
+            targetTrackBar.Value = (int) Math.Round(m_TempConfig.targetRadius * 100);
             targetValueLabel.Text = targetTrackBar.Value + @"%";
             targetMaxCheck.Checked = m_TempConfig.targetAlwaysMax;
 
-            offsetXValue.Value = (decimal)m_TempConfig.centerOffset.X;
-            offsetYValue.Value = (decimal)m_TempConfig.centerOffset.Y;
+            offsetXValue.Value = (decimal) m_TempConfig.centerOffset.X;
+            offsetYValue.Value = (decimal) m_TempConfig.centerOffset.Y;
 
             Refresh();
         }

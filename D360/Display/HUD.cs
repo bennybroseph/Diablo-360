@@ -2,11 +2,12 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using D360.Utility;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace D360.Display
 {
+    using SharpDX;
+
     public class HUD
     {
         public int screenWidth;
@@ -63,7 +64,7 @@ namespace D360.Display
 
         public void Draw(ControllerState state, bool diabloActive)
         {
-            m_GraphicsDevice.Clear(new Color(0, 0, 0, 0.0f));
+            //m_GraphicsDevice.Clear(new Color(0, 0, 0, 0.0f));
 
             if (diabloActive)
             {
@@ -74,39 +75,39 @@ namespace D360.Display
 
                 m_SpriteBatch.Begin();
                 {
-                    Rectangle targetRect;
+                    //Rectangle targetRect;
 
                     if (!state.connected)
                     {
-                        targetRect =
-                            new Rectangle(
-                                screenWidth / 2 - m_ControllerNotFoundTexture.Width / 2,
-                                screenHeight / 2 - m_ControllerNotFoundTexture.Height / 2,
-                                m_ControllerNotFoundTexture.Width,
-                                m_ControllerNotFoundTexture.Height);
-                        m_SpriteBatch.Draw(m_ControllerNotFoundTexture, targetRect, Color.White);
+                        //targetRect =
+                        //    new Rectangle(
+                        //        screenWidth / 2 - m_ControllerNotFoundTexture.Width / 2,
+                        //        screenHeight / 2 - m_ControllerNotFoundTexture.Height / 2,
+                        //        m_ControllerNotFoundTexture.Width,
+                        //        m_ControllerNotFoundTexture.Height);
+                        //m_SpriteBatch.Draw(m_ControllerNotFoundTexture, targetRect, Color.White);
                     }
 
                     else
                     {
-                        if ((Math.Abs(state.targetPosition.X - state.centerOffset.X) > float.Epsilon) ||
-                            (Math.Abs(state.targetPosition.Y - state.centerOffset.Y) > float.Epsilon))
-                        {
-                            var anchor =
-                                state.pressedTargetKeys > 0 && state.targetPosition != Vector2.Zero ?
-                                state.cursorPosition : state.targetPosition;
+                        //if ((Math.Abs(state.targetPosition.X - state.centerOffset.X) > float.Epsilon) ||
+                        //    (Math.Abs(state.targetPosition.Y - state.centerOffset.Y) > float.Epsilon))
+                        //{
+                            //var anchor =
+                            //    state.pressedTargetKeys > 0 && state.targetPosition != Vector2.Zero ?
+                            //    state.cursorPosition : state.targetPosition;
 
-                            var x = (int)(anchor.X * (screenWidth / 2f) + screenWidth / 2f) - 16;
-                            var y = (int)(anchor.Y * (screenHeight / 2f) + screenHeight / 2f) - 16;
-                            targetRect = new Rectangle(x, y, 32, 32);
+                            //var x = (int)(anchor.X * (screenWidth / 2f) + screenWidth / 2f) - 16;
+                            //var y = (int)(anchor.Y * (screenHeight / 2f) + screenHeight / 2f) - 16;
+                            //targetRect = new Rectangle(x, y, 32, 32);
 
-                            m_SpriteBatch.Draw(m_TargetTexture, targetRect, new Color(1.0f, 1.0f, 1.0f, 0.5f));
-                        }
+                            //m_SpriteBatch.Draw(m_TargetTexture, targetRect, new Color(1.0f, 1.0f, 1.0f, 0.5f));
+                        //}
 
-                        m_SpriteBatch.Draw(
-                            state.currentMode == BindingMode.Pointer ? m_PointerModeTexture : m_MoveModeTexture,
-                            new Rectangle(screenWidth - 128, screenHeight - 64, 128, 64),
-                            Color.White);
+                        //m_SpriteBatch.Draw(
+                        //    state.currentMode == BindingMode.Pointer ? m_PointerModeTexture : m_MoveModeTexture,
+                        //    new Rectangle(screenWidth - 128, screenHeight - 64, 128, 64),
+                        //    Color.White);
                     }
                 }
                 m_SpriteBatch.End();
