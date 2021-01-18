@@ -102,22 +102,11 @@
     <Compile Include="Utility\BinarySerializer.cs" />
     <Compile Include="Utility\StringExtensions.cs" />
     <Compile Include="Utility\Time.cs" />
-    <Compile Include="Types\Action.cs" />
-    <Compile Include="Bindings\ControllerStickBinding.cs" />
-    <Compile Include="Bindings\ControllerTriggerBinding.cs" />
-    <Compile Include="Bindings\ActionBindings.cs" />
-    <Compile Include="Commands\CursorMoveCommand.cs" />
-    <Compile Include="Commands\MouseButtonCommand.cs" />
-    <Compile Include="Commands\KeyboardCommand.cs" />
-    <Compile Include="Commands\StateChangeCommand.cs" />
+    <Compile Include="Types\SpecialAction.cs" />
     <Compile Include="Utility\Configuration.cs" />
-    <Compile Include="Utility\Hotkey.cs" />
     <Compile Include="Utility\WindowFunctions.cs" />
     <Compile Include="Types\XInputWrapper.cs" />
     <Compile Include="Types\ControllerEnums.cs" />
-    <Compile Include="Bindings\MouseMove.cs" />
-    <Compile Include="Bindings\StateChange.cs" />
-    <Compile Include="Commands\Command.cs" />
     <Compile Include="ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,12 +114,6 @@
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\ControllerState.cs" />
-    <Compile Include="ActionBindingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ActionBindingsForm.Designer.cs">
-      <DependentUpon>ActionBindingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Display\HUD.cs" />
     <Compile Include="HUDForm.cs">
       <SubType>Form</SubType>
@@ -138,9 +121,7 @@
     <Compile Include="HUDForm.Designer.cs">
       <DependentUpon>HUDForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Bindings\ControllerInputBinding.cs" />
     <Compile Include="InputEmulation\VirtualMouse.cs" />
-    <Compile Include="Utility\InputProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InputEmulation\VirtualKeyboard.cs" />
@@ -150,10 +131,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ActionBindingsForm.resx">
-      <DependentUpon>ActionBindingsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="HUDForm.resx">
@@ -219,7 +196,6 @@
     <Content Include="Readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OldProcessing.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

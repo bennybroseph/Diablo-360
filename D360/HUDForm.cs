@@ -1,14 +1,11 @@
 using D360.Display;
 using D360.Utility;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using D360.Bindings;
-using Newtonsoft.Json;
 using Keys = System.Windows.Forms.Keys;
 
 namespace D360
@@ -41,15 +38,10 @@ namespace D360
         private readonly bool m_HUDDisabled;
 
         private readonly HUD m_HUD;
-        private readonly InputProcessor m_InputProcessor;
         private InputManager m_InputManager;
-
-        private readonly ActionBindingsForm m_ActionBindingsForm;
+        
         private readonly ConfigForm m_ConfigForm;
-
-        //private GamePadState m_OldGamePadState;
-        //private KeyboardState m_OldKeyboardState;
-
+        
         /// <summary>
         /// Gets an IServiceProvider containing our IGraphicsDeviceService.
         /// This can be used with components such as the ContentManager,
@@ -70,7 +62,7 @@ namespace D360
             Left = 0;
             Top = 0;
 
-            TopMost = true;        // make the form always on top
+            TopMost = true;        // make the form always on top 
             Visible = true;        // Important! if this isn't set, then the form is not shown at all
 
             // Set the form click-through
@@ -80,8 +72,7 @@ namespace D360
                 SetWindowLong(Handle, -20, initialStyle | 0x80000 | 0x20);
             else
                 m_HUDDisabled = true;
-
-            m_InputProcessor = new InputProcessor(GamePad.GetState(0));
+            
             m_InputManager = new InputManager();
 
             m_HUD = new HUD(Handle)
@@ -92,38 +83,16 @@ namespace D360
 
             // Extend aero glass style on form initialization
             OnResize(null);
-
-            m_ActionBindingsForm = new ActionBindingsForm { inputProcessor = m_InputProcessor };
-
-            if (File.Exists(@"ActionBindings.json"))
-            {
-                m_InputProcessor.actionBindings =
-                    JsonConvert.DeserializeObject<ActionBindings>(File.ReadAllText(@"ActionBindings.json"));
-            }
-            else
-            {
-                File.AppendAllText(
-                    @"ActionBindings.json",
-                    JsonConvert.SerializeObject(m_InputProcessor.actionBindings));
-
-                m_ActionBindingsForm.Show();
-            }
-
+            
             m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
 
-            if (File.Exists(@"Config.json"))
-            {
-                m_InputManager.configuration =
-                    JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(@"Config.json"));
-            }
+            if (File.Exists(@"Config.dat"))
+                BinarySerializer.LoadObject(ref m_InputManager.configuration, @"Config.dat");
             else
             {
-                File.AppendAllText(@"Config.json", JsonConvert.SerializeObject(m_InputManager.configuration));
-
+                BinarySerializer.SaveObject(m_InputManager.configuration, @"Config.dat");
                 m_ConfigForm.Show();
             }
-
-            m_InputProcessor.AddConfiguredBindings();
 
             //m_OldGamePadState = GamePad.GetState(0, GamePadDeadZone.Circular);
             //m_OldKeyboardState = Keyboard.GetState();
@@ -217,8 +186,6 @@ namespace D360
                     SetForegroundWindow(m_ConfigForm.Handle.ToInt32());
                     break;
                 case ACTIONS_HOTKEY:
-                    m_ActionBindingsForm.Visible = !m_ActionBindingsForm.Visible;
-                    SetForegroundWindow(m_ActionBindingsForm.Handle.ToInt32());
                     break;
                 case EXIT_HOTKEY:
                     Close();

@@ -35,6 +35,7 @@
             this.defaultMoveRadio = new System.Windows.Forms.RadioButton();
             this.defaultPanel = new System.Windows.Forms.TableLayoutPanel();
             this.defaultTargetCheck = new System.Windows.Forms.CheckBox();
+            this.defaultTextBox = new D360.CustomTextBox();
             this.defaultDelete = new System.Windows.Forms.Button();
             this.defaultComboBox = new System.Windows.Forms.ComboBox();
             this.addButton = new System.Windows.Forms.Button();
@@ -52,7 +53,6 @@
             this.deadZoneLabel = new System.Windows.Forms.Label();
             this.deadZoneTrackBar = new System.Windows.Forms.TrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.defaultTextBox = new D360.CustomTextBox();
             this.defaultPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.bindingsTabPage.SuspendLayout();
@@ -147,6 +147,19 @@
             this.defaultTargetCheck.Text = "Targeted";
             this.defaultTargetCheck.UseVisualStyleBackColor = true;
             // 
+            // defaultTextBox
+            // 
+            this.defaultTextBox.AllowDrop = true;
+            this.defaultPanel.SetColumnSpan(this.defaultTextBox, 2);
+            this.defaultTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.defaultTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.defaultTextBox.Location = new System.Drawing.Point(3, 59);
+            this.defaultTextBox.Name = "defaultTextBox";
+            this.defaultTextBox.ReadOnly = true;
+            this.defaultTextBox.Size = new System.Drawing.Size(203, 20);
+            this.defaultTextBox.TabIndex = 29;
+            this.defaultTextBox.Text = "Default Binding";
+            // 
             // defaultDelete
             // 
             this.defaultPanel.SetColumnSpan(this.defaultDelete, 2);
@@ -238,7 +251,7 @@
             this.otherTabPage.Location = new System.Drawing.Point(4, 22);
             this.otherTabPage.Name = "otherTabPage";
             this.otherTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.otherTabPage.Size = new System.Drawing.Size(221, 218);
+            this.otherTabPage.Size = new System.Drawing.Size(221, 223);
             this.otherTabPage.TabIndex = 1;
             this.otherTabPage.Text = "Other";
             this.otherTabPage.UseVisualStyleBackColor = true;
@@ -344,19 +357,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(229, 29);
             this.panel1.TabIndex = 41;
-            // 
-            // defaultTextBox
-            // 
-            this.defaultTextBox.AllowDrop = true;
-            this.defaultPanel.SetColumnSpan(this.defaultTextBox, 2);
-            this.defaultTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.defaultTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.defaultTextBox.Location = new System.Drawing.Point(3, 59);
-            this.defaultTextBox.Name = "defaultTextBox";
-            this.defaultTextBox.ReadOnly = true;
-            this.defaultTextBox.Size = new System.Drawing.Size(203, 20);
-            this.defaultTextBox.TabIndex = 29;
-            this.defaultTextBox.Text = "Default Binding";
             // 
             // BindingConfigForm
             // 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using D360.Bindings;
 using D360.InputEmulation;
 using D360.Types;
 using Microsoft.Xna.Framework;

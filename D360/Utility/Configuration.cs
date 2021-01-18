@@ -1,13 +1,11 @@
-﻿
+﻿using D360.Types;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+
 namespace D360.Utility
 {
-    using Microsoft.Xna.Framework;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Forms;
-    using Types;
-    using Action = Types.Action;
-
     [Flags]
     public enum BindingMode
     {
@@ -69,11 +67,6 @@ namespace D360.Utility
     [Serializable]
     public class Configuration
     {
-        public Screen screen = Screen.PrimaryScreen;
-
-        public Action leftTriggerBinding;
-        public Action rightTriggerBinding;
-
         public Dictionary<GamePadControl, BindingConfig> bindingConfigs =
             new Dictionary<GamePadControl, BindingConfig>();
 
@@ -90,9 +83,6 @@ namespace D360.Utility
 
         public Configuration()
         {
-            leftTriggerBinding = Action.ActionbarSkill1;
-            rightTriggerBinding = Action.ActionbarSkill2;
-
             foreach (GamePadControl button in Enum.GetValues(typeof(GamePadControl)))
             {
                 BindingConfig newBindingConfig;

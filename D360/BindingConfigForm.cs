@@ -733,4 +733,15 @@ namespace D360
                 m_TempBinding = new BindingConfig();
         }
     }
+
+    public class CustomTextBox : TextBox
+    {
+        protected override bool IsInputKey(Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+                return true;
+
+            return base.IsInputKey(keyData);
+        }
+    }
 }
