@@ -9,7 +9,9 @@ namespace D360.Controls
         public string Label
         {
             get => label1.Text;
-            set { label1.Text = value;
+            set
+            {
+                label1.Text = value;
                 editButton.Name = value + "EditButton";
             }
         }

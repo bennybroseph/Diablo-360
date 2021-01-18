@@ -109,6 +109,7 @@ namespace D360
             this.offsetYLabel = new System.Windows.Forms.Label();
             this.offsetXValue = new System.Windows.Forms.NumericUpDown();
             this.offsetYValue = new System.Windows.Forms.NumericUpDown();
+            this.controllerButtonLabel1 = new D360.Controls.ControllerButtonLabel();
             defaultEditButton = new System.Windows.Forms.Button();
             defaultLabel = new System.Windows.Forms.Label();
             backLabel = new System.Windows.Forms.Label();
@@ -590,6 +591,52 @@ namespace D360
             rightStickEditButton.UseVisualStyleBackColor = true;
             rightStickEditButton.Click += new System.EventHandler(this.OnEditClick);
             // 
+            // leftStickButtonLabel
+            // 
+            leftStickButtonLabel.AutoSize = true;
+            leftStickButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftStickButtonLabel.Location = new System.Drawing.Point(3, 0);
+            leftStickButtonLabel.Name = "leftStickButtonLabel";
+            leftStickButtonLabel.Size = new System.Drawing.Size(169, 15);
+            leftStickButtonLabel.TabIndex = 28;
+            leftStickButtonLabel.Text = "Left Stick Button";
+            leftStickButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // leftStickButtonEditButton
+            // 
+            leftStickButtonEditButton.AutoSize = true;
+            leftStickButtonEditButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            leftStickButtonEditButton.Location = new System.Drawing.Point(3, 18);
+            leftStickButtonEditButton.Name = "leftStickButtonEditButton";
+            leftStickButtonEditButton.Size = new System.Drawing.Size(169, 24);
+            leftStickButtonEditButton.TabIndex = 27;
+            leftStickButtonEditButton.Text = "Edit";
+            leftStickButtonEditButton.UseVisualStyleBackColor = true;
+            leftStickButtonEditButton.Click += new System.EventHandler(this.OnEditClick);
+            // 
+            // rightStickButtonLabel
+            // 
+            rightStickButtonLabel.AutoSize = true;
+            rightStickButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightStickButtonLabel.Location = new System.Drawing.Point(3, 0);
+            rightStickButtonLabel.Name = "rightStickButtonLabel";
+            rightStickButtonLabel.Size = new System.Drawing.Size(169, 15);
+            rightStickButtonLabel.TabIndex = 28;
+            rightStickButtonLabel.Text = "Right Stick Button";
+            rightStickButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rightStickButtonEditButton
+            // 
+            rightStickButtonEditButton.AutoSize = true;
+            rightStickButtonEditButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            rightStickButtonEditButton.Location = new System.Drawing.Point(3, 18);
+            rightStickButtonEditButton.Name = "rightStickButtonEditButton";
+            rightStickButtonEditButton.Size = new System.Drawing.Size(169, 24);
+            rightStickButtonEditButton.TabIndex = 27;
+            rightStickButtonEditButton.Text = "Edit";
+            rightStickButtonEditButton.UseVisualStyleBackColor = true;
+            rightStickButtonEditButton.Click += new System.EventHandler(this.OnEditClick);
+            // 
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -972,29 +1019,6 @@ namespace D360
             this.tableLayoutPanel1.Size = new System.Drawing.Size(175, 45);
             this.tableLayoutPanel1.TabIndex = 55;
             // 
-            // leftStickButtonLabel
-            // 
-            leftStickButtonLabel.AutoSize = true;
-            leftStickButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftStickButtonLabel.Location = new System.Drawing.Point(3, 0);
-            leftStickButtonLabel.Name = "leftStickButtonLabel";
-            leftStickButtonLabel.Size = new System.Drawing.Size(169, 15);
-            leftStickButtonLabel.TabIndex = 28;
-            leftStickButtonLabel.Text = "Left Stick Button";
-            leftStickButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // leftStickButtonEditButton
-            // 
-            leftStickButtonEditButton.AutoSize = true;
-            leftStickButtonEditButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            leftStickButtonEditButton.Location = new System.Drawing.Point(3, 18);
-            leftStickButtonEditButton.Name = "leftStickButtonEditButton";
-            leftStickButtonEditButton.Size = new System.Drawing.Size(169, 24);
-            leftStickButtonEditButton.TabIndex = 27;
-            leftStickButtonEditButton.Text = "Edit";
-            leftStickButtonEditButton.UseVisualStyleBackColor = true;
-            leftStickButtonEditButton.Click += new System.EventHandler(this.OnEditClick);
-            // 
             // tableLayoutPanel19
             // 
             this.tableLayoutPanel19.ColumnCount = 1;
@@ -1008,29 +1032,6 @@ namespace D360
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
             this.tableLayoutPanel19.Size = new System.Drawing.Size(175, 45);
             this.tableLayoutPanel19.TabIndex = 56;
-            // 
-            // rightStickButtonLabel
-            // 
-            rightStickButtonLabel.AutoSize = true;
-            rightStickButtonLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightStickButtonLabel.Location = new System.Drawing.Point(3, 0);
-            rightStickButtonLabel.Name = "rightStickButtonLabel";
-            rightStickButtonLabel.Size = new System.Drawing.Size(169, 15);
-            rightStickButtonLabel.TabIndex = 28;
-            rightStickButtonLabel.Text = "Right Stick Button";
-            rightStickButtonLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // rightStickButtonEditButton
-            // 
-            rightStickButtonEditButton.AutoSize = true;
-            rightStickButtonEditButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            rightStickButtonEditButton.Location = new System.Drawing.Point(3, 18);
-            rightStickButtonEditButton.Name = "rightStickButtonEditButton";
-            rightStickButtonEditButton.Size = new System.Drawing.Size(169, 24);
-            rightStickButtonEditButton.TabIndex = 27;
-            rightStickButtonEditButton.Text = "Edit";
-            rightStickButtonEditButton.UseVisualStyleBackColor = true;
-            rightStickButtonEditButton.Click += new System.EventHandler(this.OnEditClick);
             // 
             // offsetLabel
             // 
@@ -1097,12 +1098,21 @@ namespace D360
             this.offsetYValue.TabIndex = 64;
             this.offsetYValue.ValueChanged += new System.EventHandler(this.OnOffsetValueChanged);
             // 
+            // controllerButtonLabel1
+            // 
+            this.controllerButtonLabel1.Label = "Your Text Here";
+            this.controllerButtonLabel1.Location = new System.Drawing.Point(635, 34);
+            this.controllerButtonLabel1.Name = "controllerButtonLabel1";
+            this.controllerButtonLabel1.Size = new System.Drawing.Size(175, 45);
+            this.controllerButtonLabel1.TabIndex = 65;
+            // 
             // ConfigForm
             // 
             this.AcceptButton = this.saveAndCloseButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 766);
+            this.Controls.Add(this.controllerButtonLabel1);
             this.Controls.Add(this.offsetYValue);
             this.Controls.Add(this.offsetXValue);
             this.Controls.Add(this.offsetYLabel);
@@ -1239,5 +1249,6 @@ namespace D360
         private Label offsetYLabel;
         private NumericUpDown offsetXValue;
         private NumericUpDown offsetYValue;
+        private Controls.ControllerButtonLabel controllerButtonLabel1;
     }
 }
