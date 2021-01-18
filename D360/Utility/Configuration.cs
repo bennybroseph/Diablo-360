@@ -1,11 +1,12 @@
-﻿using D360.Types;
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework;
-
+﻿
 namespace D360.Utility
 {
+    using Types;
+    using Microsoft.Xna.Framework;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Forms;
+
     [Flags]
     public enum BindingMode
     {
@@ -67,6 +68,8 @@ namespace D360.Utility
     [Serializable]
     public class Configuration
     {
+        public Screen screen = Screen.PrimaryScreen;
+
         public Dictionary<GamePadControl, BindingConfig> bindingConfigs =
             new Dictionary<GamePadControl, BindingConfig>();
 
