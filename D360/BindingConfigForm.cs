@@ -9,6 +9,8 @@ namespace D360
 {
     public partial class BindingConfigForm : Form
     {
+        public event EventHandler ClosedEvent;
+
         public Form parentForm;
         private int m_TableCount;
 
@@ -731,6 +733,11 @@ namespace D360
                 m_TempBinding = new StickConfig();
             else
                 m_TempBinding = new BindingConfig();
+        }
+
+        private void OnClosed(object sender, FormClosedEventArgs e)
+        {
+            ClosedEvent?.Invoke(this, e);
         }
     }
 

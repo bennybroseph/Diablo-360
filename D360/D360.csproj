@@ -149,6 +149,9 @@
     <EmbeddedResource Include="Controls\ControllerButtonLabel.resx">
       <DependentUpon>ControllerButtonLabel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RadiusSlider.resx">
+      <DependentUpon>RadiusSlider.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HUDForm.resx">
       <DependentUpon>HUDForm.cs</DependentUpon>
     </EmbeddedResource>

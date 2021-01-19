@@ -25,6 +25,7 @@ namespace D360.Display
 
         private struct Brushes
         {
+            public IBrush Black;
             public IBrush Green;
         }
 
@@ -70,6 +71,7 @@ namespace D360.Display
             m_DefaultFont = m_Graphics.CreateFont("Consolas", 14);
 
             m_Brushes.Green = m_Graphics.CreateSolidBrush(Color.Green);
+            m_Brushes.Black = m_Graphics.CreateSolidBrush(new Color(0, 0, 0));
         }
 
         private void OnDrawGraphics(object sender, DrawGraphicsEventArgs e)
@@ -92,8 +94,6 @@ namespace D360.Display
         {
             m_Graphics.ClearScene();
 
-            m_Graphics.DrawText(m_DefaultFont, m_Brushes.Green, 0, 0, m_Graphics.FPS.ToString());
-
             if (!m_ControllerState.connected)
                 m_Graphics.DrawImage(
                     m_ControllerNotFoundImage,
@@ -103,13 +103,16 @@ namespace D360.Display
                         m_ControllerNotFoundImage.Width * 2,
                         m_ControllerNotFoundImage.Height * 2), 1f, false);
 
-            m_Graphics.DrawText(
+            m_Graphics.DrawTextWithBackground(
                 m_DefaultFont,
                 m_Brushes.Green,
-                0, 10,
-                m_ControllerState.cursorPosition + "\n" +
-                m_ControllerState.targetPosition + "\n" +
-                m_ControllerState.pressedTargetKeys);
+                m_Brushes.Black,
+                10, 10,
+                m_Graphics.FPS + "\n\n" +
+                "Left Stick: " + m_ControllerState.cursorPosition + "\n" +
+                "Right Stick: " + m_ControllerState.targetPosition + "\n" +
+                m_ControllerState.pressedTargetKeys + "\n" +
+                m_ControllerState.currentMode);
         }
 
         public void Close()

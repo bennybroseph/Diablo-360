@@ -35,14 +35,6 @@ namespace D360
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveAndCloseButton = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.cursorLabel = new System.Windows.Forms.Label();
-            this.cursorTrackBar = new System.Windows.Forms.TrackBar();
-            this.cursorValueLabel = new System.Windows.Forms.Label();
-            this.cursorMaxCheck = new System.Windows.Forms.CheckBox();
-            this.targetMaxCheck = new System.Windows.Forms.CheckBox();
-            this.targetValueLabel = new System.Windows.Forms.Label();
-            this.targetTrackBar = new System.Windows.Forms.TrackBar();
-            this.targetLabel = new System.Windows.Forms.Label();
             this.offsetLabel = new System.Windows.Forms.Label();
             this.offsetXLabel = new System.Windows.Forms.Label();
             this.offsetYLabel = new System.Windows.Forms.Label();
@@ -69,8 +61,8 @@ namespace D360
             this.controllerButtonLabel3 = new D360.Controls.ControllerButtonLabel();
             this.controllerButtonLabel2 = new D360.Controls.ControllerButtonLabel();
             this.controllerButtonLabel1 = new D360.Controls.ControllerButtonLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.cursorTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.targetTrackBar)).BeginInit();
+            this.cursorSlider = new D360.Controls.RadiusSlider();
+            this.targetSlider = new D360.Controls.RadiusSlider();
             ((System.ComponentModel.ISupportInitialize)(this.offsetXValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.offsetYValue)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -99,86 +91,6 @@ namespace D360
             this.saveAndCloseButton.Text = "Save and Close";
             this.saveAndCloseButton.UseVisualStyleBackColor = true;
             this.saveAndCloseButton.Click += new System.EventHandler(this.OnSaveClick);
-            // 
-            // cursorLabel
-            // 
-            this.cursorLabel.Location = new System.Drawing.Point(13, 13);
-            this.cursorLabel.Name = "cursorLabel";
-            this.cursorLabel.Size = new System.Drawing.Size(156, 14);
-            this.cursorLabel.TabIndex = 47;
-            this.cursorLabel.Text = "Cursor Radius";
-            this.cursorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cursorTrackBar
-            // 
-            this.cursorTrackBar.AutoSize = false;
-            this.cursorTrackBar.Location = new System.Drawing.Point(13, 30);
-            this.cursorTrackBar.Maximum = 100;
-            this.cursorTrackBar.Name = "cursorTrackBar";
-            this.cursorTrackBar.Size = new System.Drawing.Size(156, 25);
-            this.cursorTrackBar.TabIndex = 48;
-            this.cursorTrackBar.TickFrequency = 10;
-            this.cursorTrackBar.ValueChanged += new System.EventHandler(this.OnRadiusTrackBarChanged);
-            // 
-            // cursorValueLabel
-            // 
-            this.cursorValueLabel.Location = new System.Drawing.Point(175, 30);
-            this.cursorValueLabel.Name = "cursorValueLabel";
-            this.cursorValueLabel.Size = new System.Drawing.Size(60, 25);
-            this.cursorValueLabel.TabIndex = 49;
-            this.cursorValueLabel.Text = "Value%";
-            this.cursorValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cursorMaxCheck
-            // 
-            this.cursorMaxCheck.AutoSize = true;
-            this.cursorMaxCheck.Location = new System.Drawing.Point(13, 62);
-            this.cursorMaxCheck.Name = "cursorMaxCheck";
-            this.cursorMaxCheck.Size = new System.Drawing.Size(82, 17);
-            this.cursorMaxCheck.TabIndex = 50;
-            this.cursorMaxCheck.Text = "Always Max";
-            this.cursorMaxCheck.UseVisualStyleBackColor = true;
-            this.cursorMaxCheck.CheckStateChanged += new System.EventHandler(this.OnMaxCheckChanged);
-            // 
-            // targetMaxCheck
-            // 
-            this.targetMaxCheck.AutoSize = true;
-            this.targetMaxCheck.Location = new System.Drawing.Point(12, 131);
-            this.targetMaxCheck.Name = "targetMaxCheck";
-            this.targetMaxCheck.Size = new System.Drawing.Size(82, 17);
-            this.targetMaxCheck.TabIndex = 54;
-            this.targetMaxCheck.Text = "Always Max";
-            this.targetMaxCheck.UseVisualStyleBackColor = true;
-            this.targetMaxCheck.CheckStateChanged += new System.EventHandler(this.OnMaxCheckChanged);
-            // 
-            // targetValueLabel
-            // 
-            this.targetValueLabel.Location = new System.Drawing.Point(174, 99);
-            this.targetValueLabel.Name = "targetValueLabel";
-            this.targetValueLabel.Size = new System.Drawing.Size(60, 25);
-            this.targetValueLabel.TabIndex = 53;
-            this.targetValueLabel.Text = "Value%";
-            this.targetValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // targetTrackBar
-            // 
-            this.targetTrackBar.AutoSize = false;
-            this.targetTrackBar.Location = new System.Drawing.Point(12, 99);
-            this.targetTrackBar.Maximum = 100;
-            this.targetTrackBar.Name = "targetTrackBar";
-            this.targetTrackBar.Size = new System.Drawing.Size(156, 25);
-            this.targetTrackBar.TabIndex = 52;
-            this.targetTrackBar.TickFrequency = 10;
-            this.targetTrackBar.ValueChanged += new System.EventHandler(this.OnRadiusTrackBarChanged);
-            // 
-            // targetLabel
-            // 
-            this.targetLabel.Location = new System.Drawing.Point(12, 82);
-            this.targetLabel.Name = "targetLabel";
-            this.targetLabel.Size = new System.Drawing.Size(156, 14);
-            this.targetLabel.TabIndex = 51;
-            this.targetLabel.Text = "Target Radius";
-            this.targetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // offsetLabel
             // 
@@ -248,34 +160,35 @@ namespace D360
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.saveAndCloseButton, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cancelButton, 3, 2);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.saveAndCloseButton, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cancelButton, 3, 3);
+            this.tableLayoutPanel1.Controls.Add(this.cursorSlider, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.targetSlider, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1271, 784);
             this.tableLayoutPanel1.TabIndex = 84;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // pictureBox1
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.pictureBox1, 4);
+            this.tableLayoutPanel1.SetColumnSpan(this.pictureBox1, 2);
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Image = global::D360.Properties.Resources.XBoxOneControllerOutline1;
-            this.pictureBox1.Location = new System.Drawing.Point(67, 143);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(67, 65, 67, 65);
+            this.pictureBox1.Location = new System.Drawing.Point(257, 159);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1137, 536);
+            this.pictureBox1.Size = new System.Drawing.Size(756, 582);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 26;
             this.pictureBox1.TabStop = false;
@@ -283,8 +196,8 @@ namespace D360
             // controllerButtonLabel7
             // 
             this.controllerButtonLabel7.Label = "Right Shoulder";
-            this.controllerButtonLabel7.Location = new System.Drawing.Point(987, 171);
-            this.controllerButtonLabel7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel7.Location = new System.Drawing.Point(942, 255);
+            this.controllerButtonLabel7.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel7.Name = "controllerButtonLabel7";
             this.controllerButtonLabel7.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel7.TabIndex = 71;
@@ -292,8 +205,8 @@ namespace D360
             // controllerButtonLabel19
             // 
             this.controllerButtonLabel19.Label = "Right Stick";
-            this.controllerButtonLabel19.Location = new System.Drawing.Point(923, 688);
-            this.controllerButtonLabel19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel19.Location = new System.Drawing.Point(923, 717);
+            this.controllerButtonLabel19.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel19.Name = "controllerButtonLabel19";
             this.controllerButtonLabel19.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel19.TabIndex = 83;
@@ -301,8 +214,8 @@ namespace D360
             // controllerButtonLabel18
             // 
             this.controllerButtonLabel18.Label = "Right Stick Button";
-            this.controllerButtonLabel18.Location = new System.Drawing.Point(734, 708);
-            this.controllerButtonLabel18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel18.Location = new System.Drawing.Point(736, 717);
+            this.controllerButtonLabel18.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel18.Name = "controllerButtonLabel18";
             this.controllerButtonLabel18.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel18.TabIndex = 82;
@@ -310,8 +223,8 @@ namespace D360
             // controllerButtonLabel17
             // 
             this.controllerButtonLabel17.Label = "DPad Right";
-            this.controllerButtonLabel17.Location = new System.Drawing.Point(495, 684);
-            this.controllerButtonLabel17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel17.Location = new System.Drawing.Point(502, 714);
+            this.controllerButtonLabel17.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel17.Name = "controllerButtonLabel17";
             this.controllerButtonLabel17.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel17.TabIndex = 81;
@@ -319,8 +232,8 @@ namespace D360
             // controllerButtonLabel16
             // 
             this.controllerButtonLabel16.Label = "Dpad Down";
-            this.controllerButtonLabel16.Location = new System.Drawing.Point(255, 674);
-            this.controllerButtonLabel16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel16.Location = new System.Drawing.Point(290, 702);
+            this.controllerButtonLabel16.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel16.Name = "controllerButtonLabel16";
             this.controllerButtonLabel16.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel16.TabIndex = 80;
@@ -328,8 +241,8 @@ namespace D360
             // controllerButtonLabel15
             // 
             this.controllerButtonLabel15.Label = "DPad Left";
-            this.controllerButtonLabel15.Location = new System.Drawing.Point(3, 515);
-            this.controllerButtonLabel15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel15.Location = new System.Drawing.Point(71, 555);
+            this.controllerButtonLabel15.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel15.Name = "controllerButtonLabel15";
             this.controllerButtonLabel15.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel15.TabIndex = 79;
@@ -337,8 +250,8 @@ namespace D360
             // controllerButtonLabel14
             // 
             this.controllerButtonLabel14.Label = "DPad Up";
-            this.controllerButtonLabel14.Location = new System.Drawing.Point(14, 447);
-            this.controllerButtonLabel14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel14.Location = new System.Drawing.Point(71, 488);
+            this.controllerButtonLabel14.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel14.Name = "controllerButtonLabel14";
             this.controllerButtonLabel14.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel14.TabIndex = 78;
@@ -346,8 +259,8 @@ namespace D360
             // controllerButtonLabel13
             // 
             this.controllerButtonLabel13.Label = "Left Stick Button";
-            this.controllerButtonLabel13.Location = new System.Drawing.Point(86, 331);
-            this.controllerButtonLabel13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel13.Location = new System.Drawing.Point(118, 370);
+            this.controllerButtonLabel13.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel13.Name = "controllerButtonLabel13";
             this.controllerButtonLabel13.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel13.TabIndex = 77;
@@ -355,8 +268,8 @@ namespace D360
             // controllerButtonLabel12
             // 
             this.controllerButtonLabel12.Label = "Left Stick";
-            this.controllerButtonLabel12.Location = new System.Drawing.Point(86, 271);
-            this.controllerButtonLabel12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel12.Location = new System.Drawing.Point(118, 300);
+            this.controllerButtonLabel12.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel12.Name = "controllerButtonLabel12";
             this.controllerButtonLabel12.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel12.TabIndex = 76;
@@ -364,8 +277,8 @@ namespace D360
             // controllerButtonLabel11
             // 
             this.controllerButtonLabel11.Label = "A";
-            this.controllerButtonLabel11.Location = new System.Drawing.Point(1072, 446);
-            this.controllerButtonLabel11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel11.Location = new System.Drawing.Point(1011, 518);
+            this.controllerButtonLabel11.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel11.Name = "controllerButtonLabel11";
             this.controllerButtonLabel11.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel11.TabIndex = 75;
@@ -373,8 +286,8 @@ namespace D360
             // controllerButtonLabel10
             // 
             this.controllerButtonLabel10.Label = "B";
-            this.controllerButtonLabel10.Location = new System.Drawing.Point(1064, 398);
-            this.controllerButtonLabel10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel10.Location = new System.Drawing.Point(1006, 456);
+            this.controllerButtonLabel10.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel10.Name = "controllerButtonLabel10";
             this.controllerButtonLabel10.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel10.TabIndex = 74;
@@ -382,8 +295,8 @@ namespace D360
             // controllerButtonLabel9
             // 
             this.controllerButtonLabel9.Label = "Y";
-            this.controllerButtonLabel9.Location = new System.Drawing.Point(1051, 349);
-            this.controllerButtonLabel9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel9.Location = new System.Drawing.Point(1001, 399);
+            this.controllerButtonLabel9.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel9.Name = "controllerButtonLabel9";
             this.controllerButtonLabel9.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel9.TabIndex = 73;
@@ -391,8 +304,8 @@ namespace D360
             // controllerButtonLabel8
             // 
             this.controllerButtonLabel8.Label = "X";
-            this.controllerButtonLabel8.Location = new System.Drawing.Point(1031, 301);
-            this.controllerButtonLabel8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel8.Location = new System.Drawing.Point(986, 339);
+            this.controllerButtonLabel8.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel8.Name = "controllerButtonLabel8";
             this.controllerButtonLabel8.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel8.TabIndex = 72;
@@ -400,8 +313,8 @@ namespace D360
             // controllerButtonLabel6
             // 
             this.controllerButtonLabel6.Label = "Start";
-            this.controllerButtonLabel6.Location = new System.Drawing.Point(632, 159);
-            this.controllerButtonLabel6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel6.Location = new System.Drawing.Point(636, 221);
+            this.controllerButtonLabel6.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel6.Name = "controllerButtonLabel6";
             this.controllerButtonLabel6.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel6.TabIndex = 70;
@@ -409,8 +322,8 @@ namespace D360
             // controllerButtonLabel5
             // 
             this.controllerButtonLabel5.Label = "Back";
-            this.controllerButtonLabel5.Location = new System.Drawing.Point(446, 159);
-            this.controllerButtonLabel5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel5.Location = new System.Drawing.Point(460, 222);
+            this.controllerButtonLabel5.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel5.Name = "controllerButtonLabel5";
             this.controllerButtonLabel5.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel5.TabIndex = 69;
@@ -418,8 +331,8 @@ namespace D360
             // controllerButtonLabel4
             // 
             this.controllerButtonLabel4.Label = "Left Shoulder";
-            this.controllerButtonLabel4.Location = new System.Drawing.Point(98, 163);
-            this.controllerButtonLabel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel4.Location = new System.Drawing.Point(152, 236);
+            this.controllerButtonLabel4.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel4.Name = "controllerButtonLabel4";
             this.controllerButtonLabel4.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel4.TabIndex = 68;
@@ -427,8 +340,8 @@ namespace D360
             // controllerButtonLabel3
             // 
             this.controllerButtonLabel3.Label = "Left Trigger";
-            this.controllerButtonLabel3.Location = new System.Drawing.Point(226, 93);
-            this.controllerButtonLabel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel3.Location = new System.Drawing.Point(188, 142);
+            this.controllerButtonLabel3.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel3.Name = "controllerButtonLabel3";
             this.controllerButtonLabel3.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel3.TabIndex = 67;
@@ -436,8 +349,8 @@ namespace D360
             // controllerButtonLabel2
             // 
             this.controllerButtonLabel2.Label = "Right Trigger";
-            this.controllerButtonLabel2.Location = new System.Drawing.Point(876, 14);
-            this.controllerButtonLabel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.controllerButtonLabel2.Location = new System.Drawing.Point(917, 144);
+            this.controllerButtonLabel2.Margin = new System.Windows.Forms.Padding(2);
             this.controllerButtonLabel2.Name = "controllerButtonLabel2";
             this.controllerButtonLabel2.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel2.TabIndex = 66;
@@ -445,11 +358,35 @@ namespace D360
             // controllerButtonLabel1
             // 
             this.controllerButtonLabel1.Label = "Guide";
-            this.controllerButtonLabel1.Location = new System.Drawing.Point(537, 102);
+            this.controllerButtonLabel1.Location = new System.Drawing.Point(548, 154);
             this.controllerButtonLabel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controllerButtonLabel1.Name = "controllerButtonLabel1";
             this.controllerButtonLabel1.Size = new System.Drawing.Size(175, 45);
             this.controllerButtonLabel1.TabIndex = 65;
+            // 
+            // cursorSlider
+            // 
+            this.cursorSlider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.cursorSlider.Checked = false;
+            this.cursorSlider.Label = "Cursor Radius";
+            this.cursorSlider.Location = new System.Drawing.Point(3, 3);
+            this.cursorSlider.Name = "cursorSlider";
+            this.cursorSlider.Percent = "Value%";
+            this.cursorSlider.Size = new System.Drawing.Size(220, 72);
+            this.cursorSlider.TabIndex = 27;
+            this.cursorSlider.Value = 0;
+            // 
+            // targetSlider
+            // 
+            this.targetSlider.Checked = false;
+            this.targetSlider.Label = "Target Radius";
+            this.targetSlider.Location = new System.Drawing.Point(3, 81);
+            this.targetSlider.Name = "targetSlider";
+            this.targetSlider.Percent = "Value%";
+            this.targetSlider.Size = new System.Drawing.Size(220, 72);
+            this.targetSlider.TabIndex = 28;
+            this.targetSlider.Value = 0;
             // 
             // ConfigForm
             // 
@@ -484,14 +421,6 @@ namespace D360
             this.Controls.Add(this.offsetYLabel);
             this.Controls.Add(this.offsetXLabel);
             this.Controls.Add(this.offsetLabel);
-            this.Controls.Add(this.targetMaxCheck);
-            this.Controls.Add(this.targetValueLabel);
-            this.Controls.Add(this.targetTrackBar);
-            this.Controls.Add(this.targetLabel);
-            this.Controls.Add(this.cursorMaxCheck);
-            this.Controls.Add(this.cursorValueLabel);
-            this.Controls.Add(this.cursorTrackBar);
-            this.Controls.Add(this.cursorLabel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -502,17 +431,13 @@ namespace D360
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.Shown += new System.EventHandler(this.OnShown);
             this.VisibleChanged += new System.EventHandler(this.OnVisibleChanged);
-            this.Click += new System.EventHandler(this.OnEditClick);
             this.Move += new System.EventHandler(this.OnMove);
             this.Resize += new System.EventHandler(this.OnResize);
-            ((System.ComponentModel.ISupportInitialize)(this.cursorTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.targetTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.offsetXValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.offsetYValue)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -520,14 +445,6 @@ namespace D360
         private Button cancelButton;
         private Button saveAndCloseButton;
         private BackgroundWorker backgroundWorker1;
-        private Label cursorLabel;
-        private TrackBar cursorTrackBar;
-        private Label cursorValueLabel;
-        private CheckBox cursorMaxCheck;
-        private CheckBox targetMaxCheck;
-        private Label targetValueLabel;
-        private TrackBar targetTrackBar;
-        private Label targetLabel;
         private Label offsetLabel;
         private Label offsetXLabel;
         private Label offsetYLabel;
@@ -554,5 +471,7 @@ namespace D360
         private Controls.ControllerButtonLabel controllerButtonLabel19;
         private TableLayoutPanel tableLayoutPanel1;
         private PictureBox pictureBox1;
+        private Controls.RadiusSlider cursorSlider;
+        private Controls.RadiusSlider targetSlider;
     }
 }

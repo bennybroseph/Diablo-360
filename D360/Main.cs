@@ -67,6 +67,7 @@ namespace D360
         private void RunConfig()
         {
             m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
+            new Thread(() => Application.Run(m_ConfigForm)).Start();
 
             var serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
             if (File.Exists(@"Config.json"))
@@ -81,9 +82,10 @@ namespace D360
                 File.AppendAllText(
                     @"Config.json",
                     JsonConvert.SerializeObject(m_InputManager.configuration, serializerSettings));
-            }
 
-            new Thread(() => Application.Run(m_ConfigForm)).Start();
+                if (m_ConfigForm.InvokeRequired)
+                    m_ConfigForm.Invoke(new Action(() => { m_ConfigForm.Show(); }));
+            }
         }
 
         private void Update()

@@ -43,6 +43,34 @@ namespace D360.Utility
     public class BindingConfig
     {
         public List<ControlBinding> controlBindings = new List<ControlBinding>();
+
+        public override string ToString()
+        {
+            var result = string.Empty;
+            for (var i = 0; i < controlBindings.Count; i++)
+            {
+                var controlBinding = controlBindings[i];
+                switch (controlBinding.bindingType)
+                {
+                    case BindingType.Key:
+                        result += controlBinding.keys.ToString();
+                        break;
+                    case BindingType.SpecialAction:
+                        result += controlBinding.specialAction.ToString();
+                        break;
+                    case BindingType.Script:
+                        result += "Script Action";
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                if (i + 1 < controlBindings.Count)
+                    result += ", ";
+            }
+
+            return result;
+        }
     }
 
     public enum StickMode
@@ -215,6 +243,9 @@ namespace D360.Utility
 
                 case GamePadControl.LeftStick:
                     {
+                        if (!(newBindingConfig is StickConfig newStickConfig))
+                            continue;
+
                         newControlBinding = new ControlBinding
                         {
                             keys = Keys.Space,
@@ -222,11 +253,30 @@ namespace D360.Utility
                             targeted = false,
                             bindingMode = BindingMode.Move
                         };
-                        newBindingConfig.controlBindings.Add(newControlBinding);
+                        newStickConfig.controlBindings.Add(newControlBinding);
+
+                        newStickConfig.mode = StickMode.Cursor;
+                    }
+                    break;
+                case GamePadControl.RightStick:
+                    {
+                        if (!(newBindingConfig is StickConfig newStickConfig))
+                            continue;
+
+                        newControlBinding = new ControlBinding
+                        {
+                            keys = Keys.Space,
+                            onHold = false,
+                            targeted = false,
+                            bindingMode = BindingMode.Move
+                        };
+                        newStickConfig.controlBindings.Add(newControlBinding);
+
+                        newStickConfig.mode = StickMode.Target;
                     }
                     break;
 
-                case GamePadControl.LeftStickButton:
+                    case GamePadControl.LeftStickButton:
                     {
                         newControlBinding = new ControlBinding
                         {

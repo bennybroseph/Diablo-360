@@ -421,7 +421,7 @@ namespace D360.Utility
                 var prevButtonState = prevButtonStates[pair.Key];
 
                 var parsedControlBindings =
-                    pair.Value.controlBindings.Where(x => controllerState.currentMode.HasFlag(x.bindingMode));
+                    pair.Value.controlBindings.Where(x => x.bindingMode.HasFlag(controllerState.currentMode));
                 foreach (var controlBinding in parsedControlBindings)
                 {
                     var hasHoldBinding = pair.Value.controlBindings.Any(x => x.onHold);
@@ -496,7 +496,7 @@ namespace D360.Utility
         {
             foreach (var binding in m_PressActions)
             {
-                switch (binding.bindingType)
+                 switch (binding.bindingType)
                 {
                 case BindingType.Key:
                     VirtualKeyboard.KeyDown(binding.keys);
@@ -601,8 +601,9 @@ namespace D360.Utility
                         controllerState.cursorPosition = new Vector2(tempStickValue.X, -tempStickValue.Y);
                     if (controllerState.currentMode.HasFlag(BindingMode.Pointer))
                     {
-                        controllerState.cursorPosition.X += tempStickValue.X * 10f * Time.deltaTime;
-                        controllerState.cursorPosition.Y -= tempStickValue.Y * 10f * Time.deltaTime;
+                        //TODO: Add sensitivity values
+                        controllerState.cursorPosition.X += tempStickValue.X * 1f * Time.deltaTime;
+                        controllerState.cursorPosition.Y -= tempStickValue.Y * 1f * Time.deltaTime;
                     }
                 }
                 break;

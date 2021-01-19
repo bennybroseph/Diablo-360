@@ -17,8 +17,8 @@ namespace D360
         {
             get
             {
-                CreateParams myCp = base.CreateParams;
-                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                var myCp = base.CreateParams;
+                myCp.ClassStyle |= CP_NOCLOSE_BUTTON;
                 return myCp;
             }
         }
@@ -33,13 +33,19 @@ namespace D360
         public ConfigForm()
         {
             InitializeComponent();
+
+            cursorSlider.TrackBarChanged += OnRadiusTrackBarChanged;
+            cursorSlider.CheckChanged += OnMaxCheckChanged;
+
+            targetSlider.TrackBarChanged += OnRadiusTrackBarChanged;
+            targetSlider.CheckChanged += OnMaxCheckChanged;
         }
 
-        public void CreateBindingConfigForm(Button button)
+        public BindingConfigForm CreateBindingConfigForm(string button)
         {
             m_BindingConfigForm?.Close();
 
-            var control = GamePadUtility.ParseControl(button.Name);
+            var control = GamePadUtility.ParseControl(button);
 
             m_BindingConfigForm = new BindingConfigForm
             {
@@ -47,6 +53,8 @@ namespace D360
                 bindings = m_TempConfig.bindingConfigs[control]
             };
             m_BindingConfigForm.Show();
+
+            return m_BindingConfigForm;
         }
 
         private void OnSaveClick(object sender, EventArgs e)
@@ -68,25 +76,17 @@ namespace D360
             Hide();
         }
 
-        private void OnEditClick(object sender, EventArgs e)
-        {
-            if (!(sender is Button senderButton))
-                return;
-
-            CreateBindingConfigForm(senderButton);
-        }
-
         private void OnRadiusTrackBarChanged(object sender, EventArgs e)
         {
-            if (sender == cursorTrackBar)
+            if (sender == cursorSlider)
             {
-                m_TempConfig.cursorRadius = cursorTrackBar.Value / 100f;
-                cursorValueLabel.Text = cursorTrackBar.Value + @"%";
+                m_TempConfig.cursorRadius = cursorSlider.Value / 100f;
+                cursorSlider.Percent = cursorSlider.Value + @"%";
             }
-            else if (sender == targetTrackBar)
+            else if (sender == targetSlider)
             {
-                m_TempConfig.targetRadius = targetTrackBar.Value / 100f;
-                targetValueLabel.Text = targetTrackBar.Value + @"%";
+                m_TempConfig.targetRadius = targetSlider.Value / 100f;
+                targetSlider.Percent = targetSlider.Value + @"%";
             }
         }
 
@@ -100,10 +100,10 @@ namespace D360
 
         private void OnMaxCheckChanged(object sender, EventArgs e)
         {
-            if (sender == cursorMaxCheck)
-                m_TempConfig.cursorAlwaysMax = cursorMaxCheck.Checked;
-            else if (sender == targetMaxCheck)
-                m_TempConfig.targetAlwaysMax = targetMaxCheck.Checked;
+            if (sender == cursorSlider)
+                m_TempConfig.cursorAlwaysMax = cursorSlider.Checked;
+            else if (sender == targetSlider)
+                m_TempConfig.targetAlwaysMax = targetSlider.Checked;
         }
 
         private void OnVisibleChanged(object sender, EventArgs e)
@@ -133,13 +133,13 @@ namespace D360
         {
             CopyConfig(inputManager.configuration, out m_TempConfig);
 
-            cursorTrackBar.Value = (int) Math.Round(m_TempConfig.cursorRadius * 100);
-            cursorValueLabel.Text = cursorTrackBar.Value + @"%";
-            cursorMaxCheck.Checked = m_TempConfig.cursorAlwaysMax;
+            cursorSlider.Value = (int) Math.Round(m_TempConfig.cursorRadius * 100);
+            cursorSlider.Percent = cursorSlider.Value + @"%";
+            cursorSlider.Checked = m_TempConfig.cursorAlwaysMax;
 
-            targetTrackBar.Value = (int) Math.Round(m_TempConfig.targetRadius * 100);
-            targetValueLabel.Text = targetTrackBar.Value + @"%";
-            targetMaxCheck.Checked = m_TempConfig.targetAlwaysMax;
+            targetSlider.Value = (int) Math.Round(m_TempConfig.targetRadius * 100);
+            targetSlider.Percent = targetSlider.Value + @"%";
+            targetSlider.Checked = m_TempConfig.targetAlwaysMax;
 
             offsetXValue.Value = (decimal) m_TempConfig.centerOffset.X;
             offsetYValue.Value = (decimal) m_TempConfig.centerOffset.Y;
@@ -175,11 +175,6 @@ namespace D360
                 targetAlwaysMax = source.targetAlwaysMax,
                 targetRadius = source.targetRadius,
             };
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

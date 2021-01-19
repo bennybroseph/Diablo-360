@@ -28,69 +28,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.editButton = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.button = new System.Windows.Forms.Button();
+            this.hotkeyLabel = new System.Windows.Forms.Label();
+            this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tableLayoutPanel
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.editButton, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(262, 69);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.tableLayoutPanel.ColumnCount = 1;
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel.Controls.Add(this.button, 0, 0);
+            this.tableLayoutPanel.Controls.Add(this.hotkeyLabel, 0, 1);
+            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel.Name = "tableLayoutPanel";
+            this.tableLayoutPanel.RowCount = 2;
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(175, 45);
+            this.tableLayoutPanel.TabIndex = 0;
             // 
-            // label1
+            // button
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(4, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(254, 24);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Your Text Here";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.button.AutoSize = true;
+            this.button.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button.Location = new System.Drawing.Point(3, 3);
+            this.button.Name = "button";
+            this.button.Size = new System.Drawing.Size(169, 25);
+            this.button.TabIndex = 0;
+            this.button.Text = "Your Text Here";
+            this.button.Click += new System.EventHandler(this.OnClick);
             // 
-            // editButton
+            // hotkeyLabel
             // 
-            this.editButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editButton.Location = new System.Drawing.Point(4, 29);
-            this.editButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(254, 35);
-            this.editButton.TabIndex = 1;
-            this.editButton.Text = "Edit";
-            this.editButton.UseVisualStyleBackColor = true;
-            this.editButton.Click += new System.EventHandler(this.onEditClick);
+            this.hotkeyLabel.AutoSize = true;
+            this.hotkeyLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hotkeyLabel.Location = new System.Drawing.Point(3, 31);
+            this.hotkeyLabel.Name = "hotkeyLabel";
+            this.hotkeyLabel.Size = new System.Drawing.Size(169, 14);
+            this.hotkeyLabel.TabIndex = 2;
+            this.hotkeyLabel.Text = "Hotkey Parse";
+            this.hotkeyLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // ControllerButtonLabel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tableLayoutPanel);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ControllerButtonLabel";
-            this.Size = new System.Drawing.Size(262, 69);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.Size = new System.Drawing.Size(175, 45);
+            this.Load += new System.EventHandler(this.OnLoad);
+            this.tableLayoutPanel.ResumeLayout(false);
+            this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button editButton;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
+        private System.Windows.Forms.Label hotkeyLabel;
+        private System.Windows.Forms.Button button;
     }
 }

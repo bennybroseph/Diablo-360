@@ -1,18 +1,21 @@
-﻿using System.ComponentModel;
-using System.Windows.Forms;
-
+﻿
 namespace D360.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows.Forms;
+    using Types;
+
     public partial class ControllerButtonLabel : UserControl
     {
         [Description("The text of the label"), Category("Data")]
         public string Label
         {
-            get => label1.Text;
+            get => button.Text;
             set
             {
-                label1.Text = value;
-                editButton.Name = value.Replace(" ", "") + "EditButton";
+                button.Text = value;
+                button.Name = value.Replace(" ", "");
             }
         }
 
@@ -21,15 +24,31 @@ namespace D360.Controls
             InitializeComponent();
         }
 
-        private void onEditClick(object sender, System.EventArgs e)
+        private void OnLoad(object sender, EventArgs e)
+        {
+            if (!(ParentForm is ConfigForm configForm))
+                return;
+            var control = GamePadUtility.ParseControl(button.Name);
+
+            hotkeyLabel.Text = configForm.inputManager.configuration.bindingConfigs[control].ToString();
+        }
+
+        private void OnBindingConfigClosed(object sender, EventArgs e)
+        {
+            if (!(ParentForm is ConfigForm configForm))
+                return;
+            var control = GamePadUtility.ParseControl(button.Name);
+
+            hotkeyLabel.Text = configForm.inputManager.configuration.bindingConfigs[control].ToString();
+        }
+
+        private void OnClick(object sender, EventArgs e)
         {
             if (!(ParentForm is ConfigForm configForm))
                 return;
 
-            if (!(sender is Button senderButton))
-                return;
-
-            configForm.CreateBindingConfigForm(senderButton);
+            var bindingConfigForm = configForm.CreateBindingConfigForm(button.Name);
+            bindingConfigForm.ClosedEvent += OnBindingConfigClosed;
         }
     }
 }
