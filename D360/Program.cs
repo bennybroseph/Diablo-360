@@ -41,7 +41,6 @@ namespace D360
             {
 #endif
             var main = new Main();
-            Application.Run();
 
             //var maxFPS = 90f;
 

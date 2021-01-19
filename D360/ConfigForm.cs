@@ -8,8 +8,20 @@ using Newtonsoft.Json;
 
 namespace D360
 {
+    using System.Runtime.InteropServices;
+
     public partial class ConfigForm : Form
     {
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
+        }
 
         private BindingConfigForm m_BindingConfigForm;
         public InputManager inputManager;
@@ -21,8 +33,6 @@ namespace D360
         public ConfigForm()
         {
             InitializeComponent();
-
-            defaultPanel.Hide();
         }
 
         public void CreateBindingConfigForm(Button button)
@@ -109,15 +119,14 @@ namespace D360
                 inputManager.controllerState.currentMode = BindingMode.Config;
                 BringToFront();
             }
-
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            //e.Cancel = true;
 
             m_BindingConfigForm?.Close();
-            Hide();
+            //Hide();
         }
 
         private void OnShown(object sender, EventArgs e)
@@ -166,6 +175,11 @@ namespace D360
                 targetAlwaysMax = source.targetAlwaysMax,
                 targetRadius = source.targetRadius,
             };
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

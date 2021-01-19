@@ -155,6 +155,14 @@ namespace D360.Utility
                     {
                         newControlBinding = new ControlBinding
                         {
+                            keys = Keys.Shift,
+                            onHold = false,
+                            targeted = false,
+                            bindingMode = BindingMode.Move
+                        };
+                        newBindingConfig.controlBindings.Add(newControlBinding);
+                            newControlBinding = new ControlBinding
+                        {
                             keys = Keys.LButton,
                             onHold = false,
                             targeted = false,

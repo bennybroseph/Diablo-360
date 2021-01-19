@@ -52,11 +52,23 @@ namespace D360
         {
             m_InputManager = new InputManager();
 
-            var config = new Thread(() => m_ConfigForm = new ConfigForm { inputManager = m_InputManager });
-            config.Start();
-            config.Join();
+            m_Overlay = new MyOverlayWindow(m_InputManager.configuration.screen, m_InputManager.controllerState);
 
-            var serializerSettings = new JsonSerializerSettings{TypeNameHandling = TypeNameHandling.All};
+            RunConfig();
+
+            m_Overlay.onDrawGraphics += Update;
+
+            m_KeyboardProc = KeyboardHookCallback;
+            m_KeyboardHookID = SetKeyboardHook(m_KeyboardProc);
+
+            m_Overlay.Run();
+        }
+
+        private void RunConfig()
+        {
+            m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
+
+            var serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
             if (File.Exists(@"Config.json"))
             {
                 m_InputManager.configuration =
@@ -69,18 +81,9 @@ namespace D360
                 File.AppendAllText(
                     @"Config.json",
                     JsonConvert.SerializeObject(m_InputManager.configuration, serializerSettings));
-
-                m_ConfigForm.Show();
             }
 
-            m_Overlay = new MyOverlayWindow(m_InputManager.configuration.screen, m_InputManager.controllerState);
-
-            m_Overlay.onDrawGraphics += Update;
-
-            m_KeyboardProc = KeyboardHookCallback;
-            m_KeyboardHookID = SetKeyboardHook(m_KeyboardProc);
-
-            m_Overlay.Run();
+            new Thread(() => Application.Run(m_ConfigForm)).Start();
         }
 
         private void Update()
@@ -124,10 +127,13 @@ namespace D360
 
                                 case Keys.F12:
                                     m_Overlay.Close();
+                                    if (m_ConfigForm.InvokeRequired)
+                                        m_ConfigForm.Invoke(new Action(() => { m_ConfigForm.Close();}));
                                     break;
 
                                 case Keys.F11:
-                                    m_ConfigForm.Show();
+                                    if (m_ConfigForm.InvokeRequired)
+                                        m_ConfigForm.Invoke(new Action(() => {m_ConfigForm.Show();}));
                                     break;
                             }
                             break;

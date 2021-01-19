@@ -643,14 +643,14 @@ namespace D360
             {
                 Name = "newMoveCheck" + m_TableCount,
                 Text = defaultMoveRadio.Text,
-                Checked = controlBinding.bindingMode == BindingMode.Move
+                Checked = (controlBinding.bindingMode & BindingMode.Move) == BindingMode.Move
             };
             newMoveCheck.CheckStateChanged += OnCheckModeChanged;
             var newPointerCheck = new CheckBox
             {
                 Name = "newPointerCheck" + m_TableCount,
                 Text = defaultPointerRadio.Text,
-                Checked = controlBinding.bindingMode == BindingMode.Pointer
+                Checked = (controlBinding.bindingMode & BindingMode.Pointer) == BindingMode.Pointer
             };
             newPointerCheck.CheckStateChanged += OnCheckModeChanged;
 

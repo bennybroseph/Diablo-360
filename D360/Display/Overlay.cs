@@ -4,6 +4,7 @@ namespace D360.Display
     using GameOverlay.Drawing;
     using GameOverlay.Windows;
     using System;
+    using System.Threading;
     using System.Windows.Forms;
     using Utility;
 
@@ -59,7 +60,7 @@ namespace D360.Display
         public void Run()
         {
             m_GraphicsWindow.Create();
-            //m_GraphicsWindow.Join();
+            m_GraphicsWindow.Join();
         }
 
         private void OnSetupGraphics(object sender, SetupGraphicsEventArgs e)

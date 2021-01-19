@@ -84,7 +84,7 @@ namespace D360
             // Extend aero glass style on form initialization
             OnResize(null);
 
-            m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
+            //m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
 
             if (File.Exists(@"Config.dat"))
                 BinarySerializer.LoadObject(ref m_InputManager.configuration, @"Config.dat");
