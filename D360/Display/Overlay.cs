@@ -6,6 +6,7 @@ namespace D360.Display
     using System;
     using System.Threading;
     using System.Windows.Forms;
+    using Controller;
     using Utility;
 
     class MyOverlayWindow
@@ -18,6 +19,7 @@ namespace D360.Display
 
         private readonly Screen m_Screen;
         private readonly ControllerState m_ControllerState;
+        private readonly ControllerManager m_ControllerManager;
 
         private Image m_ControllerNotFoundImage;
 
@@ -34,10 +36,11 @@ namespace D360.Display
         public delegate void OnDrawGraphicsDelegate();
         public OnDrawGraphicsDelegate onDrawGraphics;
 
-        public MyOverlayWindow(Screen pScreen, ControllerState pControllerState)
+        public MyOverlayWindow(Screen pScreen, ControllerState pControllerState, ControllerManager pControllerManager)
         {
             m_Screen = pScreen;
             m_ControllerState = pControllerState;
+            m_ControllerManager = pControllerManager;
 
             m_GraphicsWindow =
                 new GraphicsWindow
@@ -112,7 +115,8 @@ namespace D360.Display
                 "Left Stick: " + m_ControllerState.cursorPosition + "\n" +
                 "Right Stick: " + m_ControllerState.targetPosition + "\n" +
                 m_ControllerState.pressedTargetKeys + "\n" +
-                m_ControllerState.currentMode);
+                m_ControllerState.currentMode +
+                m_ControllerManager.debugText);
         }
 
         public void Close()

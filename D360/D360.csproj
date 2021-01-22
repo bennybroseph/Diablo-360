@@ -61,8 +61,6 @@
     <Reference Include="GameOverlay, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GameOverlay.Net.4.3.0\lib\net45\GameOverlay.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -96,6 +94,8 @@
     <Compile Include="BindingConfigForm.Designer.cs">
       <DependentUpon>BindingConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Controller\ControllerManager.cs" />
     <Compile Include="Controls\ControllerButtonLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>

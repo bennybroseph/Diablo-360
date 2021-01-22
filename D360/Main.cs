@@ -10,6 +10,7 @@ namespace D360
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using Controller;
     using Utility;
 
     public class Main
@@ -44,6 +45,8 @@ namespace D360
         private IntPtr m_KeyboardHookID = IntPtr.Zero;
 
         private readonly InputManager m_InputManager;
+        private readonly ControllerManager m_ControllerManager;
+
         private ConfigForm m_ConfigForm;
 
         private MyOverlayWindow m_Overlay;
@@ -51,8 +54,13 @@ namespace D360
         public Main()
         {
             m_InputManager = new InputManager();
+            m_ControllerManager = new ControllerManager();
 
-            m_Overlay = new MyOverlayWindow(m_InputManager.configuration.screen, m_InputManager.controllerState);
+            m_Overlay =
+                new MyOverlayWindow(
+                    m_InputManager.configuration.screen,
+                    m_InputManager.controllerState,
+                    m_ControllerManager);
 
             RunConfig();
 
@@ -97,6 +105,7 @@ namespace D360
             {
 #endif
                 m_InputManager.Update();
+                m_ControllerManager.Update();
 #if !DEBUG
             }
 
