@@ -5,6 +5,7 @@ namespace D360.Display
     using GameOverlay.Drawing;
     using GameOverlay.Windows;
     using System;
+    using System.Linq;
     using System.Windows.Forms;
     using Utility;
 
@@ -17,7 +18,6 @@ namespace D360.Display
         private Graphics m_Graphics => m_GraphicsWindow.Graphics;
 
         private readonly Screen m_Screen;
-        private readonly ControllerState m_ControllerState;
         private readonly ControllerManager m_ControllerManager;
 
         private Image m_ControllerNotFoundImage;
@@ -38,11 +38,9 @@ namespace D360.Display
         public delegate void OnDrawGraphicsDelegate();
         public OnDrawGraphicsDelegate onDrawGraphics;
 
-        public MyOverlayWindow(Screen pScreen, ControllerState pControllerState, ControllerManager pControllerManager)
+        public MyOverlayWindow()
         {
-            m_Screen = pScreen;
-            m_ControllerState = pControllerState;
-            m_ControllerManager = pControllerManager;
+            m_Screen = Main.self.configuration.screen;
 
             m_GraphicsWindow =
                 new GraphicsWindow
@@ -99,7 +97,7 @@ namespace D360.Display
         {
             m_Graphics.ClearScene();
 
-            if (!m_ControllerState.connected)
+            if (!Main.self.controllerManager.controllers.Any(x => x.Value.isConnected))
                 m_Graphics.DrawImage(
                     m_ControllerNotFoundImage,
                     Rectangle.Create(

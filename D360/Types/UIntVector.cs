@@ -1,7 +1,4 @@
 ﻿
-
-
-
 namespace D360.Types
 {
     public struct UIntVector

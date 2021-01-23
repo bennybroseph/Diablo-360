@@ -6,8 +6,6 @@ namespace D360.Controller
     using System.Windows.Forms;
     using InputEmulation;
     using SharpDX;
-    using Types;
-    using Utility;
 
     [Flags]
     public enum InputMode
@@ -31,6 +29,9 @@ namespace D360.Controller
 
         public abstract void OnPress();
         public abstract void OnRelease();
+
+        public abstract override string ToString();
+        public abstract Binding Clone();
     }
 
     [Serializable]
@@ -52,6 +53,18 @@ namespace D360.Controller
         {
             return keys.ToString();
         }
+
+        public override Binding Clone()
+        {
+            return new KeyBinding
+            {
+                keys = keys,
+
+                inputMode = inputMode,
+                isHoldAction = isHoldAction,
+                isTargetedAction = isTargetedAction,
+            };
+        }
     }
 
     [Serializable]
@@ -70,6 +83,16 @@ namespace D360.Controller
         public override string ToString()
         {
             return GetType().ToString();
+        }
+
+        public override Binding Clone()
+        {
+            return new SpecialBinding
+            {
+                inputMode = inputMode,
+                isHoldAction = isHoldAction,
+                isTargetedAction = isTargetedAction,
+            };
         }
     }
 
@@ -91,6 +114,18 @@ namespace D360.Controller
         public override string ToString()
         {
             return "Script";
+        }
+
+        public override Binding Clone()
+        {
+            return new ScriptBinding
+            {
+                script = script,
+
+                inputMode = inputMode,
+                isHoldAction = isHoldAction,
+                isTargetedAction = isTargetedAction,
+            };
         }
     }
 

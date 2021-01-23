@@ -45,9 +45,7 @@ namespace D360
         }
 
         private IntPtr m_KeyboardHookID = IntPtr.Zero;
-
-        private InputManager m_InputManager;
-
+        
         private ControllerManager m_ControllerManager;
         public ControllerManager controllerManager => m_ControllerManager;
 
@@ -61,15 +59,7 @@ namespace D360
 
         public void Init()
         {
-            m_InputManager = new InputManager();
-
-
-
-            m_OverlayWindow =
-                new MyOverlayWindow(
-                    configuration.screen,
-                    m_InputManager.controllerState,
-                    m_ControllerManager);
+            m_OverlayWindow = new MyOverlayWindow();
 
             m_ControllerManager = new ControllerManager();
 

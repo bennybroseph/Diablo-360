@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using D360.Types;
-using D360.Utility;
 
 namespace D360
 {
+    using System.Linq;
+    using System.Windows.Forms;
+    using Controller;
+    using Binding = Controller.Binding;
+    using WinControl = System.Windows.Forms.Control;
+
     public partial class BindingConfigForm : Form
     {
         public event EventHandler ClosedEvent;
@@ -17,8 +19,8 @@ namespace D360
         private bool m_EditingConfig;
         private Keys m_PressedKeys;
 
-        public BindingConfig bindings;
-        private BindingConfig m_TempBinding;
+        public ControlConfig bindings;
+        private ControlConfig m_TempBinding;
 
         private Size m_DefaultSize;
 
@@ -93,11 +95,11 @@ namespace D360
 
             changedControls = 0;
 
-            foreach (Control control in otherTabPage.Controls)
+            foreach (WinControl control in otherTabPage.Controls)
                 control.Text = control.Text.TrimEnd('*');
 
             foreach (var table in bindingsTabPage.Controls.OfType<TableLayoutPanel>())
-                foreach (var control in table.Controls.OfType<Control>())
+                foreach (var control in table.Controls.OfType<WinControl>())
                 {
                     control.ForeColor = DefaultForeColor;
                     control.Text = control.Text.TrimEnd('*');
@@ -113,8 +115,8 @@ namespace D360
 
         private void OnAddClick(object sender, EventArgs e)
         {
-            var newBinding = new ControlBinding();
-            m_TempBinding.controlBindings.Add(newBinding);
+            var newBinding = new KeyBinding();
+            m_TempBinding.bindings.Add(newBinding);
             bindingsTabPage.Controls.Add(CreateNewBinding(newBinding));
 
             ProperResize();
@@ -131,7 +133,7 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<Button>().All(button => button != senderButton)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings.RemoveAt(index);
+            m_TempBinding.bindings.RemoveAt(index);
 
             bindingsTabPage.Controls.Remove(senderButton.Parent);
             --m_TableCount;
@@ -151,10 +153,10 @@ namespace D360
                     All(comboBox => comboBox != senderComboBox)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings[index].bindingType = (BindingType)senderComboBox.SelectedItem;
+            m_TempBinding.bindings[index].inputMode = (InputMode)senderComboBox.SelectedItem;
 
-            var isDifferent = bindings.controlBindings.Count <= index ||
-                m_TempBinding.controlBindings[index].bindingType != bindings.controlBindings[index].bindingType;
+            var isDifferent = bindings.bindings.Count <= index ||
+                m_TempBinding.bindings[index].inputMode != bindings.bindings[index].inputMode;
 
             if (isDifferent)
                 changedControls++;
@@ -166,16 +168,16 @@ namespace D360
 
             var textBox = panel.Controls.OfType<TextBox>().FirstOrDefault(x => !x.Multiline);
             if (textBox != null)
-                textBox.Visible = m_TempBinding.controlBindings[index].bindingType == BindingType.Key;
+                textBox.Visible = m_TempBinding.bindings[index].GetType() == typeof(KeyBinding);
 
             var multilineBox = panel.Controls.OfType<TextBox>().FirstOrDefault(x => x.Multiline);
             if (multilineBox != null)
-                multilineBox.Visible = m_TempBinding.controlBindings[index].bindingType == BindingType.Script;
+                multilineBox.Visible = m_TempBinding.bindings[index].GetType() == typeof(ScriptBinding);
 
             var specialComboBox = panel.Controls.OfType<ComboBox>().FirstOrDefault(x => panel.GetRow(x) == 2);
             if (specialComboBox != null)
                 specialComboBox.Visible =
-                    m_TempBinding.controlBindings[index].bindingType == BindingType.SpecialAction;
+                    m_TempBinding.bindings[index].GetType() == typeof(SpecialBinding);
 
             Refresh();
         }
@@ -191,10 +193,12 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<TextBox>().All(textBox => textBox != senderTextBox)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings[index].script = senderTextBox.Text;
+            var scriptBinding = (ScriptBinding)bindings.bindings[index];
+            var tempScriptBinding = (ScriptBinding)m_TempBinding.bindings[index];
+            tempScriptBinding.script = senderTextBox.Text;
 
-            var isDifferent = bindings.controlBindings.Count <= index ||
-                m_TempBinding.controlBindings[index].script != bindings.controlBindings[index].script;
+            var isDifferent = bindings.bindings.Count <= index ||
+                tempScriptBinding.script != scriptBinding.script;
 
             senderTextBox.ForeColor = isDifferent ? Color.DodgerBlue : SystemColors.ControlText;
             if (isDifferent)
@@ -217,10 +221,12 @@ namespace D360
                     All(comboBox => comboBox != senderComboBox)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings[index].specialAction = (SpecialAction)senderComboBox.SelectedItem;
+            var scriptBinding = (SpecialBinding)bindings.bindings[index];
+            var tempScriptBinding = (SpecialBinding)m_TempBinding.bindings[index];
+            //tempScriptBinding = (SpecialAction)senderComboBox.SelectedItem;
 
-            var isDifferent = bindings.controlBindings.Count <= index ||
-                m_TempBinding.controlBindings[index].specialAction != bindings.controlBindings[index].specialAction;
+            var isDifferent = bindings.bindings.Count <= index ||
+                tempScriptBinding != scriptBinding;
 
             if (isDifferent)
                 changedControls++;
@@ -263,22 +269,22 @@ namespace D360
 
             switch (mouseEvent.Button)
             {
-            case MouseButtons.Left:
-                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.LButton));
-                break;
-            case MouseButtons.Right:
-                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.RButton));
-                break;
-            case MouseButtons.Middle:
-                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.MButton));
-                break;
+                case MouseButtons.Left:
+                    OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.LButton));
+                    break;
+                case MouseButtons.Right:
+                    OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.RButton));
+                    break;
+                case MouseButtons.Middle:
+                    OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.MButton));
+                    break;
 
-            case MouseButtons.XButton1:
-                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.XButton1));
-                break;
-            case MouseButtons.XButton2:
-                OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.XButton2));
-                break;
+                case MouseButtons.XButton1:
+                    OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.XButton1));
+                    break;
+                case MouseButtons.XButton2:
+                    OnKeysTextBoxKeyUp(senderTextBox, new KeyEventArgs(Keys.XButton2));
+                    break;
             }
         }
 
@@ -297,13 +303,15 @@ namespace D360
             if (m_PressedKeys != Keys.None)
                 parsedKeys |= m_PressedKeys;
 
-            m_TempBinding.controlBindings[index].keys = parsedKeys;
+            var scriptBinding = (KeyBinding)bindings.bindings[index];
+            var tempScriptBinding = (KeyBinding)m_TempBinding.bindings[index];
+            tempScriptBinding.keys = parsedKeys;
 
             var isDifferent =
-                bindings.controlBindings.Count <= index ||
-                m_TempBinding.controlBindings[index].keys != bindings.controlBindings[index].keys;
+                bindings.bindings.Count <= index ||
+                tempScriptBinding.keys != scriptBinding.keys;
 
-            senderTextBox.Text = m_TempBinding.controlBindings[index].keys.ToString();
+            senderTextBox.Text = tempScriptBinding.keys.ToString();
             senderTextBox.BackColor = defaultTextBox.BackColor;
             senderTextBox.ForeColor = isDifferent ? Color.DodgerBlue : SystemColors.ControlText;
 
@@ -328,11 +336,11 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<CheckBox>().All(checkBox => checkBox != senderCheck)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings[index].onHold = senderCheck.Checked;
+            m_TempBinding.bindings[index].isHoldAction = senderCheck.Checked;
 
             var isDifferent =
-                bindings.controlBindings.Count <= index ||
-                m_TempBinding.controlBindings[index].onHold != bindings.controlBindings[index].onHold;
+                bindings.bindings.Count <= index ||
+                m_TempBinding.bindings[index].isHoldAction != bindings.bindings[index].isHoldAction;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -357,11 +365,11 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<CheckBox>().All(checkBox => checkBox != senderCheck)).
                         Count() - 1;
 
-            m_TempBinding.controlBindings[index].targeted = senderCheck.Checked;
+            m_TempBinding.bindings[index].isTargetedAction = senderCheck.Checked;
 
             var isDifferent =
-                bindings.controlBindings.Count <= index ||
-                m_TempBinding.controlBindings[index].targeted != bindings.controlBindings[index].targeted;
+                bindings.bindings.Count <= index ||
+                m_TempBinding.bindings[index].isTargetedAction != bindings.bindings[index].isTargetedAction;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -392,13 +400,13 @@ namespace D360
                         All(radioButton => radioButton != senderCheckBox)).
                     Count() - 1;
 
-            var bindingMode = (BindingMode)(1 << parentTable.GetColumn(senderCheckBox));
-            m_TempBinding.controlBindings[index].bindingMode ^= bindingMode;
+            var bindingMode = (InputMode)(1 << parentTable.GetColumn(senderCheckBox));
+            m_TempBinding.bindings[index].inputMode ^= bindingMode;
 
             var isDifferent =
-                bindings.controlBindings.Count <= index ||
-                (m_TempBinding.controlBindings[index].bindingMode & bindingMode) !=
-                (bindings.controlBindings[index].bindingMode & bindingMode);
+                bindings.bindings.Count <= index ||
+                (m_TempBinding.bindings[index].inputMode & bindingMode) !=
+                (bindings.bindings[index].inputMode & bindingMode);
 
             senderCheckBox.Text = senderCheckBox.Text.TrimEnd('*');
             if (isDifferent)
@@ -544,7 +552,7 @@ namespace D360
             }
         }
 
-        private TableLayoutPanel CreateNewBinding(ControlBinding controlBinding)
+        private TableLayoutPanel CreateNewBinding(Binding controlBinding)
         {
             var newPanel = new TableLayoutPanel
             {
@@ -580,9 +588,9 @@ namespace D360
                 AutoSize = defaultComboBox.AutoSize,
                 Dock = defaultComboBox.Dock
             };
-            foreach (BindingType bindingType in Enum.GetValues(typeof(BindingType)))
+            foreach (InputMode bindingType in Enum.GetValues(typeof(InputMode)))
                 newComboBox.Items.Add(bindingType);
-            newComboBox.SelectedItem = controlBinding.bindingType;
+            newComboBox.SelectedItem = controlBinding.inputMode;
             newComboBox.SelectedIndexChanged += OnBindingTypeChanged;
 
             var newSpecialComboBox = new ComboBox
@@ -591,33 +599,33 @@ namespace D360
                 DropDownStyle = defaultComboBox.DropDownStyle,
                 AutoSize = defaultComboBox.AutoSize,
                 Dock = defaultComboBox.Dock,
-                Visible = controlBinding.bindingType == BindingType.SpecialAction
+                //Visible = controlBinding.inputMode == InputMode.SpecialAction
             };
-            foreach (SpecialAction value in Enum.GetValues(typeof(SpecialAction)))
-                newSpecialComboBox.Items.Add(value);
-            newSpecialComboBox.SelectedItem = controlBinding.specialAction;
-            newSpecialComboBox.SelectedIndexChanged += OnSpecialActionChanged;
+            //foreach (SpecialAction value in Enum.GetValues(typeof(SpecialAction)))
+            //    newSpecialComboBox.Items.Add(value);
+            //newSpecialComboBox.SelectedItem = controlBinding.specialAction;
+            //newSpecialComboBox.SelectedIndexChanged += OnSpecialActionChanged;
 
             var newMultilineBox = new TextBox
             {
                 Name = "newMultilineBox" + m_TableCount,
-                Text = controlBinding.script,
+                //Text = controlBinding.script,
                 AutoSize = defaultTextBox.AutoSize,
                 Dock = defaultTextBox.Dock,
                 Multiline = true,
-                Visible = controlBinding.bindingType == BindingType.Script
+                //Visible = controlBinding.inputMode == InputMode.Script
             };
             newMultilineBox.TextChanged += OnScriptChanged;
 
             var newTextBox = new CustomTextBox
             {
                 Name = "newTextBox" + m_TableCount,
-                Text = controlBinding.keys.ToString(),
+                //Text = controlBinding.keys.ToString(),
                 AutoSize = defaultTextBox.AutoSize,
                 Dock = defaultTextBox.Dock,
                 ReadOnly = defaultTextBox.ReadOnly,
                 Cursor = defaultTextBox.Cursor,
-                Visible = controlBinding.bindingType == BindingType.Key,
+                //Visible = controlBinding.inputMode == InputMode,
                 ContextMenu = new ContextMenu()
             };
             newTextBox.MouseDoubleClick += OnKeysTextBoxDoubleClick;
@@ -629,7 +637,7 @@ namespace D360
             {
                 Name = "newCheck" + m_TableCount,
                 Text = defaultHeldCheck.Text,
-                Checked = controlBinding.onHold
+                Checked = controlBinding.isHoldAction
             };
             newHoldCheck.CheckStateChanged += OnHoldCheckChanged;
 
@@ -637,7 +645,7 @@ namespace D360
             {
                 Name = "newCheck" + m_TableCount,
                 Text = defaultTargetCheck.Text,
-                Checked = controlBinding.targeted
+                Checked = controlBinding.isTargetedAction
             };
             newTargetedCheck.CheckStateChanged += OnTargetedCheckChanged;
 
@@ -645,14 +653,14 @@ namespace D360
             {
                 Name = "newMoveCheck" + m_TableCount,
                 Text = defaultMoveRadio.Text,
-                Checked = (controlBinding.bindingMode & BindingMode.Move) == BindingMode.Move
+                //Checked = (controlBinding.inputMode & BindingMode.Move) == BindingMode.Move
             };
             newMoveCheck.CheckStateChanged += OnCheckModeChanged;
             var newPointerCheck = new CheckBox
             {
                 Name = "newPointerCheck" + m_TableCount,
                 Text = defaultPointerRadio.Text,
-                Checked = (controlBinding.bindingMode & BindingMode.Pointer) == BindingMode.Pointer
+                //Checked = (controlBinding.bindingMode & BindingMode.Pointer) == BindingMode.Pointer
             };
             newPointerCheck.CheckStateChanged += OnCheckModeChanged;
 
@@ -687,7 +695,7 @@ namespace D360
             return newPanel;
         }
 
-        private void CopyConfig(BindingConfig source, BindingConfig destination)
+        private void CopyConfig(ControlConfig source, ControlConfig destination)
         {
             var triggerBinding = source as TriggerConfig;
             var destTriggerBinding = destination as TriggerConfig;
@@ -704,21 +712,10 @@ namespace D360
                 destStickConfig.mode = stickConfig.mode;
             }
 
-            destination.controlBindings.Clear();
-            foreach (var sourceBinding in source.controlBindings)
+            destination.bindings.Clear();
+            foreach (var sourceBinding in source.bindings)
             {
-                destination.controlBindings.Add(
-                    new ControlBinding
-                    {
-                        keys = sourceBinding.keys,
-                        specialAction = sourceBinding.specialAction,
-                        script = sourceBinding.script,
-
-                        onHold = sourceBinding.onHold,
-                        targeted = sourceBinding.targeted,
-                        bindingMode = sourceBinding.bindingMode,
-                        bindingType = sourceBinding.bindingType
-                    });
+                destination.bindings.Add(sourceBinding.Clone());
                 bindingsTabPage.Controls.Add(CreateNewBinding(sourceBinding));
             }
         }
@@ -732,7 +729,7 @@ namespace D360
             else if (stickConfig != null)
                 m_TempBinding = new StickConfig();
             else
-                m_TempBinding = new BindingConfig();
+                m_TempBinding = new ControlConfig();
         }
 
         private void OnClosed(object sender, FormClosedEventArgs e)

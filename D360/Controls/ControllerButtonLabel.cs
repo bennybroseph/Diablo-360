@@ -28,7 +28,7 @@ namespace D360.Controls
         {
             if (!(ParentForm is ConfigForm configForm))
                 return;
-            var control = GamePadUtility.ParseControl(button.Name);
+            //var control = GamePadUtility.ParseControl(button.Name);
 
             //hotkeyLabel.Text = Main.self.configuration.bindingConfigs[control].ToString();
         }
@@ -37,7 +37,7 @@ namespace D360.Controls
         {
             if (!(ParentForm is ConfigForm configForm))
                 return;
-            var control = GamePadUtility.ParseControl(button.Name);
+            //var control = GamePadUtility.ParseControl(button.Name);
 
             //hotkeyLabel.Text = Main.self.configuration.bindingConfigs[control].ToString();
         }

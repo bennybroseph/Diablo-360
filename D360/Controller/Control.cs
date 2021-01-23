@@ -166,7 +166,7 @@ namespace D360.Controller
             if (state == prevState)
                 return;
 
-            Enum.TryParse(Main.self.controllerManager.currentMode.ToString(), out BindingMode bindingMode);
+            Enum.TryParse(Main.self.controllerManager.currentMode.ToString(), out InputMode inputMode);
 
             var bindings =
                 Main.self.configuration.bindingConfigs[index].bindings.

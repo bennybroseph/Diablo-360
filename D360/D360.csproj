@@ -114,28 +114,15 @@
     <Compile Include="Main.cs" />
     <Compile Include="Utility\Singleton.cs" />
     <Compile Include="Utility\TaskbarUtility.cs" />
-    <Compile Include="Utility\InputManager.cs" />
     <Compile Include="Utility\BinarySerializer.cs" />
     <Compile Include="Utility\StringExtensions.cs" />
     <Compile Include="Utility\Time.cs" />
-    <Compile Include="Types\SpecialAction.cs" />
-    <Compile Include="Utility\Configuration.cs" />
     <Compile Include="Utility\WindowFunctions.cs" />
-    <Compile Include="Types\XInputWrapper.cs" />
-    <Compile Include="Types\ControllerEnums.cs" />
     <Compile Include="ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ConfigForm.Designer.cs">
       <DependentUpon>ConfigForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Utility\ControllerState.cs" />
-    <Compile Include="Display\HUD.cs" />
-    <Compile Include="HUDForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HUDForm.Designer.cs">
-      <DependentUpon>HUDForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputEmulation\VirtualMouse.cs" />
     <Compile Include="Program.cs" />
@@ -154,9 +141,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\RadiusSlider.resx">
       <DependentUpon>RadiusSlider.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HUDForm.resx">
-      <DependentUpon>HUDForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
