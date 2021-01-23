@@ -94,6 +94,8 @@
     <Compile Include="BindingConfigForm.Designer.cs">
       <DependentUpon>BindingConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controller\Config.cs" />
+    <Compile Include="Controller\Control.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\ControllerManager.cs" />
     <Compile Include="Controls\ControllerButtonLabel.cs">
@@ -110,6 +112,7 @@
     </Compile>
     <Compile Include="Display\Overlay.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Utility\Singleton.cs" />
     <Compile Include="Utility\TaskbarUtility.cs" />
     <Compile Include="Utility\InputManager.cs" />
     <Compile Include="Utility\BinarySerializer.cs" />

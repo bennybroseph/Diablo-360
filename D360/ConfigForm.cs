@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 namespace D360
 {
     using System.Runtime.InteropServices;
+    using Controller;
 
     public partial class ConfigForm : Form
     {
@@ -24,11 +25,10 @@ namespace D360
         }
 
         private BindingConfigForm m_BindingConfigForm;
-        public InputManager inputManager;
 
         private Configuration m_TempConfig = new Configuration();
 
-        private BindingMode m_OldMode;
+        private InputMode m_OldMode;
 
         public ConfigForm()
         {
@@ -50,7 +50,7 @@ namespace D360
             m_BindingConfigForm = new BindingConfigForm
             {
                 parentForm = this,
-                bindings = m_TempConfig.bindingConfigs[control]
+                //bindings = m_TempConfig.bindingConfigs[control]
             };
             m_BindingConfigForm.Show();
 
@@ -59,13 +59,13 @@ namespace D360
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            CopyConfig(m_TempConfig, out inputManager.configuration);
-            inputManager.controllerState.centerOffset = inputManager.configuration.centerOffset;
+            CopyConfig(m_TempConfig, out Main.self.configuration);
+            //inputManager.controllerState.centerOffset = inputManager.configuration.centerOffset;
 
             File.WriteAllText(
                 "Config.json",
                 JsonConvert.SerializeObject(
-                    inputManager.configuration,
+                    Main.self.configuration,
                     new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All}));
 
             Hide();
@@ -110,13 +110,13 @@ namespace D360
         {
             if (!Visible)
             {
-                inputManager.controllerState.currentMode = m_OldMode;
+                Main.self.controllerManager.currentMode = m_OldMode;
                 m_BindingConfigForm?.Close();
             }
             else
             {
-                m_OldMode = inputManager.controllerState.currentMode;
-                inputManager.controllerState.currentMode = BindingMode.Config;
+                m_OldMode = Main.self.controllerManager.currentMode;
+                Main.self.controllerManager.currentMode = InputMode.Config;
                 BringToFront();
             }
         }
@@ -131,7 +131,7 @@ namespace D360
 
         private void OnShown(object sender, EventArgs e)
         {
-            CopyConfig(inputManager.configuration, out m_TempConfig);
+            CopyConfig(Main.self.configuration, out m_TempConfig);
 
             cursorSlider.Value = (int) Math.Round(m_TempConfig.cursorRadius * 100);
             cursorSlider.Percent = cursorSlider.Value + @"%";
@@ -162,7 +162,7 @@ namespace D360
         {
             destination = new Configuration
             {
-                bindingConfigs = new Dictionary<GamePadControl, BindingConfig>(source.bindingConfigs),
+                bindingConfigs = new Dictionary<ControlIndex, ControlConfig>(source.bindingConfigs),
 
                 holdTime = source.holdTime,
                 vibrationTime = source.vibrationTime,

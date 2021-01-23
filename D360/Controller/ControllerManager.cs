@@ -1,9 +1,9 @@
 ﻿
 namespace D360.Controller
 {
-    using SharpDX;
     using System;
     using System.Collections.Generic;
+    using InputEmulation;
     using XInputDotNetPure;
 
     public class ControllerManager
@@ -12,98 +12,52 @@ namespace D360.Controller
 
         public Dictionary<PlayerIndex, Controller> controllers => m_Controllers;
 
-        private string m_DebugText;
+        public InputMode currentMode = InputMode.Default;
 
-        public string debugText => m_DebugText;
+        public readonly List<Binding> pressActions = new List<Binding>();
+        public readonly List<Binding> releaseActions = new List<Binding>();
 
         public ControllerManager()
         {
             foreach (PlayerIndex playerIndex in Enum.GetValues(typeof(PlayerIndex)))
-            {
-                var controller =
-                    new Controller
-                    {
-                        index = playerIndex
-                    };
+                m_Controllers.Add(playerIndex, new Controller(playerIndex));
 
-                foreach (ControlIndex controlIndex in Enum.GetValues(typeof(ControlIndex)))
-                {
-                    Control control;
-
-                    // Creates a new State class of the appropriate type based on the control type
-                    switch (controlIndex.ParseControlType())
-                    {
-                        default:
-                            control = new Control(controlIndex);
-                            break;
-
-                        case ControlType.DPad:
-                            control = new DPad(controlIndex);
-                            break;
-
-                        case ControlType.Trigger:
-                            control = new Trigger(controlIndex)
-                            {
-                                index = controlIndex,
-                                directionIndex = controlIndex.ParseDirectionIndex(),
-
-                            };
-                            break;
-
-                        case ControlType.Stick:
-                            control = new Stick(controlIndex)
-                            {
-                                index = controlIndex,
-                                directionIndex = controlIndex.ParseDirectionIndex(),
-                            };
-                            break;
-                    }
-
-                    controller.controls.Add(controlIndex, control);
-                }
-
-                m_Controllers.Add(playerIndex, controller);
-            }
+            Main.self.overlayWindow.setDebugText += SetDebugText;
         }
 
         public void Update()
         {
-            m_DebugText = string.Empty;
-
             foreach (var controllerPair in m_Controllers)
             {
-                var playerIndex = controllerPair.Key;
-                var controller = controllerPair.Value;
+                controllerPair.Value.RefreshState();
 
-                m_DebugText += $"\n\nController {playerIndex}: ";
-
-                var rawState = GamePad.GetState(playerIndex);
-
-                controller.wasConnected = controller.isConnected;
-
-                controller.isConnected = rawState.IsConnected;
-
-                m_DebugText += (controller.isConnected ? "Connected" : "Disconnected") + "\n";
-                if (!controller.isConnected)
-                {
-                    if (controller.wasConnected)
-                        System.Diagnostics.Debug.WriteLine($"Controller {playerIndex} disconnected.");
+                if (currentMode == InputMode.Config)
                     continue;
-                }
 
-                if (!controller.wasConnected)
-                    System.Diagnostics.Debug.WriteLine($"Controller {playerIndex} connected.");
-
-                foreach (var controlPair in controller.controls)
-                {
-                    var controlIndex = controlPair.Key;
-                    var control = controlPair.Value;
-
-                    control.RefreshState(rawState);
-
-                    m_DebugText += $"\n{control.index} {control.state}";
-                }
+                controllerPair.Value.ParseInput();
             }
+
+            ProcessInput();
+        }
+
+        private void ProcessInput()
+        {
+            foreach (var action in pressActions)
+                action.OnPress();
+
+            foreach (var action in releaseActions)
+                action.OnRelease();
+
+            pressActions.Clear();
+            releaseActions.Clear();
+        }
+
+        private void SetDebugText(ref string pDebugText)
+        {
+            pDebugText += $"Current Mode: {currentMode}";
+
+            foreach (var controllerPair in m_Controllers)
+                controllerPair.Value.SetDebugText(ref pDebugText);
         }
     }
 }

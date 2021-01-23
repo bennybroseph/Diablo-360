@@ -30,7 +30,7 @@ namespace D360.Controls
                 return;
             var control = GamePadUtility.ParseControl(button.Name);
 
-            hotkeyLabel.Text = configForm.inputManager.configuration.bindingConfigs[control].ToString();
+            //hotkeyLabel.Text = Main.self.configuration.bindingConfigs[control].ToString();
         }
 
         private void OnBindingConfigClosed(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace D360.Controls
                 return;
             var control = GamePadUtility.ParseControl(button.Name);
 
-            hotkeyLabel.Text = configForm.inputManager.configuration.bindingConfigs[control].ToString();
+            //hotkeyLabel.Text = Main.self.configuration.bindingConfigs[control].ToString();
         }
 
         private void OnClick(object sender, EventArgs e)

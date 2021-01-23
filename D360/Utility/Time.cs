@@ -39,7 +39,6 @@ namespace D360.Utility
                 s_FPS = s_Frames;
                 s_Frames = 0;
                 s_LastFpsTime = s_CurrentTime;
-                Console.WriteLine(s_FPS);
             }
             s_Frames++;
 

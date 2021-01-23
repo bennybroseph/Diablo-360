@@ -1,6 +1,7 @@
 ﻿
 namespace D360
 {
+    using Controller;
     using Display;
     using Newtonsoft.Json;
     using System;
@@ -8,12 +9,13 @@ namespace D360
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Threading;
-    using System.Threading.Tasks;
     using System.Windows.Forms;
-    using Controller;
     using Utility;
 
-    public class Main
+    using Action = System.Action;
+    using Configuration = Controller.Configuration;
+
+    public class Main : Singleton<Main>
     {
         private delegate IntPtr LowLevelProc(int nCode, IntPtr wParam, IntPtr lParam);
         private LowLevelProc m_KeyboardProc;
@@ -44,43 +46,52 @@ namespace D360
 
         private IntPtr m_KeyboardHookID = IntPtr.Zero;
 
-        private readonly InputManager m_InputManager;
-        private readonly ControllerManager m_ControllerManager;
+        private InputManager m_InputManager;
+
+        private ControllerManager m_ControllerManager;
+        public ControllerManager controllerManager => m_ControllerManager;
 
         private ConfigForm m_ConfigForm;
+        public ConfigForm configForm => m_ConfigForm;
 
-        private MyOverlayWindow m_Overlay;
+        public Configuration configuration = new Configuration();
 
-        public Main()
+        private MyOverlayWindow m_OverlayWindow;
+        public MyOverlayWindow overlayWindow => m_OverlayWindow;
+
+        public void Init()
         {
             m_InputManager = new InputManager();
-            m_ControllerManager = new ControllerManager();
 
-            m_Overlay =
+
+
+            m_OverlayWindow =
                 new MyOverlayWindow(
-                    m_InputManager.configuration.screen,
+                    configuration.screen,
                     m_InputManager.controllerState,
                     m_ControllerManager);
 
+            m_ControllerManager = new ControllerManager();
+
             RunConfig();
 
-            m_Overlay.onDrawGraphics += Update;
+            m_OverlayWindow.onDrawGraphics += Update;
 
             m_KeyboardProc = KeyboardHookCallback;
             m_KeyboardHookID = SetKeyboardHook(m_KeyboardProc);
 
-            m_Overlay.Run();
+            m_OverlayWindow.Run();
         }
 
         private void RunConfig()
         {
-            m_ConfigForm = new ConfigForm { inputManager = m_InputManager };
+            m_ConfigForm = new ConfigForm();
             new Thread(() => Application.Run(m_ConfigForm)).Start();
 
             var serializerSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
             if (File.Exists(@"Config.json"))
             {
-                m_InputManager.configuration =
+                configuration =
                     JsonConvert.DeserializeObject<Configuration>(
                         File.ReadAllText(@"Config.json"),
                         serializerSettings);
@@ -89,11 +100,13 @@ namespace D360
             {
                 File.AppendAllText(
                     @"Config.json",
-                    JsonConvert.SerializeObject(m_InputManager.configuration, serializerSettings));
+                    JsonConvert.SerializeObject(configuration, serializerSettings));
 
                 if (m_ConfigForm.InvokeRequired)
                     m_ConfigForm.Invoke(new Action(() => { m_ConfigForm.Show(); }));
             }
+
+            //m_InputManager.configuration = configuration;
         }
 
         private void Update()
@@ -104,7 +117,6 @@ namespace D360
             try
             {
 #endif
-                m_InputManager.Update();
                 m_ControllerManager.Update();
 #if !DEBUG
             }
@@ -113,7 +125,8 @@ namespace D360
             {
                 Program.WriteToLog(exception);
                 MessageBox.Show(new Form(), @"Exception in Logic update. Written to crash.txt.");
-                m_Overlay.Close();
+
+                Close();
             }
 #endif
         }
@@ -137,9 +150,7 @@ namespace D360
                                     break;
 
                                 case Keys.F12:
-                                    m_Overlay.Close();
-                                    if (m_ConfigForm.InvokeRequired)
-                                        m_ConfigForm.Invoke(new Action(() => { m_ConfigForm.Close();}));
+                                    Close();
                                     break;
 
                                 case Keys.F11:
@@ -160,16 +171,23 @@ namespace D360
                         }
 
                 }
-                Console.WriteLine((Keys)vkCode + " " + (KeyboardMessages)wParam);
+                Debug.WriteLine((Keys)vkCode + " " + (KeyboardMessages)wParam);
             }
 
             return CallNextHookEx(m_KeyboardHookID, nCode, wParam, lParam);
         }
 
+        private void Close()
+        {
+            m_OverlayWindow.Close();
+            if (m_ConfigForm.InvokeRequired)
+                m_ConfigForm.Invoke(new Action(() => { m_ConfigForm.Close(); }));
+        }
+
         private static IntPtr SetKeyboardHook(LowLevelProc proc)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
+            using (var curProcess = Process.GetCurrentProcess())
+            using (var curModule = curProcess.MainModule)
             {
                 return SetWindowsHookEx((int)GlobalHookTypes.WH_KEYBOARD_LL, proc,
                     GetModuleHandle(curModule.ModuleName), 0);

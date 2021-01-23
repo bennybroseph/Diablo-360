@@ -4,6 +4,8 @@ using AutoHotkey.Interop;           // The AutoHotkey Wrapper for C#
 
 namespace D360.InputEmulation
 {
+    using System.Diagnostics;
+
     /// <summary>
     /// Class which takes in 'System.Windows.Forms.Keys' values and sends an appropriate
     /// script to be executed by AutoHotkey in an attempt to provide keyboard emulation
@@ -21,10 +23,11 @@ namespace D360.InputEmulation
         /// Don't forget to release the key or it will be held down until the program stops
         /// </summary>
         /// <param name="keys">The keys to be pressed down</param>
-        public static void KeyDown(Keys keys)
+        /// <param name="repeat">Whether or not to allow repeat key presses</param>
+        public static void KeyDown(Keys keys, bool repeat = false)
         {
             // Don't press the key down again if it already is
-            if (s_DownKeys.Contains(keys))
+            if (!repeat && s_DownKeys.Contains(keys))
                 return;
 
             // Save as a currently pressed key
@@ -32,7 +35,10 @@ namespace D360.InputEmulation
 
             // Convert the keys into a string and send it to AutoHotkey
             foreach (var key in keys.ParseToStrings())
+            {
                 s_AutoHotkey.ExecRaw("Send {" + key + " down}");
+                Debug.WriteLine($"Pressed {key}");
+            }
         }
 
         /// <summary>
@@ -47,7 +53,10 @@ namespace D360.InputEmulation
 
             // Convert the keys into a string and send it to AutoHotkey
             foreach (var key in keys.ParseToStrings())
+            {
                 s_AutoHotkey.ExecRaw("Send {" + key + " up}");
+                Debug.WriteLine($"Released {key}");
+            }
 
             // Remove the key as a currently pressed keys and allow the keys to be pressed again
             s_DownKeys.Remove(keys);

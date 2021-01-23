@@ -1,15 +1,14 @@
 ﻿
 namespace D360.Display
 {
+    using Controller;
     using GameOverlay.Drawing;
     using GameOverlay.Windows;
     using System;
-    using System.Threading;
     using System.Windows.Forms;
-    using Controller;
     using Utility;
 
-    class MyOverlayWindow
+    public class MyOverlayWindow
     {
         public IntPtr Handle => m_GraphicsWindow.Handle;
 
@@ -31,7 +30,10 @@ namespace D360.Display
             public IBrush Green;
         }
 
-        Brushes m_Brushes;
+        private Brushes m_Brushes;
+
+        public delegate void SetDebugTextDelegate(ref string pDebugText);
+        public SetDebugTextDelegate setDebugText;
 
         public delegate void OnDrawGraphicsDelegate();
         public OnDrawGraphicsDelegate onDrawGraphics;
@@ -106,17 +108,16 @@ namespace D360.Display
                         m_ControllerNotFoundImage.Width * 2,
                         m_ControllerNotFoundImage.Height * 2), 1f, false);
 
+            var debugText = string.Empty;
+            setDebugText.Invoke(ref debugText);
+
             m_Graphics.DrawTextWithBackground(
                 m_DefaultFont,
                 m_Brushes.Green,
                 m_Brushes.Black,
                 10, 10,
                 m_Graphics.FPS + "\n\n" +
-                "Left Stick: " + m_ControllerState.cursorPosition + "\n" +
-                "Right Stick: " + m_ControllerState.targetPosition + "\n" +
-                m_ControllerState.pressedTargetKeys + "\n" +
-                m_ControllerState.currentMode +
-                m_ControllerManager.debugText);
+                debugText);
         }
 
         public void Close()
