@@ -45,12 +45,12 @@ namespace D360
         {
             m_BindingConfigForm?.Close();
 
-            //var control = GamePadUtility.ParseControl(button);
+            var control = ControllerUtility.ParseControlIndex(button);
 
             m_BindingConfigForm = new BindingConfigForm
             {
                 parentForm = this,
-                //bindings = m_TempConfig.bindingConfigs[control]
+                bindings = m_TempConfig.bindingConfigs[control]
             };
             m_BindingConfigForm.Show();
 

@@ -6,6 +6,7 @@ namespace D360
     using System.Linq;
     using System.Windows.Forms;
     using Controller;
+    using Controls;
     using Binding = Controller.Binding;
     using WinControl = System.Windows.Forms.Control;
 
@@ -70,7 +71,7 @@ namespace D360
                         : (int)Math.Round(stickConfig.moveDeadzone * 100f);
                 deadZoneValueLabel.Text = deadZoneTrackBar.Value + @"%";
 
-                if (triggerBinding == null)
+                if (stickConfig != null)
                 {
                     actionZoneLabel.Visible = true;
                     actionZoneValueLabel.Visible = true;
@@ -552,147 +553,148 @@ namespace D360
             }
         }
 
-        private TableLayoutPanel CreateNewBinding(Binding controlBinding)
+        private BindingControl CreateNewBinding(Binding binding)
         {
-            var newPanel = new TableLayoutPanel
-            {
-                Name = "newPanel" + m_TableCount,
-                Size = new Size(defaultPanel.Size.Width, defaultPanel.Size.Height),
-                Location =
-                    new Point(
-                        defaultPanel.Location.X,
-                        defaultPanel.Location.Y
-                        + defaultPanel.Size.Height * m_TableCount
-                        + defaultPanel.Margin.Bottom * m_TableCount * 2),
-                BorderStyle = BorderStyle.FixedSingle
-            };
-            newPanel.RowStyles.Clear();
-            foreach (RowStyle rowStyle in defaultPanel.RowStyles)
-                newPanel.RowStyles.Add(new RowStyle(rowStyle.SizeType, rowStyle.Height));
-            newPanel.ColumnStyles.Clear();
-            foreach (ColumnStyle columnStyle in defaultPanel.ColumnStyles)
-                newPanel.ColumnStyles.Add(new ColumnStyle(columnStyle.SizeType, columnStyle.Width));
+            return new BindingControl(binding);
+            //var newPanel = new TableLayoutPanel
+            //{
+            //    Name = "newPanel" + m_TableCount,
+            //    Size = new Size(defaultPanel.Size.Width, defaultPanel.Size.Height),
+            //    Location =
+            //        new Point(
+            //            defaultPanel.Location.X,
+            //            defaultPanel.Location.Y
+            //            + defaultPanel.Size.Height * m_TableCount
+            //            + defaultPanel.Margin.Bottom * m_TableCount * 2),
+            //    BorderStyle = BorderStyle.FixedSingle
+            //};
+            //newPanel.RowStyles.Clear();
+            //foreach (RowStyle rowStyle in defaultPanel.RowStyles)
+            //    newPanel.RowStyles.Add(new RowStyle(rowStyle.SizeType, rowStyle.Height));
+            //newPanel.ColumnStyles.Clear();
+            //foreach (ColumnStyle columnStyle in defaultPanel.ColumnStyles)
+            //    newPanel.ColumnStyles.Add(new ColumnStyle(columnStyle.SizeType, columnStyle.Width));
 
-            var newLabel = new Label
-            {
-                Text = @"Binding " + (m_TableCount + 1),
-                AutoSize = defaultLabel.AutoSize,
-                Dock = defaultLabel.Dock,
-                TextAlign = defaultLabel.TextAlign
-            };
+            //var newLabel = new Label
+            //{
+            //    Text = @"Binding " + (m_TableCount + 1),
+            //    AutoSize = defaultLabel.AutoSize,
+            //    Dock = defaultLabel.Dock,
+            //    TextAlign = defaultLabel.TextAlign
+            //};
 
-            var newComboBox = new ComboBox
-            {
-                Name = "newComboBox" + m_TableCount,
-                DropDownStyle = defaultComboBox.DropDownStyle,
-                AutoSize = defaultComboBox.AutoSize,
-                Dock = defaultComboBox.Dock
-            };
-            foreach (InputMode bindingType in Enum.GetValues(typeof(InputMode)))
-                newComboBox.Items.Add(bindingType);
-            newComboBox.SelectedItem = controlBinding.inputMode;
-            newComboBox.SelectedIndexChanged += OnBindingTypeChanged;
+            //var newComboBox = new ComboBox
+            //{
+            //    Name = "newComboBox" + m_TableCount,
+            //    DropDownStyle = defaultComboBox.DropDownStyle,
+            //    AutoSize = defaultComboBox.AutoSize,
+            //    Dock = defaultComboBox.Dock
+            //};
+            //foreach (InputMode bindingType in Enum.GetValues(typeof(InputMode)))
+            //    newComboBox.Items.Add(bindingType);
+            //newComboBox.SelectedItem = controlBinding.inputMode;
+            //newComboBox.SelectedIndexChanged += OnBindingTypeChanged;
 
-            var newSpecialComboBox = new ComboBox
-            {
-                Name = "newComboBox" + m_TableCount,
-                DropDownStyle = defaultComboBox.DropDownStyle,
-                AutoSize = defaultComboBox.AutoSize,
-                Dock = defaultComboBox.Dock,
-                //Visible = controlBinding.inputMode == InputMode.SpecialAction
-            };
-            //foreach (SpecialAction value in Enum.GetValues(typeof(SpecialAction)))
-            //    newSpecialComboBox.Items.Add(value);
-            //newSpecialComboBox.SelectedItem = controlBinding.specialAction;
-            //newSpecialComboBox.SelectedIndexChanged += OnSpecialActionChanged;
+            //var newSpecialComboBox = new ComboBox
+            //{
+            //    Name = "newComboBox" + m_TableCount,
+            //    DropDownStyle = defaultComboBox.DropDownStyle,
+            //    AutoSize = defaultComboBox.AutoSize,
+            //    Dock = defaultComboBox.Dock,
+            //    //Visible = controlBinding.inputMode == InputMode.SpecialAction
+            //};
+            ////foreach (SpecialAction value in Enum.GetValues(typeof(SpecialAction)))
+            ////    newSpecialComboBox.Items.Add(value);
+            ////newSpecialComboBox.SelectedItem = controlBinding.specialAction;
+            ////newSpecialComboBox.SelectedIndexChanged += OnSpecialActionChanged;
 
-            var newMultilineBox = new TextBox
-            {
-                Name = "newMultilineBox" + m_TableCount,
-                //Text = controlBinding.script,
-                AutoSize = defaultTextBox.AutoSize,
-                Dock = defaultTextBox.Dock,
-                Multiline = true,
-                //Visible = controlBinding.inputMode == InputMode.Script
-            };
-            newMultilineBox.TextChanged += OnScriptChanged;
+            //var newMultilineBox = new TextBox
+            //{
+            //    Name = "newMultilineBox" + m_TableCount,
+            //    //Text = controlBinding.script,
+            //    AutoSize = defaultTextBox.AutoSize,
+            //    Dock = defaultTextBox.Dock,
+            //    Multiline = true,
+            //    //Visible = controlBinding.inputMode == InputMode.Script
+            //};
+            //newMultilineBox.TextChanged += OnScriptChanged;
 
-            var newTextBox = new CustomTextBox
-            {
-                Name = "newTextBox" + m_TableCount,
-                //Text = controlBinding.keys.ToString(),
-                AutoSize = defaultTextBox.AutoSize,
-                Dock = defaultTextBox.Dock,
-                ReadOnly = defaultTextBox.ReadOnly,
-                Cursor = defaultTextBox.Cursor,
-                //Visible = controlBinding.inputMode == InputMode,
-                ContextMenu = new ContextMenu()
-            };
-            newTextBox.MouseDoubleClick += OnKeysTextBoxDoubleClick;
-            newTextBox.KeyDown += OnKeysTextBoxKeyDown;
-            newTextBox.MouseDown += OnKeysTextBoxMouseDown;
-            newTextBox.KeyUp += OnKeysTextBoxKeyUp;
+            //var newTextBox = new CustomTextBox
+            //{
+            //    Name = "newTextBox" + m_TableCount,
+            //    //Text = controlBinding.keys.ToString(),
+            //    AutoSize = defaultTextBox.AutoSize,
+            //    Dock = defaultTextBox.Dock,
+            //    ReadOnly = defaultTextBox.ReadOnly,
+            //    Cursor = defaultTextBox.Cursor,
+            //    //Visible = controlBinding.inputMode == InputMode,
+            //    ContextMenu = new ContextMenu()
+            //};
+            //newTextBox.MouseDoubleClick += OnKeysTextBoxDoubleClick;
+            //newTextBox.KeyDown += OnKeysTextBoxKeyDown;
+            //newTextBox.MouseDown += OnKeysTextBoxMouseDown;
+            //newTextBox.KeyUp += OnKeysTextBoxKeyUp;
 
-            var newHoldCheck = new CheckBox
-            {
-                Name = "newCheck" + m_TableCount,
-                Text = defaultHeldCheck.Text,
-                Checked = controlBinding.isHoldAction
-            };
-            newHoldCheck.CheckStateChanged += OnHoldCheckChanged;
+            //var newHoldCheck = new CheckBox
+            //{
+            //    Name = "newCheck" + m_TableCount,
+            //    Text = defaultHeldCheck.Text,
+            //    Checked = controlBinding.isHoldAction
+            //};
+            //newHoldCheck.CheckStateChanged += OnHoldCheckChanged;
 
-            var newTargetedCheck = new CheckBox
-            {
-                Name = "newCheck" + m_TableCount,
-                Text = defaultTargetCheck.Text,
-                Checked = controlBinding.isTargetedAction
-            };
-            newTargetedCheck.CheckStateChanged += OnTargetedCheckChanged;
+            //var newTargetedCheck = new CheckBox
+            //{
+            //    Name = "newCheck" + m_TableCount,
+            //    Text = defaultTargetCheck.Text,
+            //    Checked = controlBinding.isTargetedAction
+            //};
+            //newTargetedCheck.CheckStateChanged += OnTargetedCheckChanged;
 
-            var newMoveCheck = new CheckBox
-            {
-                Name = "newMoveCheck" + m_TableCount,
-                Text = defaultMoveRadio.Text,
-                //Checked = (controlBinding.inputMode & BindingMode.Move) == BindingMode.Move
-            };
-            newMoveCheck.CheckStateChanged += OnCheckModeChanged;
-            var newPointerCheck = new CheckBox
-            {
-                Name = "newPointerCheck" + m_TableCount,
-                Text = defaultPointerRadio.Text,
-                //Checked = (controlBinding.bindingMode & BindingMode.Pointer) == BindingMode.Pointer
-            };
-            newPointerCheck.CheckStateChanged += OnCheckModeChanged;
+            //var newMoveCheck = new CheckBox
+            //{
+            //    Name = "newMoveCheck" + m_TableCount,
+            //    Text = defaultMoveRadio.Text,
+            //    //Checked = (controlBinding.inputMode & BindingMode.Move) == BindingMode.Move
+            //};
+            //newMoveCheck.CheckStateChanged += OnCheckModeChanged;
+            //var newPointerCheck = new CheckBox
+            //{
+            //    Name = "newPointerCheck" + m_TableCount,
+            //    Text = defaultPointerRadio.Text,
+            //    //Checked = (controlBinding.bindingMode & BindingMode.Pointer) == BindingMode.Pointer
+            //};
+            //newPointerCheck.CheckStateChanged += OnCheckModeChanged;
 
-            var newDelete = new Button
-            {
-                Name = "newDeleteButton" + m_TableCount,
-                Text = defaultDelete.Text,
-                Dock = defaultDelete.Dock
-            };
-            newDelete.Click += OnDeleteClick;
+            //var newDelete = new Button
+            //{
+            //    Name = "newDeleteButton" + m_TableCount,
+            //    Text = defaultDelete.Text,
+            //    Dock = defaultDelete.Dock
+            //};
+            //newDelete.Click += OnDeleteClick;
 
-            newPanel.Controls.Add(newLabel, 0, 0);
-            newPanel.Controls.Add(newComboBox, 0, 1);
-            newPanel.Controls.Add(newSpecialComboBox, 0, 2);
-            newPanel.Controls.Add(newMultilineBox, 0, 2);
-            newPanel.Controls.Add(newTextBox, 0, 2);
-            newPanel.Controls.Add(newHoldCheck, 0, 3);
-            newPanel.Controls.Add(newTargetedCheck, 1, 3);
-            newPanel.Controls.Add(newMoveCheck, 0, 4);
-            newPanel.Controls.Add(newPointerCheck, 1, 4);
-            newPanel.Controls.Add(newDelete, 0, 5);
+            //newPanel.Controls.Add(newLabel, 0, 0);
+            //newPanel.Controls.Add(newComboBox, 0, 1);
+            //newPanel.Controls.Add(newSpecialComboBox, 0, 2);
+            //newPanel.Controls.Add(newMultilineBox, 0, 2);
+            //newPanel.Controls.Add(newTextBox, 0, 2);
+            //newPanel.Controls.Add(newHoldCheck, 0, 3);
+            //newPanel.Controls.Add(newTargetedCheck, 1, 3);
+            //newPanel.Controls.Add(newMoveCheck, 0, 4);
+            //newPanel.Controls.Add(newPointerCheck, 1, 4);
+            //newPanel.Controls.Add(newDelete, 0, 5);
 
-            newPanel.SetColumnSpan(newLabel, 2);
-            newPanel.SetColumnSpan(newComboBox, 2);
-            newPanel.SetColumnSpan(newSpecialComboBox, 2);
-            newPanel.SetColumnSpan(newMultilineBox, 2);
-            newPanel.SetColumnSpan(newTextBox, 2);
-            newPanel.SetColumnSpan(newDelete, 2);
+            //newPanel.SetColumnSpan(newLabel, 2);
+            //newPanel.SetColumnSpan(newComboBox, 2);
+            //newPanel.SetColumnSpan(newSpecialComboBox, 2);
+            //newPanel.SetColumnSpan(newMultilineBox, 2);
+            //newPanel.SetColumnSpan(newTextBox, 2);
+            //newPanel.SetColumnSpan(newDelete, 2);
 
-            m_TableCount++;
+            //m_TableCount++;
 
-            return newPanel;
+            //return newPanel;
         }
 
         private void CopyConfig(ControlConfig source, ControlConfig destination)

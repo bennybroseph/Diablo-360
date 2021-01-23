@@ -153,5 +153,12 @@
                     return DirectionIndex.None;
             }
         }
+
+        public static ControlIndex ParseControlIndex(string pString)
+        {
+            Enum.TryParse(pString.Replace("StickButton", "Thumb"), true, out ControlIndex result);
+
+            return result;
+        }
     }
 }
