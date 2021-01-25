@@ -45,7 +45,7 @@ namespace D360
         }
 
         private IntPtr m_KeyboardHookID = IntPtr.Zero;
-        
+
         private ControllerManager m_ControllerManager;
         public ControllerManager controllerManager => m_ControllerManager;
 
@@ -95,8 +95,6 @@ namespace D360
                 if (m_ConfigForm.InvokeRequired)
                     m_ConfigForm.Invoke(new Action(() => { m_ConfigForm.Show(); }));
             }
-
-            //m_InputManager.configuration = configuration;
         }
 
         private void Update()

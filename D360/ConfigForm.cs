@@ -47,11 +47,7 @@ namespace D360
 
             var control = ControllerUtility.ParseControlIndex(button);
 
-            m_BindingConfigForm = new BindingConfigForm
-            {
-                parentForm = this,
-                bindings = m_TempConfig.bindingConfigs[control]
-            };
+            m_BindingConfigForm = new BindingConfigForm(this, m_TempConfig.bindingConfigs[control]);
             m_BindingConfigForm.Show();
 
             return m_BindingConfigForm;
@@ -66,7 +62,7 @@ namespace D360
                 "Config.json",
                 JsonConvert.SerializeObject(
                     Main.self.configuration,
-                    new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All}));
+                    new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }));
 
             Hide();
         }
@@ -93,9 +89,9 @@ namespace D360
         private void OnOffsetValueChanged(object sender, EventArgs e)
         {
             if (sender == offsetXValue)
-                m_TempConfig.centerOffset.X = (float) offsetXValue.Value;
+                m_TempConfig.centerOffset.X = (float)offsetXValue.Value;
             if (sender == offsetYValue)
-                m_TempConfig.centerOffset.Y = (float) offsetYValue.Value;
+                m_TempConfig.centerOffset.Y = (float)offsetYValue.Value;
         }
 
         private void OnMaxCheckChanged(object sender, EventArgs e)
@@ -133,16 +129,16 @@ namespace D360
         {
             CopyConfig(Main.self.configuration, out m_TempConfig);
 
-            cursorSlider.Value = (int) Math.Round(m_TempConfig.cursorRadius * 100);
+            cursorSlider.Value = (int)Math.Round(m_TempConfig.cursorRadius * 100);
             cursorSlider.Percent = cursorSlider.Value + @"%";
             cursorSlider.Checked = m_TempConfig.cursorAlwaysMax;
 
-            targetSlider.Value = (int) Math.Round(m_TempConfig.targetRadius * 100);
+            targetSlider.Value = (int)Math.Round(m_TempConfig.targetRadius * 100);
             targetSlider.Percent = targetSlider.Value + @"%";
             targetSlider.Checked = m_TempConfig.targetAlwaysMax;
 
-            offsetXValue.Value = (decimal) m_TempConfig.centerOffset.X;
-            offsetYValue.Value = (decimal) m_TempConfig.centerOffset.Y;
+            offsetXValue.Value = (decimal)m_TempConfig.centerOffset.X;
+            offsetYValue.Value = (decimal)m_TempConfig.centerOffset.Y;
 
             Refresh();
         }

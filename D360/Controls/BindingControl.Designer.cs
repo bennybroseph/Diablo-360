@@ -1,6 +1,6 @@
 ﻿namespace D360.Controls
 {
-    partial class BindingControl
+    sealed partial class BindingControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -64,7 +64,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(209, 200);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(215, 200);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // bindingNumberLabel
@@ -74,7 +74,7 @@
             this.bindingNumberLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bindingNumberLabel.Location = new System.Drawing.Point(3, 0);
             this.bindingNumberLabel.Name = "bindingNumberLabel";
-            this.bindingNumberLabel.Size = new System.Drawing.Size(203, 28);
+            this.bindingNumberLabel.Size = new System.Drawing.Size(209, 28);
             this.bindingNumberLabel.TabIndex = 0;
             this.bindingNumberLabel.Text = "Binding Number Here";
             this.bindingNumberLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -87,8 +87,9 @@
             this.bindingTypeComboBox.FormattingEnabled = true;
             this.bindingTypeComboBox.Location = new System.Drawing.Point(3, 31);
             this.bindingTypeComboBox.Name = "bindingTypeComboBox";
-            this.bindingTypeComboBox.Size = new System.Drawing.Size(203, 21);
+            this.bindingTypeComboBox.Size = new System.Drawing.Size(209, 21);
             this.bindingTypeComboBox.TabIndex = 1;
+            this.bindingTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.OnBindingTypeChanged);
             // 
             // inputModeComboBox
             // 
@@ -98,8 +99,9 @@
             this.inputModeComboBox.FormattingEnabled = true;
             this.inputModeComboBox.Location = new System.Drawing.Point(3, 87);
             this.inputModeComboBox.Name = "inputModeComboBox";
-            this.inputModeComboBox.Size = new System.Drawing.Size(203, 21);
+            this.inputModeComboBox.Size = new System.Drawing.Size(209, 21);
             this.inputModeComboBox.TabIndex = 2;
+            this.inputModeComboBox.SelectedIndexChanged += new System.EventHandler(this.OnInputModeChanged);
             // 
             // isHoldActionCheckBox
             // 
@@ -107,41 +109,45 @@
             this.isHoldActionCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.isHoldActionCheckBox.Location = new System.Drawing.Point(3, 115);
             this.isHoldActionCheckBox.Name = "isHoldActionCheckBox";
-            this.isHoldActionCheckBox.Size = new System.Drawing.Size(98, 22);
+            this.isHoldActionCheckBox.Size = new System.Drawing.Size(101, 22);
             this.isHoldActionCheckBox.TabIndex = 3;
             this.isHoldActionCheckBox.Text = "On Hold";
             this.isHoldActionCheckBox.UseVisualStyleBackColor = true;
+            this.isHoldActionCheckBox.CheckedChanged += new System.EventHandler(this.OnHoldCheckChanged);
             // 
             // isTargetedActionCheckBox
             // 
             this.isTargetedActionCheckBox.AutoSize = true;
             this.isTargetedActionCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.isTargetedActionCheckBox.Location = new System.Drawing.Point(107, 115);
+            this.isTargetedActionCheckBox.Location = new System.Drawing.Point(110, 115);
             this.isTargetedActionCheckBox.Name = "isTargetedActionCheckBox";
-            this.isTargetedActionCheckBox.Size = new System.Drawing.Size(99, 22);
+            this.isTargetedActionCheckBox.Size = new System.Drawing.Size(102, 22);
             this.isTargetedActionCheckBox.TabIndex = 4;
             this.isTargetedActionCheckBox.Text = "Targeted";
             this.isTargetedActionCheckBox.UseVisualStyleBackColor = true;
+            this.isTargetedActionCheckBox.CheckedChanged += new System.EventHandler(this.OnTargetedCheckChanged);
             // 
             // moveUpButton
             // 
             this.moveUpButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.moveUpButton.Location = new System.Drawing.Point(3, 143);
             this.moveUpButton.Name = "moveUpButton";
-            this.moveUpButton.Size = new System.Drawing.Size(98, 22);
+            this.moveUpButton.Size = new System.Drawing.Size(101, 22);
             this.moveUpButton.TabIndex = 5;
             this.moveUpButton.Text = "▲";
             this.moveUpButton.UseVisualStyleBackColor = true;
+            this.moveUpButton.Click += new System.EventHandler(this.OnUpClick);
             // 
             // moveDownButton
             // 
             this.moveDownButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.moveDownButton.Location = new System.Drawing.Point(107, 143);
+            this.moveDownButton.Location = new System.Drawing.Point(110, 143);
             this.moveDownButton.Name = "moveDownButton";
-            this.moveDownButton.Size = new System.Drawing.Size(99, 22);
+            this.moveDownButton.Size = new System.Drawing.Size(102, 22);
             this.moveDownButton.TabIndex = 6;
             this.moveDownButton.Text = "▼";
             this.moveDownButton.UseVisualStyleBackColor = true;
+            this.moveDownButton.Click += new System.EventHandler(this.OnDownClick);
             // 
             // deleteButton
             // 
@@ -149,18 +155,21 @@
             this.deleteButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.deleteButton.Location = new System.Drawing.Point(3, 171);
             this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(203, 26);
+            this.deleteButton.Size = new System.Drawing.Size(209, 26);
             this.deleteButton.TabIndex = 7;
             this.deleteButton.Text = "Delete Binding";
             this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.OnDeleteClick);
             // 
             // BindingControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "BindingControl";
-            this.Size = new System.Drawing.Size(209, 200);
+            this.Size = new System.Drawing.Size(215, 200);
+            this.Load += new System.EventHandler(this.OnLoad);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
