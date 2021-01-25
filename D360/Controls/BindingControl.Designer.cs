@@ -2,12 +2,12 @@
 {
     sealed partial class BindingControl
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -22,8 +22,8 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -84,6 +84,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.bindingTypeComboBox, 2);
             this.bindingTypeComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bindingTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.bindingTypeComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bindingTypeComboBox.FormattingEnabled = true;
             this.bindingTypeComboBox.Location = new System.Drawing.Point(3, 31);
             this.bindingTypeComboBox.Name = "bindingTypeComboBox";
@@ -96,6 +97,7 @@
             this.tableLayoutPanel1.SetColumnSpan(this.inputModeComboBox, 2);
             this.inputModeComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputModeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inputModeComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.inputModeComboBox.FormattingEnabled = true;
             this.inputModeComboBox.Location = new System.Drawing.Point(3, 87);
             this.inputModeComboBox.Name = "inputModeComboBox";

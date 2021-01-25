@@ -20,12 +20,25 @@ namespace D360.Controls
             public string displayName { get; set; }
         }
 
-        public Binding binding;
+        private enum CreationMethod
+        {
+            Designer,
+            Program,
+        }
+
+        private CreationMethod m_CreationMethod;
+        private bool m_Initialized;
+
+        private Binding m_Binding;
+        public Binding binding
+        {
+            get => m_Binding;
+            set { m_Binding = value; CheckChangedValues(); }
+        }
         public Binding tempBinding;
 
         public BindingTypeChangedEventHandler bindingTypeChangedEvent;
-        private readonly CustomTextBox m_KeyBindingTextBox;
-        public Keys keyBindingKeys;
+        public CustomTextBox keyBindingTextBox;
 
         private ComboBox specialComboBox;
         private TextBox scriptTextBox;
@@ -38,21 +51,31 @@ namespace D360.Controls
 
         public EventHandler deleteClick;
 
+        public Action onValueChanged;
+        public int valuesChanged;
+
+        private Color m_AlteredColor = Color.DarkBlue;
+        private FontStyle m_AlteredFontStyle = FontStyle.Bold;
+
         public BindingControl()
         {
             InitializeComponent();
+
+            m_CreationMethod = CreationMethod.Designer;
         }
 
-        public BindingControl(Binding pBinding)
+        public BindingControl(Binding _binding, Binding _tempBinding)
         {
             InitializeComponent();
 
+            m_CreationMethod = CreationMethod.Program;
+
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            binding = pBinding;
-            tempBinding = binding.Clone();
+            m_Binding = _binding;
+            tempBinding = _tempBinding;
 
-            m_KeyBindingTextBox =
+            keyBindingTextBox =
                 new CustomTextBox
                 {
                     Text = tempBinding is KeyBinding keyBinding ? keyBinding.keys.ToString() : "",
@@ -61,13 +84,9 @@ namespace D360.Controls
                     ContextMenu = new ContextMenu(),
                     Visible = tempBinding is KeyBinding,
                 };
-            m_KeyBindingTextBox.KeyDown += OnKeyBindingTextBoxKeyDown;
-            m_KeyBindingTextBox.DoubleClick += OnKeyBindingTextBoxDoubleClick;
-            m_KeyBindingTextBox.KeyUp += OnKeyBindingTextBoxKeyUp;
-            m_KeyBindingTextBox.MouseDown += OnKeyBindingTextBoxMouseDown;
 
-            tableLayoutPanel1.Controls.Add(m_KeyBindingTextBox, 0, 2);
-            tableLayoutPanel1.SetColumnSpan(m_KeyBindingTextBox, 2);
+            tableLayoutPanel1.Controls.Add(keyBindingTextBox, 0, 2);
+            tableLayoutPanel1.SetColumnSpan(keyBindingTextBox, 2);
 
             specialComboBox =
                 new ComboBox
@@ -83,6 +102,7 @@ namespace D360.Controls
             scriptTextBox =
                 new TextBox
                 {
+                    Text = tempBinding is ScriptBinding scriptBinding ? scriptBinding.script : "",
                     Dock = DockStyle.Fill,
                     Multiline = true,
                     Visible = tempBinding is ScriptBinding,
@@ -90,12 +110,17 @@ namespace D360.Controls
             tableLayoutPanel1.Controls.Add(scriptTextBox, 0, 2);
             tableLayoutPanel1.SetColumnSpan(scriptTextBox, 2);
 
-            foreach (var comboBox in tableLayoutPanel1.Controls.OfType<ComboBox>())
-                comboBox.MouseWheel += OnComboBoxMouseWheel;
+            foreach (var inputMode in Enum.GetValues(typeof(InputMode)))
+                inputModeComboBox.Items.Add(inputMode);
+
+            inputModeComboBox.Items.Remove(InputMode.Config);
         }
 
         private void OnLoad(object sender, EventArgs e)
         {
+            if (m_CreationMethod == CreationMethod.Designer)
+                return;
+
             var bindingTypes =
                 new[]
                 {
@@ -118,15 +143,28 @@ namespace D360.Controls
 
             bindingTypeComboBox.SelectedIndex = matchingIndex;
 
-            foreach (var inputMode in Enum.GetValues(typeof(InputMode)))
-                inputModeComboBox.Items.Add(inputMode);
-
-            inputModeComboBox.Items.Remove(InputMode.Config);
-
             inputModeComboBox.SelectedItem = tempBinding.inputMode;
 
             isHoldActionCheckBox.Checked = tempBinding.isHoldAction;
             isTargetedActionCheckBox.Checked = tempBinding.isTargetedAction;
+
+            keyBindingTextBox.KeyDown += OnKeyBindingTextBoxKeyDown;
+            keyBindingTextBox.DoubleClick += OnKeyBindingTextBoxDoubleClick;
+            keyBindingTextBox.KeyUp += OnKeyBindingTextBoxKeyUp;
+            keyBindingTextBox.MouseDown += OnKeyBindingTextBoxMouseDown;
+
+            foreach (var comboBox in tableLayoutPanel1.Controls.OfType<ComboBox>())
+            {
+                comboBox.DropDownClosed += ComboBoxOnDropDownClosed;
+                comboBox.MouseWheel += OnComboBoxMouseWheel;
+            }
+
+            m_Initialized = true;
+        }
+
+        private void ComboBoxOnDropDownClosed(object sender, EventArgs e)
+        {
+            isHoldActionCheckBox.Focus();
         }
 
         private void OnComboBoxMouseWheel(object sender, MouseEventArgs e)
@@ -143,9 +181,9 @@ namespace D360.Controls
             m_EditingKeyBinding = true;
             m_PressedKeys = Keys.None;
 
-            m_KeyBindingTextBox.BackColor = Color.White;
-            m_KeyBindingTextBox.ForeColor = Color.DodgerBlue;
-            m_KeyBindingTextBox.Text = @"<Press Any Key>";
+            keyBindingTextBox.BackColor = Color.White;
+            keyBindingTextBox.ForeColor = Color.DodgerBlue;
+            keyBindingTextBox.Text = @"<Press Any Key>";
 
             Refresh();
         }
@@ -184,56 +222,79 @@ namespace D360.Controls
 
         private void OnKeyBindingTextBoxKeyUp(object sender, KeyEventArgs e)
         {
-            if (!m_EditingKeyBinding || !(binding is KeyBinding keyBinding))
+            if (!m_EditingKeyBinding || !(tempBinding is KeyBinding keyBinding))
                 return;
 
-            keyBindingKeys = e.KeyData;
+            var keyBindingKeys = e.KeyData;
             if (m_PressedKeys != Keys.None)
                 keyBindingKeys |= m_PressedKeys;
 
             keyBinding.keys = keyBindingKeys;
 
-            m_KeyBindingTextBox.Text = keyBindingKeys.ToString();
-            m_KeyBindingTextBox.BackColor = SystemColors.Control;
-            m_KeyBindingTextBox.ForeColor = SystemColors.ControlText;
+            keyBindingTextBox.Text = keyBindingKeys.ToString();
+            keyBindingTextBox.BackColor = SystemColors.Control;
+            keyBindingTextBox.ForeColor = SystemColors.ControlText;
 
             m_EditingKeyBinding = false;
 
+            CheckChangedValues();
             Refresh();
         }
 
         private void OnBindingTypeChanged(object sender, EventArgs e)
         {
-            m_KeyBindingTextBox.Visible = false;
+            if (!m_Initialized)
+                return;
+
+            keyBindingTextBox.Visible = false;
             specialComboBox.Visible = false;
             scriptTextBox.Visible = false;
 
             if ((Type)bindingTypeComboBox.SelectedValue == typeof(KeyBinding))
-                m_KeyBindingTextBox.Visible = true;
+                keyBindingTextBox.Visible = true;
             else if ((Type)bindingTypeComboBox.SelectedValue == typeof(SpecialBinding))
                 specialComboBox.Visible = true;
             else if ((Type)bindingTypeComboBox.SelectedValue == typeof(ScriptBinding))
                 scriptTextBox.Visible = true;
 
             var eventArgs = new BindingTypeChangedArgs((Type)bindingTypeComboBox.SelectedValue);
-            bindingTypeChangedEvent.Invoke(this, eventArgs);
+            bindingTypeChangedEvent?.Invoke(this, eventArgs);
 
+            CheckChangedValues();
             Refresh();
         }
 
         private void OnInputModeChanged(object sender, EventArgs e)
         {
+            if (!m_Initialized)
+                return;
 
+            tempBinding.inputMode = (InputMode)inputModeComboBox.SelectedItem;
+
+            CheckChangedValues();
+            Refresh();
         }
 
         private void OnHoldCheckChanged(object sender, EventArgs e)
         {
+            if (!m_Initialized)
+                return;
 
+            tempBinding.isHoldAction = isHoldActionCheckBox.Checked;
+
+            CheckChangedValues();
+            Refresh();
         }
 
         private void OnTargetedCheckChanged(object sender, EventArgs e)
         {
+            if (!m_Initialized)
+                return;
 
+            tempBinding.isTargetedAction = isTargetedActionCheckBox.Checked;
+
+            CheckChangedValues();
+            Refresh();
         }
 
         private void OnDeleteClick(object sender, EventArgs e)
@@ -249,6 +310,101 @@ namespace D360.Controls
         private void OnDownClick(object sender, EventArgs e)
         {
             downClick.Invoke(this, e);
+        }
+
+        private void CheckChangedValues()
+        {
+            valuesChanged = 0;
+
+            if (m_Binding.GetType() != tempBinding.GetType())
+            {
+                bindingTypeComboBox.ForeColor = m_AlteredColor;
+                bindingTypeComboBox.Font =
+                    new Font(
+                        bindingTypeComboBox.Font.FontFamily,
+                        bindingTypeComboBox.Font.Size,
+                        m_AlteredFontStyle);
+
+                valuesChanged++;
+            }
+            else
+            {
+                bindingTypeComboBox.ResetForeColor();
+                bindingTypeComboBox.ResetFont();
+            }
+
+            if (m_Binding is KeyBinding keyBinding && tempBinding is KeyBinding tempKeyBinding)
+            {
+                if (keyBinding.keys != tempKeyBinding.keys)
+                {
+                    keyBindingTextBox.ForeColor = m_AlteredColor;
+                    keyBindingTextBox.Font =
+                        new Font(
+                            keyBindingTextBox.Font.FontFamily,
+                            keyBindingTextBox.Font.Size,
+                            m_AlteredFontStyle);
+
+                    valuesChanged++;
+                }
+                else
+                {
+                    keyBindingTextBox.ResetForeColor();
+                    keyBindingTextBox.ResetFont();
+                }
+            }
+
+            if (m_Binding.inputMode != tempBinding.inputMode)
+            {
+                inputModeComboBox.ForeColor = m_AlteredColor;
+                inputModeComboBox.Font =
+                    new Font(
+                        inputModeComboBox.Font.FontFamily,
+                        inputModeComboBox.Font.Size,
+                        m_AlteredFontStyle);
+
+                valuesChanged++;
+            }
+            else
+            {
+                inputModeComboBox.ResetForeColor();
+                inputModeComboBox.ResetFont();
+            }
+
+            if (m_Binding.isHoldAction != isHoldActionCheckBox.Checked)
+            {
+                isHoldActionCheckBox.ForeColor = m_AlteredColor;
+                isHoldActionCheckBox.Font =
+                    new Font(
+                        isHoldActionCheckBox.Font.FontFamily,
+                        isHoldActionCheckBox.Font.Size,
+                        m_AlteredFontStyle);
+
+                valuesChanged++;
+            }
+            else
+            {
+                isHoldActionCheckBox.ResetForeColor();
+                isHoldActionCheckBox.ResetFont();
+            }
+
+            if (m_Binding.isTargetedAction != isTargetedActionCheckBox.Checked)
+            {
+                isTargetedActionCheckBox.ForeColor = m_AlteredColor;
+                isTargetedActionCheckBox.Font =
+                    new Font(
+                        isTargetedActionCheckBox.Font.FontFamily,
+                        isTargetedActionCheckBox.Font.Size,
+                        m_AlteredFontStyle);
+
+                valuesChanged++;
+            }
+            else
+            {
+                isTargetedActionCheckBox.ResetForeColor();
+                isTargetedActionCheckBox.ResetFont();
+            }
+
+            onValueChanged.Invoke();
         }
     }
 
@@ -271,10 +427,11 @@ namespace D360.Controls
         public CustomTextBox()
         {
             Cursor = Cursors.Arrow;
-            GotFocus += OnGotFocus;
+            GotFocus += NeedCaretHide;
+            FontChanged += NeedCaretHide;
         }
 
-        private void OnGotFocus(object sender, EventArgs e)
+        private void NeedCaretHide(object sender, EventArgs e)
         {
             HideCaret(Handle);
         }
@@ -286,6 +443,5 @@ namespace D360.Controls
 
             return base.IsInputKey(keyData);
         }
-
     }
 }

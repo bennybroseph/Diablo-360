@@ -3,6 +3,7 @@ using System.Drawing;
 
 namespace D360
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Eventing.Reader;
     using System.Linq;
     using System.Runtime.InteropServices;
@@ -30,7 +31,7 @@ namespace D360
         private bool m_EditingConfig;
         private Keys m_PressedKeys;
 
-        public ControlConfig bindings;
+        public ControlConfig controlConfig;
         private ControlConfig m_TempControlConfig;
 
         private Size m_DefaultSize;
@@ -55,7 +56,7 @@ namespace D360
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             parentForm = _parentForm;
-            bindings = _controlConfig;
+            controlConfig = _controlConfig;
 
             m_DefaultSize =
                     new Size(
@@ -66,7 +67,7 @@ namespace D360
 
             InitializeTempConfig();
 
-            CopyConfig(bindings, m_TempControlConfig);
+            CopyConfig(controlConfig, m_TempControlConfig);
             UpdateBindingControls();
 
             ProperResize();
@@ -106,7 +107,16 @@ namespace D360
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            CopyConfig(m_TempControlConfig, bindings);
+            CopyConfig(m_TempControlConfig, controlConfig);
+
+            var bindingControls = GetBindingControls();
+            for (var i = 0; i < bindingControls.Count; i++)
+            {
+                var binding = controlConfig.bindings[i];
+                var bindingControl = bindingControls[i];
+
+                bindingControl.binding = binding;
+            }
 
             changedControls = 0;
 
@@ -116,8 +126,9 @@ namespace D360
             foreach (var table in bindingsFlowLayoutPanel.Controls.OfType<TableLayoutPanel>())
                 foreach (var control in table.Controls.OfType<WinControl>())
                 {
-                    control.ForeColor = DefaultForeColor;
                     control.Text = control.Text.TrimEnd('*');
+                    control.ResetForeColor();
+                    control.ResetFont();
                 }
 
             Refresh();
@@ -132,8 +143,15 @@ namespace D360
         {
             SuspendDrawing(this);
 
-            AddNewBinding(new KeyBinding());
+            var newKeyBinding =
+                controlConfig.bindings.Count >= m_TempControlConfig.bindings.Count + 1
+                    ? controlConfig.bindings[m_TempControlConfig.bindings.Count]
+                    : new KeyBinding();
+
+            AddNewBinding(newKeyBinding, newKeyBinding.Clone());
             ProperResize();
+
+            SetSaveText();
 
             ResumeDrawing(this);
         }
@@ -153,9 +171,11 @@ namespace D360
             SuspendDrawing(this);
 
             if (sender is BindingControl bindingControl)
-                RemoveBinding(bindingControl.binding);
+                RemoveBinding(bindingControl.tempBinding);
 
             ProperResize();
+
+            SetSaveText();
 
             ResumeDrawing(this);
         }
@@ -165,15 +185,19 @@ namespace D360
             if (!(sender is BindingControl bindingControl))
                 return;
 
-            var index = m_TempControlConfig.bindings.IndexOf(bindingControl.binding);
+            var index = m_TempControlConfig.bindings.IndexOf(bindingControl.tempBinding);
             if (e.newBindingType == typeof(KeyBinding))
-                m_TempControlConfig.bindings[index] = new KeyBinding { keys = bindingControl.keyBindingKeys };
+                m_TempControlConfig.bindings[index] =
+                    new KeyBinding
+                    {
+                        keys = (Keys)Enum.Parse(typeof(Keys), bindingControl.keyBindingTextBox.Text, true)
+                    };
             else if (e.newBindingType == typeof(SpecialBinding))
                 m_TempControlConfig.bindings[index] = new SpecialBinding();
             else if (e.newBindingType == typeof(ScriptBinding))
                 m_TempControlConfig.bindings[index] = new ScriptBinding();
 
-            bindingControl.binding = m_TempControlConfig.bindings[index];
+            bindingControl.tempBinding = m_TempControlConfig.bindings[index];
         }
 
         private void OnScriptChanged(object sender, EventArgs e)
@@ -187,11 +211,11 @@ namespace D360
                     TakeWhile(table => table.Controls.OfType<TextBox>().All(textBox => textBox != senderTextBox)).
                         Count() - 1;
 
-            var scriptBinding = (ScriptBinding)bindings.bindings[index];
+            var scriptBinding = (ScriptBinding)controlConfig.bindings[index];
             var tempScriptBinding = (ScriptBinding)m_TempControlConfig.bindings[index];
             tempScriptBinding.script = senderTextBox.Text;
 
-            var isDifferent = bindings.bindings.Count <= index ||
+            var isDifferent = controlConfig.bindings.Count <= index ||
                 tempScriptBinding.script != scriptBinding.script;
 
             senderTextBox.ForeColor = isDifferent ? Color.DodgerBlue : SystemColors.ControlText;
@@ -215,11 +239,11 @@ namespace D360
                     All(comboBox => comboBox != senderComboBox)).
                         Count() - 1;
 
-            var scriptBinding = (SpecialBinding)bindings.bindings[index];
+            var scriptBinding = (SpecialBinding)controlConfig.bindings[index];
             var tempScriptBinding = (SpecialBinding)m_TempControlConfig.bindings[index];
             //tempScriptBinding = (SpecialAction)senderComboBox.SelectedItem;
 
-            var isDifferent = bindings.bindings.Count <= index ||
+            var isDifferent = controlConfig.bindings.Count <= index ||
                 tempScriptBinding != scriptBinding;
 
             if (isDifferent)
@@ -297,12 +321,12 @@ namespace D360
             if (m_PressedKeys != Keys.None)
                 parsedKeys |= m_PressedKeys;
 
-            var scriptBinding = (KeyBinding)bindings.bindings[index];
+            var scriptBinding = (KeyBinding)controlConfig.bindings[index];
             var tempScriptBinding = (KeyBinding)m_TempControlConfig.bindings[index];
             tempScriptBinding.keys = parsedKeys;
 
             var isDifferent =
-                bindings.bindings.Count <= index ||
+                controlConfig.bindings.Count <= index ||
                 tempScriptBinding.keys != scriptBinding.keys;
 
             senderTextBox.Text = tempScriptBinding.keys.ToString();
@@ -333,8 +357,8 @@ namespace D360
             m_TempControlConfig.bindings[index].isHoldAction = senderCheck.Checked;
 
             var isDifferent =
-                bindings.bindings.Count <= index ||
-                m_TempControlConfig.bindings[index].isHoldAction != bindings.bindings[index].isHoldAction;
+                controlConfig.bindings.Count <= index ||
+                m_TempControlConfig.bindings[index].isHoldAction != controlConfig.bindings[index].isHoldAction;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -362,8 +386,8 @@ namespace D360
             m_TempControlConfig.bindings[index].isTargetedAction = senderCheck.Checked;
 
             var isDifferent =
-                bindings.bindings.Count <= index ||
-                m_TempControlConfig.bindings[index].isTargetedAction != bindings.bindings[index].isTargetedAction;
+                controlConfig.bindings.Count <= index ||
+                m_TempControlConfig.bindings[index].isTargetedAction != controlConfig.bindings[index].isTargetedAction;
 
             senderCheck.Text = senderCheck.Text.TrimEnd('*');
             if (isDifferent)
@@ -398,9 +422,9 @@ namespace D360
             m_TempControlConfig.bindings[index].inputMode ^= bindingMode;
 
             var isDifferent =
-                bindings.bindings.Count <= index ||
+                controlConfig.bindings.Count <= index ||
                 (m_TempControlConfig.bindings[index].inputMode & bindingMode) !=
-                (bindings.bindings[index].inputMode & bindingMode);
+                (controlConfig.bindings[index].inputMode & bindingMode);
 
             senderCheckBox.Text = senderCheckBox.Text.TrimEnd('*');
             if (isDifferent)
@@ -428,7 +452,7 @@ namespace D360
             {
                 tempTriggerConfig.deadzone = deadZoneTrackBar.Value / 100f;
 
-                var triggerConfig = bindings as TriggerConfig;
+                var triggerConfig = controlConfig as TriggerConfig;
                 if (triggerConfig != null)
                     isDifferent = Math.Abs(tempTriggerConfig.deadzone - triggerConfig.deadzone) > float.Epsilon;
             }
@@ -436,7 +460,7 @@ namespace D360
             {
                 tempStickConfig.moveDeadzone = deadZoneTrackBar.Value / 100f;
 
-                var stickConfig = bindings as StickConfig;
+                var stickConfig = controlConfig as StickConfig;
                 if (stickConfig != null)
                     isDifferent = Math.Abs(tempStickConfig.moveDeadzone - stickConfig.moveDeadzone) > float.Epsilon;
             }
@@ -458,7 +482,7 @@ namespace D360
         private void OnActionZoneValueChanged(object sender, EventArgs e)
         {
             var tempStickConfig = m_TempControlConfig as StickConfig;
-            var stickConfig = bindings as StickConfig;
+            var stickConfig = controlConfig as StickConfig;
             if (tempStickConfig == null || stickConfig == null || !m_Initialized)
                 return;
 
@@ -484,7 +508,7 @@ namespace D360
         private void OnStickModeChanged(object sender, EventArgs e)
         {
             var tempStickConfig = m_TempControlConfig as StickConfig;
-            var stickConfig = bindings as StickConfig;
+            var stickConfig = controlConfig as StickConfig;
             if (tempStickConfig == null || stickConfig == null || !m_Initialized)
                 return;
 
@@ -502,8 +526,23 @@ namespace D360
         private void SetSaveText()
         {
             saveButton.Text = saveButton.Text.TrimEnd('*');
-            if (m_ChangedControls > 0)
+
+            var valuesChanged = 0;
+            foreach (var bindingControl in GetBindingControls())
+                valuesChanged += bindingControl.valuesChanged;
+
+            if (valuesChanged + m_ChangedControls > 0 ||
+                m_TempControlConfig.bindings.Count != controlConfig.bindings.Count)
+            {
                 saveButton.Text += '*';
+                saveButton.Font =
+                    new Font(
+                        saveButton.Font.FontFamily,
+                        saveButton.Font.Size,
+                        FontStyle.Bold);
+            }
+            else
+                saveButton.ResetFont();
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -534,49 +573,35 @@ namespace D360
 
             Size = new Size(width, height);
 
-            var tables =
-                bindingsFlowLayoutPanel.Controls.
-                    OfType<BindingControl>().
-                    Where(x => x.Name != "defaultBindingControl").ToArray();
+            var bindingControls = GetBindingControls();
 
-            for (var i = 0; i < tables.Length; ++i)
-            {
-                tables[i].Name = @"Binding " + (i + 1);
-                //tables[i].Location =
-                //    new Point(
-                //        defaultBindingControl.Location.X,
-                //        defaultBindingControl.Location.Y
-                //        + defaultBindingControl.Size.Height * i
-                //        + defaultBindingControl.Margin.Bottom * i * 2);
-            }
+            for (var i = 0; i < bindingControls.Count; ++i)
+                bindingControls[i].Name = @"Binding " + (i + 1);
 
             Refresh();
         }
 
         private void UpdateBindingControls()
         {
-            var bindingControls =
-                bindingsFlowLayoutPanel.Controls.
-                    OfType<BindingControl>().
-                    Where(x => x.Name != "defaultBindingControl").ToList();
-
-            foreach (var bindingControl in bindingControls)
+            foreach (var bindingControl in GetBindingControls())
                 RemoveBindingControl(bindingControl);
 
-            foreach (var tempBinding in m_TempControlConfig.bindings)
-                AddNewBindingControl(tempBinding);
+            for (var i = 0; i < controlConfig.bindings.Count; i++)
+            {
+                AddNewBindingControl(controlConfig.bindings[i], m_TempControlConfig.bindings[i]);
+            }
 
             ProperResize();
         }
 
-        private void AddNewBinding(Binding binding)
+        private void AddNewBinding(Binding binding, Binding _tempBinding)
         {
-            m_TempControlConfig.bindings.Add(binding);
-            AddNewBindingControl(binding);
+            m_TempControlConfig.bindings.Add(_tempBinding);
+            AddNewBindingControl(binding, _tempBinding);
         }
-        private void AddNewBindingControl(Binding binding)
+        private void AddNewBindingControl(Binding binding, Binding _tempBinding)
         {
-            var newBindingControl = new BindingControl(binding);
+            var newBindingControl = new BindingControl(binding, _tempBinding);
 
             newBindingControl.deleteClick += OnDeleteClick;
 
@@ -585,9 +610,16 @@ namespace D360
 
             newBindingControl.bindingTypeChangedEvent += OnBindingTypeChanged;
 
+            newBindingControl.onValueChanged += OnBindingControlValueChanged;
+
             bindingsFlowLayoutPanel.Controls.Add(newBindingControl);
 
             ++m_TableCount;
+        }
+
+        private void OnBindingControlValueChanged()
+        {
+            SetSaveText();
         }
 
         private void RemoveBinding(Binding binding)
@@ -596,12 +628,20 @@ namespace D360
             RemoveBindingControl(
                 bindingsFlowLayoutPanel.Controls.
                     OfType<BindingControl>().
-                    First(x => x.binding == binding));
+                    First(x => x.tempBinding == binding));
         }
         private void RemoveBindingControl(BindingControl bindingControl)
         {
             --m_TableCount;
             bindingsFlowLayoutPanel.Controls.Remove(bindingControl);
+        }
+
+        private List<BindingControl> GetBindingControls()
+        {
+            return
+                bindingsFlowLayoutPanel.Controls.
+                    OfType<BindingControl>().
+                    Where(x => x != defaultBindingControl).ToList();
         }
 
         private void CopyConfig(ControlConfig source, ControlConfig destination)
@@ -627,8 +667,8 @@ namespace D360
         }
         private void InitializeTempConfig()
         {
-            var triggerBinding = bindings as TriggerConfig;
-            var stickConfig = bindings as StickConfig;
+            var triggerBinding = controlConfig as TriggerConfig;
+            var stickConfig = controlConfig as StickConfig;
 
             if (triggerBinding != null)
                 m_TempControlConfig = new TriggerConfig();
